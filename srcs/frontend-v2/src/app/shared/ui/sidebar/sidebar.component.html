@@ -1,1 +1,22 @@
-<p>sidebar works!</p>
+<nav
+  class="bg-navbar border-panel dark:bg-navbar_dark dark:border-panel_dark fixed
+    bottom-0 top-0 z-10 w-24 min-w-24 border-r pt-16 dark:border-r flex flex-col
+    flex-grow overflow-y-auto scrollbar-none"
+>
+  @for (item of config(); track item.name) {
+    <li
+      (click)="onMenuClick(item)"
+      class="group aspect-square overflow-visible flex flex-col items-center
+        justify-center gap-y-1 cursor-pointer hover:dark:bg-panel_dark
+        transition-all"
+    >
+      <img
+        class="select-none h-8 w-8 dark:invert group-hover:animate-squeeze
+          group-hover:animate-duration-300"
+        [src]="item.iconAsset"
+        [alt]="item.name"
+      />
+      {{ item.name }}
+    </li>
+  }
+</nav>
