@@ -23,12 +23,12 @@ COPY tsconfig.app.json ./
 COPY tsconfig.spec.json ./
 
 # Styling
-COPY .postcssrc.json ./
 COPY tailwind.config.js ./
 
 COPY docker-entrypoint.sh ./
 
+RUN npm i -g @angular/cli@17
 RUN npm i
-RUN npm run build
+RUN ng build --base-href /v2/
 
 ENTRYPOINT ["/bin/sh", "./docker-entrypoint.sh"]
