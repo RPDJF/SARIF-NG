@@ -1,0 +1,20 @@
+{
+	"type": "module",
+	"devDependencies": {
+		"@nomicfoundation/hardhat-toolbox": "^6.1.0",
+		"@types/node": "^22.15.21",
+		"typescript": "^5.8.3"
+	},
+	"dependencies": {
+		"axios": "^1.11.0",
+		"dotenv": "^16.5.0",
+		"ethers": "^6.15.0",
+		"fastify": "^5.4.0",
+		"zod": "^3.25.42"
+	},
+	"scripts": {
+		"compile": "hardhat compile",
+		"test": "hardhat test",
+		"main": "node ./srcs/scripts/main.ts"
+	}
+}

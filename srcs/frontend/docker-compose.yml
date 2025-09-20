@@ -1,0 +1,21 @@
+services:
+  frontend-builder:
+    build: ./
+    container_name: frontend
+    environment:
+      - TZ=Europe/Zurich
+    volumes:
+      - sarif-frontend:/var/www/sarif-frontend
+    networks:
+      - sarifntw
+    restart: on-failure
+
+volumes:
+  sarif-frontend:
+    name: "sarif-frontend"
+    driver: local
+
+# networks:
+#   sarifntw:
+#     name: "SARIF Bridge"
+#     driver: bridge

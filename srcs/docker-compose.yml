@@ -1,0 +1,34 @@
+# ------------------ #
+# docker-compose.yml #
+# ------------------ #
+
+include:
+  - ./libs/docker-compose.yml
+  - ./core/docker-compose.yml
+  - ./database/docker-compose.yml
+  - ./oauth2/docker-compose.yml
+  - ./usermanager/docker-compose.yml
+  - ./frontend/docker-compose.yml
+  - ./blockchain/docker-compose.yml
+  - ./games/pong/docker-compose.yml
+
+networks:
+  sarifntw:
+    name: "SARIF Bridge"
+    driver: bridge
+
+volumes:
+  ssl:
+    name: "SARIF_ssl"
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ../ssl/
+  data:
+    name: "SARIF_data"
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ../data/

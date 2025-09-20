@@ -1,0 +1,36 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    docker-compose.yml                                 :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: fclivaz <fclivaz@student.42lausanne.ch>    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2025/05/04 22:27:50 by fclivaz           #+#    #+#              #
+#    Updated: 2025/08/02 11:25:59 by fclivaz          ###   LAUSANNE.ch        #
+#                                                                              #
+# **************************************************************************** #
+
+services:
+  database:
+    container_name: database
+    networks:
+      - sarifntw
+    volumes:
+      - ssl:/ssl
+      - data:/data
+      - sarif-libs:/libs/
+    build: ./
+    env_file:
+      - ../.env
+      - .env
+    environment:
+      - API_KEY
+      - TZ=Europe/Zurich
+    restart: on-failure
+    depends_on:
+      libs:
+        condition: service_completed_successfully
+        restart: true
+      frontend-builder:
+        condition: service_completed_successfully
+        restart: true
