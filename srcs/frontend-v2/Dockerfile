@@ -14,7 +14,6 @@ COPY src ./src
 COPY package.json ./
 COPY package-lock.json ./
 COPY server.ts ./
-COPY .npmrc ./
 COPY .nvmrc ./
 
 # Angular
