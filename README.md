@@ -33,6 +33,11 @@ This is a **personal learning journey**, so development is experimental and evol
 
 ---
 
+## frontend-v2
+
+Frontend V2 is not served by default yet.
+Take a look at [frontend-v2 readme](./srcs/frontend-v2/README.md)
+
 ## 🔧 Using / Launching
 
 Just like the original project, SARIF-NG runs on **Docker** 🐳 with a **Makefile** to standardize commands.  
