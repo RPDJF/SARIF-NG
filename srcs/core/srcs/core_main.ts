@@ -42,7 +42,12 @@ await fastify.register(fastifyMultipart, {
 	limits: {
 		fileSize: 8 * 1024 * 1024
 	}
-})
+});
+await fastify.register(await import('@fastify/http-proxy'), {
+	upstream: `https://frontend-v2:4200`,
+	prefix: `/v2`,
+	http2: false,
+});
 await fastify.register(websocketPlugin);
 await load_modules()
 
@@ -52,7 +57,6 @@ fastify.addHook('onSend', async (request, reply, payload) => {
 	reply.header('Server', 'Sarifcore Webserver');
 	return payload;
 });
-
 
 fastify.listen({ port: Number(process.env.PORT!), host: '::' }, (err) => {
 	if (err) {
