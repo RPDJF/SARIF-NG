@@ -1,1 +1,45 @@
-<p>sidebar works!</p>
+<nav
+  class="bg-navbar border-panel dark:bg-navbar_dark dark:border-panel_dark fixed
+    bottom-0 top-0 z-10 border-r pt-16 dark:border-r flex"
+>
+  <div
+    class="flex flex-col flex-grow overflow-y-auto scrollbar-none w-24 min-w-24"
+  >
+    @for (item of config(); track item.name) {
+      <li
+        (mouseenter)="onMenuEnter(item)"
+        (click)="onMenuClick(item)"
+        [class]="
+          'group aspect-square overflow-visible flex flex-col items-center
+          justify-center gap-y-1 cursor-pointer hover:dark:bg-panel_dark
+          transition-all ' +
+          (currentChild() === item.content
+            ? 'bg-panel_dark transition-all '
+            : ' ') +
+          item.addClass
+        "
+      >
+        <img
+          class="select-none h-8 w-8 dark:invert group-hover:animate-squeeze
+            group-hover:animate-duration-300"
+          [src]="item.iconAsset"
+          [alt]="item.nameSignal!()"
+        />
+        {{ item.nameSignal!() }}
+      </li>
+    }
+  </div>
+  <div
+    [class]="
+      'overflow-hidden transition-all bg-panel_dark rounded-xl h-full mt-8 ' +
+      (currentChild() ? 'w-72 mr-4' : 'w-0 mr-0')
+    "
+    (mouseleave)="closeMenu()"
+  >
+    <div class="w-72">
+      @if (currentChild()) {
+        <ng-container *ngComponentOutlet="currentChild()" />
+      }
+    </div>
+  </div>
+</nav>

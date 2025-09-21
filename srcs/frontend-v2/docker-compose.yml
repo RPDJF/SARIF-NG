@@ -9,4 +9,6 @@ services:
       - ../.env/
     networks:
       - sarifntw
+    volumes:
+      - ssl:/ssl
     restart: on-failure

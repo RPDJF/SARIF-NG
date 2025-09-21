@@ -1,0 +1,80 @@
+<div
+  class="w-72 overflow-y-auto scrollbar-thin bg-panel dark:bg-panel_dark
+    rounded-xl p-8"
+>
+  <h3
+    class="text-lg text-center font-bold duration-0 text-black dark:text-white"
+  >
+    {{ i18n()['navbar.pong.title'] }}
+  </h3>
+  <hr class="my-4" />
+  <div class="grid grid-cols-2 gap-4">
+    <a
+      class="bg-background dark:bg-background_dark hover:animate-scale
+        hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
+        font-semibold flex align-middle items-center gap-x-3 flex-col
+        justify-center text-center gap-y-2 aspect-square m-0 overflow-hidden"
+    >
+      <img
+        class="select-none h-8 w-8 dark:invert"
+        src="/assets/ui/game-controller-svgrepo-com.svg"
+      />
+      <p>{{ i18n()['navbar.pong.submenu.play'] }}</p> </a
+    ><a
+      class="bg-background dark:bg-background_dark hover:animate-scale
+        hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
+        font-semibold flex align-middle items-center gap-x-3 flex-col
+        justify-center text-center gap-y-2 aspect-square m-0 overflow-hidden"
+    >
+      <img
+        class="select-none h-8 w-8 dark:invert"
+        src="/assets/ui/cup-star-svgrepo-com.svg"
+      />
+      <p>{{ i18n()['navbar.pong.submenu.tournament'] }}</p> </a
+    ><a
+      class="bg-background dark:bg-background_dark hover:animate-scale
+        hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
+        font-semibold flex align-middle items-center gap-x-3 flex-col
+        justify-center text-center gap-y-2 aspect-square m-0 overflow-hidden"
+    >
+      <img
+        class="select-none h-8 w-8 dark:invert"
+        src="/assets/ui/computer-svgrepo-com.svg"
+      />
+      <p>{{ i18n()['navbar.pong.submenu.solo'] }}</p> </a
+    ><a
+      class="bg-background dark:bg-background_dark hover:animate-scale
+        hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
+        font-semibold flex align-middle items-center gap-x-3 flex-col
+        justify-center text-center gap-y-2 aspect-square m-0 overflow-hidden"
+    >
+      <img
+        class="select-none h-8 w-8 dark:invert"
+        src="/assets/ui/game-controller-svgrepo-com.svg"
+      />
+      <p>{{ i18n()['navbar.pong.submenu.local'] }}</p> </a
+    ><a
+      class="bg-background dark:bg-background_dark hover:animate-scale
+        hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
+        font-semibold flex align-middle items-center gap-x-3 flex-col
+        justify-center text-center gap-y-2 aspect-square m-0 overflow-hidden"
+    >
+      <img
+        class="select-none h-8 w-8 dark:invert"
+        src="/assets/ui/lock-alt-svgrepo-com.svg"
+      />
+      <p>{{ i18n()['navbar.pong.submenu.join'] }}</p> </a
+    ><a
+      class="bg-background dark:bg-background_dark hover:animate-scale
+        hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
+        font-semibold flex align-middle items-center gap-x-3 flex-col
+        justify-center text-center gap-y-2 aspect-square m-0 overflow-hidden"
+    >
+      <img
+        class="select-none h-8 w-8 dark:invert"
+        src="/assets/ui/lock-alt-svgrepo-com.svg"
+      />
+      <p>{{ i18n()['navbar.pong.submenu.create'] }}</p>
+    </a>
+  </div>
+</div>
