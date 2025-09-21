@@ -5,7 +5,7 @@
   <h3
     class="text-lg text-center font-bold duration-0 text-black dark:text-white"
   >
-    Pong Game
+    {{ i18n()['navbar.pong.title'] }}
   </h3>
   <hr class="my-4" />
   <div class="grid grid-cols-2 gap-4">
@@ -19,7 +19,7 @@
         class="select-none h-8 w-8 dark:invert"
         src="/assets/ui/game-controller-svgrepo-com.svg"
       />
-      <p>Play now</p> </a
+      <p>{{ i18n()['navbar.pong.submenu.play'] }}</p> </a
     ><a
       class="bg-background dark:bg-background_dark hover:animate-scale
         hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
@@ -30,7 +30,7 @@
         class="select-none h-8 w-8 dark:invert"
         src="/assets/ui/cup-star-svgrepo-com.svg"
       />
-      <p>Tournament</p> </a
+      <p>{{ i18n()['navbar.pong.submenu.tournament'] }}</p> </a
     ><a
       class="bg-background dark:bg-background_dark hover:animate-scale
         hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
@@ -41,7 +41,7 @@
         class="select-none h-8 w-8 dark:invert"
         src="/assets/ui/computer-svgrepo-com.svg"
       />
-      <p>Solo mode</p> </a
+      <p>{{ i18n()['navbar.pong.submenu.solo'] }}</p> </a
     ><a
       class="bg-background dark:bg-background_dark hover:animate-scale
         hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
@@ -52,7 +52,7 @@
         class="select-none h-8 w-8 dark:invert"
         src="/assets/ui/game-controller-svgrepo-com.svg"
       />
-      <p>Local Game</p> </a
+      <p>{{ i18n()['navbar.pong.submenu.local'] }}</p> </a
     ><a
       class="bg-background dark:bg-background_dark hover:animate-scale
         hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
@@ -63,7 +63,7 @@
         class="select-none h-8 w-8 dark:invert"
         src="/assets/ui/lock-alt-svgrepo-com.svg"
       />
-      <p>Join room</p> </a
+      <p>{{ i18n()['navbar.pong.submenu.join'] }}</p> </a
     ><a
       class="bg-background dark:bg-background_dark hover:animate-scale
         hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
@@ -74,7 +74,7 @@
         class="select-none h-8 w-8 dark:invert"
         src="/assets/ui/lock-alt-svgrepo-com.svg"
       />
-      <p>Create room</p>
+      <p>{{ i18n()['navbar.pong.submenu.create'] }}</p>
     </a>
   </div>
 </div>
