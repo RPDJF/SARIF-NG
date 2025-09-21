@@ -28,6 +28,11 @@ export class SidebarComponent {
   private readonly store = inject(Store);
 
   ngOnInit() {
+    const bottom = this.config()
+      .sort((a, b) => (a.bottom ? 1 : 0) - (b.bottom ? 1 : 0))
+      .find((item) => item.bottom);
+    if (bottom) bottom.addClass += ' mt-auto';
+
     for (const item of this.config()) {
       if (!item.routerLink && !item.href && !item.content)
         throw 'RouterLink, content or href properties are required';

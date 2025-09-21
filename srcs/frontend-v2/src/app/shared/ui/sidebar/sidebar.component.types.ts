@@ -9,5 +9,7 @@ export type sidebarElement = {
   href?: string;
   content?: Type<unknown>;
   iconAsset: string;
+  addClass?: string;
+  bottom?: boolean;
 };
 export type SidebarConfig = sidebarElement[];

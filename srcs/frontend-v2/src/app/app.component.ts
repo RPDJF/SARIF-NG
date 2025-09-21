@@ -47,6 +47,7 @@ export class AppComponent implements OnInit {
       name: 'navbar.settings.label',
       content: SettingsPanelComponent,
       iconAsset: 'assets/ui/settings-svgrepo-com.svg',
+      bottom: true,
     },
   ];
 

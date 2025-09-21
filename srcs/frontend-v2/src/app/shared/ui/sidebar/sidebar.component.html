@@ -14,8 +14,9 @@
           justify-center gap-y-1 cursor-pointer hover:dark:bg-panel_dark
           transition-all ' +
           (currentChild() === item.content
-            ? 'bg-panel_dark transition-all'
-            : '')
+            ? 'bg-panel_dark transition-all '
+            : ' ') +
+          item.addClass
         "
       >
         <img
@@ -30,8 +31,8 @@
   </div>
   <div
     [class]="
-      'overflow-hidden transition-all bg-panel_dark rounded-xl h-fit
-      min-h-[600px] mt-8 ' + (currentChild() ? 'w-72 mr-4' : 'w-0 mr-0')
+      'overflow-hidden transition-all bg-panel_dark rounded-xl h-full mt-8 ' +
+      (currentChild() ? 'w-72 mr-4' : 'w-0 mr-0')
     "
     (mouseleave)="closeMenu()"
   >
