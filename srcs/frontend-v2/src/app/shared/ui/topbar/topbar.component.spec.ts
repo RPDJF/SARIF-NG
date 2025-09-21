@@ -1,9 +1,10 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TopbarComponent } from './topbar.component';
+import { provideHttpClient } from '@angular/common/http';
 import { provideStore } from '@ngxs/store';
 import { I18nState } from '../../../state/i18n/i18n.state';
-import { provideHttpClient } from '@angular/common/http';
+import { UserState } from '../../../state/user/user.state';
+import { TopbarComponent } from './topbar.component';
 
 describe('TopbarComponent', () => {
   let component: TopbarComponent;
@@ -12,7 +13,7 @@ describe('TopbarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [TopbarComponent],
-      providers: [provideStore([I18nState]), provideHttpClient()],
+      providers: [provideStore([I18nState, UserState]), provideHttpClient()],
     }).compileComponents();
 
     fixture = TestBed.createComponent(TopbarComponent);
