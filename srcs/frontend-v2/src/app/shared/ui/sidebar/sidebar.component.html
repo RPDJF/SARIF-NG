@@ -14,9 +14,9 @@
         class="select-none h-8 w-8 dark:invert group-hover:animate-squeeze
           group-hover:animate-duration-300"
         [src]="item.iconAsset"
-        [alt]="item.name"
+        [alt]="item.nameSignal!()"
       />
-      {{ item.name }}
+      {{ item.nameSignal!() }}
     </li>
   }
 </nav>

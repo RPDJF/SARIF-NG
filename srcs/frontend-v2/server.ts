@@ -23,9 +23,12 @@ export function app() {
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
-  server.get('*.*', express.static(browserDistFolder, {
-    maxAge: '1y'
-  }));
+  server.get(
+    '*.*',
+    express.static(browserDistFolder, {
+      maxAge: '1y',
+    }),
+  );
 
   // All regular routes use the Angular engine
   server.get('*', (req, res, next) => {
@@ -43,11 +46,13 @@ export function app() {
       .catch((err) => next(err));
   });
 
-
-  const httpsServer = https.createServer({
-    key: fs.readFileSync(process.env['KEY_PATH'] || ''),
-    cert: fs.readFileSync(process.env['CERT_PATH'] || ''),
-  }, server);
+  const httpsServer = https.createServer(
+    {
+      key: fs.readFileSync(process.env['KEY_PATH'] || ''),
+      cert: fs.readFileSync(process.env['CERT_PATH'] || ''),
+    },
+    server,
+  );
 
   return httpsServer;
 }

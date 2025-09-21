@@ -1,9 +1,9 @@
+import { DOCUMENT } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { SidebarComponent } from './shared/ui/sidebar/sidebar.component';
 import { SidebarConfig } from './shared/ui/sidebar/sidebar.component.types';
-import { TopbarComponent } from './shared/ui/topbar/topbar.component'
-import { DOCUMENT } from '@angular/common';
+import { TopbarComponent } from './shared/ui/topbar/topbar.component';
 
 @Component({
   selector: 'app-root',
@@ -13,32 +13,37 @@ import { DOCUMENT } from '@angular/common';
 })
 export class AppComponent implements OnInit {
   private document = inject(DOCUMENT);
-  title = 'frontend-v2';
+
   sidebarConfig: SidebarConfig = [
     {
-      name: "Home",
-      routerLink: "home",
-      iconAsset: "assets/ui/home-svgrepo-com.svg",
-    }, {
-      name: "Pong",
-      routerLink: "pong",
-      iconAsset: "assets/ui/ping-pong-svgrepo-com.svg",
-    }, {
-      name: "Friends",
-      routerLink: "friends",
-      iconAsset: "assets/ui/friend-svgrepo-com.svg",
-    }, {
-      name: "History",
-      routerLink: "history",
-      iconAsset: "assets/ui/history-svgrepo-com.svg",
-    }, {
-      name: "Profile",
-      routerLink: "profile",
-      iconAsset: "assets/ui/profile-round-1342-svgrepo-com.svg",
-    }, {
-      name: "Settings",
-      href: "https://google.com",
-      iconAsset: "assets/ui/settings-svgrepo-com.svg",
+      name: 'navbar.home.label',
+      routerLink: 'home',
+      iconAsset: 'assets/ui/home-svgrepo-com.svg',
+    },
+    {
+      name: 'navbar.pong.label',
+      routerLink: 'pong',
+      iconAsset: 'assets/ui/ping-pong-svgrepo-com.svg',
+    },
+    {
+      name: 'navbar.friend.label',
+      routerLink: 'friends',
+      iconAsset: 'assets/ui/friend-svgrepo-com.svg',
+    },
+    {
+      name: 'navbar.history.label',
+      routerLink: 'history',
+      iconAsset: 'assets/ui/history-svgrepo-com.svg',
+    },
+    {
+      name: 'navbar.profile.label',
+      routerLink: 'profile',
+      iconAsset: 'assets/ui/profile-round-1342-svgrepo-com.svg',
+    },
+    {
+      name: 'navbar.settings.label',
+      routerLink: 'settings',
+      iconAsset: 'assets/ui/settings-svgrepo-com.svg',
     },
   ];
 

@@ -4,6 +4,18 @@
 >
   <div class="flex justify-center items-center gap-4">
     <img src="" alt="logo" />
-    <h1 class="text-lg my-auto h-fit font-bold">Title</h1>
+    <h1 class="text-lg my-auto h-fit font-bold uppercase">Sarif-ng's pong</h1>
+  </div>
+  <div class="flex flex-row items-center right-1 bg-navbar_dark rounded-xl p-2">
+    @for (item of langButtonsConfig; track item.langCode) {
+      <button
+        class="p-2 h-full flex flex-row items-center text-sm font-medium
+          rounded-lg hover:bg-panel_dark"
+        (click)="onLangChange(item.langCode)"
+      >
+        <span class="text-md">{{ item.langCode }}</span>
+        <span class="ml-1"> <img [src]="item.icon" class="w-5 h-5" /></span>
+      </button>
+    }
   </div>
 </header>
