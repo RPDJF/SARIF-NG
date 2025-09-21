@@ -22,12 +22,12 @@ export class AppComponent implements OnInit {
     },
     {
       name: 'navbar.pong.label',
-      routerLink: 'pong',
+      content: 'pong',
       iconAsset: 'assets/ui/ping-pong-svgrepo-com.svg',
     },
     {
       name: 'navbar.friend.label',
-      routerLink: 'friends',
+      content: 'friends',
       iconAsset: 'assets/ui/friend-svgrepo-com.svg',
     },
     {
@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
     },
     {
       name: 'navbar.settings.label',
-      routerLink: 'settings',
+      content: 'settings',
       iconAsset: 'assets/ui/settings-svgrepo-com.svg',
     },
   ];

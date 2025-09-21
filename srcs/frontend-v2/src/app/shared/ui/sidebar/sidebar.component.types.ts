@@ -7,6 +7,7 @@ export type sidebarElement = {
   isNameSignal?: boolean;
   routerLink?: string;
   href?: string;
+  content?: Object;
   iconAsset: string;
 };
 export type SidebarConfig = sidebarElement[];

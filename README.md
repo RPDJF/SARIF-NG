@@ -12,22 +12,20 @@ The goal is simple: 🎯 learn Angular while keeping the spirit of the original 
 
 ## 📌 Project Status
 
-![status](https://img.shields.io/badge/status-in%20development-orange?style=for-the-badge&logo=angular)   ![release](https://img.shields.io/badge/release-none%20yet-lightgrey?style=for-the-badge&logo=github)  
+![status](https://img.shields.io/badge/status-in%20development-orange?style=for-the-badge&logo=angular) ![release](https://img.shields.io/badge/release-none%20yet-lightgrey?style=for-the-badge&logo=github)  
 ![angular](https://img.shields.io/badge/frontend-angular%20v17-red?style=for-the-badge&logo=angular)
 
 ## ⚠️ Current State
 
-👉 The codebase is **still identical** to the original repositories — no personal changes have been made yet.  
-Development will start with the new Angular frontend soon 🚀.
-
+👉 The old frontend is set by default. To access the new frontend, add `/v2` to your base route, e.g: `http://localhost:4200/v2` 🚀.
 
 ---
 
 ## 🧭 What is SARIF-NG?
 
-SARIF-NG is a **web-app** where you can play Pong 🏓 and run tournaments 🏆.  
+SARIF-NG is a **web-app** where you can play Pong 🏓 and run tournaments 🏆.
 
-It’s built as a **single-page application**, but this fork is moving away from the original frontend stack to fully embrace **Angular v17** for a modern UI/UX and a smoother developer experience.  
+It’s built as a **single-page application**, but this fork is moving away from the original frontend stack to fully embrace **Angular v17** for a modern UI/UX and a smoother developer experience.
 
 This is a **personal learning journey**, so development is experimental and evolving quickly.
 
@@ -43,20 +41,20 @@ Take a look at [frontend-v2 readme](./srcs/frontend-v2/README.md)
 Just like the original project, SARIF-NG runs on **Docker** 🐳 with a **Makefile** to standardize commands.  
 From inside the project folder:
 
-| Command        | 🛠️ Result                                                                                  |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| `make`         | Builds every docker image and launches SARIF-NG.                                           |
-| `make all`     | Same as above.                                                                             |
-| `make start`   | Starts the containers (builds them if they do not exist).                                  |
-| `make stop`    | Stops the service and halts the containers.                                                |
-| `make down`    | Stops the service and removes the containers.                                              |
-| `make status`  | Shortcut for `docker ps -a`                                                                |
-| `make network` | Shortcut for `docker network ls`                                                           |
-| `make prune`   | Shortcut for `docker system prune -af`                                                     |
-| `make nuke`    | Deletes SARIF-NG entirely, its persistent data, then calls `prune`. ⚠️ **Dangerous!**      |
-| `make re`      | Rebuilds the containers without pruning any data.                                          |
-| `make rebuild` | Calls `nuke` and rebuilds everything from scratch. ⚠️ **Dangerous!**                       |
-| `make restart` | Stops the containers and starts them again.                                                |
+| Command        | 🛠️ Result                                                                             |
+| -------------- | ------------------------------------------------------------------------------------- |
+| `make`         | Builds every docker image and launches SARIF-NG.                                      |
+| `make all`     | Same as above.                                                                        |
+| `make start`   | Starts the containers (builds them if they do not exist).                             |
+| `make stop`    | Stops the service and halts the containers.                                           |
+| `make down`    | Stops the service and removes the containers.                                         |
+| `make status`  | Shortcut for `docker ps -a`                                                           |
+| `make network` | Shortcut for `docker network ls`                                                      |
+| `make prune`   | Shortcut for `docker system prune -af`                                                |
+| `make nuke`    | Deletes SARIF-NG entirely, its persistent data, then calls `prune`. ⚠️ **Dangerous!** |
+| `make re`      | Rebuilds the containers without pruning any data.                                     |
+| `make rebuild` | Calls `nuke` and rebuilds everything from scratch. ⚠️ **Dangerous!**                  |
+| `make restart` | Stops the containers and starts them again.                                           |
 
 ---
 
@@ -79,3 +77,4 @@ From inside the project folder:
    ├─ docker-compose.yml   # Main docker-compose (ties modules together)
    ├─ dockerignore.example # Example .dockerignore
    └─ env.example          # Example environment variables
+```

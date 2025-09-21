@@ -1,16 +1,18 @@
 import { APP_INITIALIZER, ApplicationConfig } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
-import { routes } from './app.routes';
-import { provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { I18nState } from './state/i18n/i18n.state';
+import { provideClientHydration } from '@angular/platform-browser';
 import { provideStore } from '@ngxs/store';
+import { routes } from './app.routes';
 import { I18nService } from './core/services/i18n/i18n.service';
+import { sidebarRoutes } from './shared/ui/sidebar/sidebar.component.routes';
+import { I18nState } from './state/i18n/i18n.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
+    provideRouter(sidebarRoutes),
     provideClientHydration(),
     provideHttpClient(withFetch()),
     provideStore([I18nState]),
