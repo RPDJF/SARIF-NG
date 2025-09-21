@@ -36,7 +36,9 @@
     (mouseleave)="closeMenu()"
   >
     <div class="w-72">
-      <router-outlet name="sidebar"></router-outlet>
+      @if (currentChild()) {
+        <ng-container *ngComponentOutlet="currentChild()" />
+      }
     </div>
   </div>
 </nav>

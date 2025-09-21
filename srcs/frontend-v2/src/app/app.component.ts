@@ -1,6 +1,9 @@
 import { DOCUMENT } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { FriendsPanelComponent } from './shared/ui/sidebar/panels/friends-panel/friends-panel.component';
+import { PongPanelComponent } from './shared/ui/sidebar/panels/pong-panel/pong-panel.component';
+import { SettingsPanelComponent } from './shared/ui/sidebar/panels/settings-panel/settings-panel.component';
 import { SidebarComponent } from './shared/ui/sidebar/sidebar.component';
 import { SidebarConfig } from './shared/ui/sidebar/sidebar.component.types';
 import { TopbarComponent } from './shared/ui/topbar/topbar.component';
@@ -22,12 +25,12 @@ export class AppComponent implements OnInit {
     },
     {
       name: 'navbar.pong.label',
-      content: 'pong',
+      content: PongPanelComponent,
       iconAsset: 'assets/ui/ping-pong-svgrepo-com.svg',
     },
     {
       name: 'navbar.friend.label',
-      content: 'friends',
+      content: FriendsPanelComponent,
       iconAsset: 'assets/ui/friend-svgrepo-com.svg',
     },
     {
@@ -42,7 +45,7 @@ export class AppComponent implements OnInit {
     },
     {
       name: 'navbar.settings.label',
-      content: 'settings',
+      content: SettingsPanelComponent,
       iconAsset: 'assets/ui/settings-svgrepo-com.svg',
     },
   ];
