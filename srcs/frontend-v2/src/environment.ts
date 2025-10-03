@@ -1,3 +1,3 @@
 export const environment = {
-  CORE_ENDPOINT: 'https://127.0.0.1/api',
+  CORE_ENDPOINT: 'https://sarif.ruinformatique.ch/api',
 };
