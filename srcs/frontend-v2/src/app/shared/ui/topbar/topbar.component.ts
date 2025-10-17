@@ -1,23 +1,21 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { ModalService } from '../../../core/services/modalService/modal.service';
+import { LoginModalComponent } from '../../../modals/auth/login-modal/login-modal.component';
 import { I18nUpdateLang } from '../../../state/i18n/i18n.actions';
 import { LangCode } from '../../../state/i18n/i18n.state.types';
 import { UserState } from '../../../state/user/user.state';
 import { ButtonComponent } from '../common/buttons/button/button.component';
 import { UserAvatarComponent } from '../common/user-avatar/user-avatar.component';
 import { langButton } from './topbar.component.types';
-import { LoginModalComponent } from '../../../modals/auth/login-modal/login-modal.component';
-import { ModalService } from '../../../core/services/modalService/modal.service';
 
 @Component({
   selector: 'app-topbar',
   standalone: true,
-  imports: [UserAvatarComponent, ButtonComponent, LoginModalComponent],
+  imports: [UserAvatarComponent, ButtonComponent],
   templateUrl: './topbar.component.html',
 })
 export class TopbarComponent {
-  public isLoginModalVisible = signal(false);
-
   readonly #store = inject(Store);
   readonly #modalService = inject(ModalService);
 
@@ -52,11 +50,9 @@ export class TopbarComponent {
   }
 
   public showLoginModal() {
-    this.isLoginModalVisible.set(true);
-    this.#modalService.open(LoginModalComponent);
-  }
-
-  public closeLoginModal() {
-    this.isLoginModalVisible.set(false);
+    this.#modalService.open({
+      component: LoginModalComponent,
+      title: 'panel.loginPanel.panelTitle',
+    });
   }
 }

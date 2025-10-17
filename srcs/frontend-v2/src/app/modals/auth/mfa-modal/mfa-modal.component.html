@@ -1,0 +1,30 @@
+<form
+  class="text-black dark:text-white flex flex-col gap-y-4 items-center w-64"
+  (ngSubmit)="onSubmitButtonClick()"
+>
+  <app-input
+    class="w-full"
+    type="text"
+    placeholder="xxxxxx"
+    [(value)]="verificationCode"
+    name="verificationCode"
+    required
+  />
+
+  <button
+    class="min-w-full text-white bg-green-500 hover:bg-green-600 focus:ring-4
+      focus:outline-none focus:ring-green-800 font-medium rounded-lg text-sm
+      w-full sm:w-auto px-5 py-2.5 text-center dark:bg-green-600
+      dark:hover:bg-green-800 dark:focus:ring-green-300"
+    type="submit"
+  >
+    {{ ('panel.2faPanel.verify' | translate)() }}
+  </button>
+  <p class="text-xs" [innerHTML]="('panel.2faPanel.info' | translate)()"></p>
+  <!-- TODO: Support remember me
+    <label>
+      <input type="checkbox" checked="checked" name="remember" />
+      {{ ('Remember me' | translate)() }}
+    </label>
+    -->
+</form>

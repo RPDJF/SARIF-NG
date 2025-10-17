@@ -125,7 +125,7 @@
   "panel.updateProfile.notification.oauthNoPassword": "Aucun mot de passe n'a été défini pour ce compte.\nVous pouvez définir un mot de passe dans les paramètres de votre profil.",
   "panel.updateProfile.notification.badPassword": "Mauvais mot de passe. ",
   "panel.updateProfile.validation.confirmPasswordRequired": "Veuillez confirmer votre nouveau mot de passe.",
-  "panel.2faPanel.title": "Authentification à deux facteurs",
+  "panel.2faPanel.title": "Authentification\nà deux facteurs",
   "panel.2faPanel.info": "Un courrier a été envoyé à votre e-mail avec le code 2FA.\nVeuillez le saisir ci-dessous pour vérifier votre identité.",
   "panel.2faPanel.verify": "Vérifier",
   "panel.2faPanel.error.invalidCode": "Code non valide. ",

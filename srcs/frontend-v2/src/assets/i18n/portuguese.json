@@ -125,7 +125,7 @@
   "panel.updateProfile.notification.oauthNoPassword": "Nenhuma senha foi definida para esta conta.\nVocê pode definir uma senha em suas configurações de perfil.",
   "panel.updateProfile.notification.badPassword": "Senha ruim. ",
   "panel.updateProfile.validation.confirmPasswordRequired": "Confirme sua nova senha.",
-  "panel.2faPanel.title": "Autenticação de dois fatores",
+  "panel.2faPanel.title": "Autenticação\nde dois fatores",
   "panel.2faPanel.info": "Um e-mail foi enviado ao seu e-mail com o código 2FA.\nPor favor, insira-o abaixo para verificar sua identidade.",
   "panel.2faPanel.verify": "Verificar",
   "panel.2faPanel.error.invalidCode": "Código inválido. ",

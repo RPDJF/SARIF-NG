@@ -1,28 +1,33 @@
 import {
-  Injectable,
   ApplicationRef,
-  EnvironmentInjector,
-  createComponent,
   ComponentRef,
-  inject
+  EnvironmentInjector,
+  Injectable,
+  createComponent,
+  inject,
 } from '@angular/core';
 import { ModalComponent } from '../../../modals/modal/modal.component';
+import { modalServiceOpenProp } from './modal.service.types';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class ModalService {
   #appRef = inject(ApplicationRef);
   #envInjector = inject(EnvironmentInjector);
 
-  open(component: any, data?: any): void {
-    const modalRef: ComponentRef<ModalComponent> = createComponent(ModalComponent, {
-      environmentInjector: this.#envInjector
-    });
+  open({ component, data, title, icon }: modalServiceOpenProp): void {
+    const modalRef: ComponentRef<ModalComponent> = createComponent(
+      ModalComponent,
+      {
+        environmentInjector: this.#envInjector,
+      },
+    );
 
     modalRef.setInput('componentChild', component);
     modalRef.setInput('data', data);
+    modalRef.setInput('title', title);
+    modalRef.setInput('icon', icon);
 
     const domElem = modalRef.location.nativeElement;
     document.body.appendChild(domElem);

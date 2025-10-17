@@ -125,7 +125,7 @@
   "panel.updateProfile.notification.oauthNoPassword": "No password has been set for this account.\nYou can set a password in your profile settings.",
   "panel.updateProfile.notification.badPassword": "Bad password. Please try again.",
   "panel.updateProfile.validation.confirmPasswordRequired": "Please confirm your new password.",
-  "panel.2faPanel.title": "Two-Factor Authentication",
+  "panel.2faPanel.title": "Two-Factor\nAuthentication",
   "panel.2faPanel.info": "A mail as been sent to your email with the 2FA code.\nPlease enter it below to verify your identity.",
   "panel.2faPanel.verify": "Verify",
   "panel.2faPanel.error.invalidCode": "Invalid code. Please try again.",

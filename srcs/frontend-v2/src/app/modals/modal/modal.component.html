@@ -1,12 +1,12 @@
 <div
-  class="z-40 fixed top-0 left-0 bottom-0 right-0 bg-black opacity-50 flex
-    items-center justify-center"
+  class="z-40 fixed top-0 left-0 bottom-0 right-0 bg-black/40 flex items-center
+    justify-center backdrop-blur-sm"
   (click)="close()"
 ></div>
 <div
   class="z-50 fixed top-0 left-0 bottom-0 right-0 bg-background
-    dark:bg-background_dark h-fit m-auto p-8 rounded-xl max-w-[500px] w-full
-    shadow-xl overflow-visible"
+    dark:bg-background_dark h-fit m-auto p-12 rounded-xl max-w-[500px] shadow-xl
+    overflow-visible w-min"
   (click)="$event.stopPropagation()"
 >
   <div
@@ -19,7 +19,15 @@
   >
     ×
   </div>
-  <div>
+  <div class="text-black dark:text-white text-center flex flex-col gap-y-4">
+    <div class="flex flex-col items-center gap-y-2">
+      @if (icon(); as icon) {
+        <img class="w-16 h-16 dark:invert" [src]="icon" />
+      }
+      @if (title(); as title) {
+        <h1 class="text-xl" [innerHTML]="(title | translate)()"></h1>
+      }
+    </div>
     <ng-container *ngComponentOutlet="componentChild()"></ng-container>
   </div>
 </div>

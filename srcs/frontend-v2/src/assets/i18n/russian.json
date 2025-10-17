@@ -125,7 +125,7 @@
   "panel.updateProfile.notification.oauthNoPassword": "Для этой учетной записи не было установлено никакого пароля.\nВы можете добавить пароль в ваших настройках профиля.",
   "panel.updateProfile.notification.badPassword": "Плохой пароль. ",
   "panel.updateProfile.validation.confirmPasswordRequired": "Пожалуйста, подтвердите свой новый пароль.",
-  "panel.2faPanel.title": "Двухфакторная аутентификация",
+  "panel.2faPanel.title": "Двухфакторная\nаутентификация",
   "panel.2faPanel.info": "Код 2FA был отправлен на вашу электронную почту.\nВведите код снизу.",
   "panel.2faPanel.verify": "Проверить",
   "panel.2faPanel.error.invalidCode": "Неверный код. Давайте снова",

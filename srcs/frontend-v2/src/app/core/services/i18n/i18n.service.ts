@@ -2,12 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { I18nUpdateLang } from '../../../state/i18n/i18n.actions';
+import { I18nState } from '../../../state/i18n/i18n.state';
 import {
+  I18nCollection,
   LangCode,
   TranslationKey,
-  I18nCollection,
 } from './../../../state/i18n/i18n.state.types';
-import { I18nState } from '../../../state/i18n/i18n.state';
 
 @Injectable({
   providedIn: 'root',
@@ -49,7 +49,9 @@ export class I18nService {
     return computed(() =>
       this.#sanityCheck(
         key,
-        this.#store.selectSignal(I18nState.getI18n)()[key] || `❌ !${key}`,
+        this.#store
+          .selectSignal(I18nState.getI18n)()
+          [key].replaceAll('\n', '<br>') || `❌ !${key}`,
       ),
     );
   }
