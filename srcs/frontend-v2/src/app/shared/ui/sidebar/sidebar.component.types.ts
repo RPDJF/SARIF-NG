@@ -1,8 +1,8 @@
 import { Signal, Type } from '@angular/core';
-import { langKeys } from '../../../state/i18n/i18n.state.types';
+import { TranslationKey } from '../../../state/i18n/i18n.state.types';
 
 export type sidebarElement = {
-  name: langKeys;
+  name: TranslationKey;
   nameSignal?: Signal<string>;
   isNameSignal?: boolean;
   routerLink?: string;

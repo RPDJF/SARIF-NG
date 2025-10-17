@@ -1,7 +1,7 @@
 import { Component, computed, inject, input, output } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { I18nState } from '../../../../../state/i18n/i18n.state';
-import { langKeys } from '../../../../../state/i18n/i18n.state.types';
+import { TranslationKey } from '../../../../../state/i18n/i18n.state.types';
 
 @Component({
   selector: 'app-button',
@@ -12,7 +12,7 @@ import { langKeys } from '../../../../../state/i18n/i18n.state.types';
 export class ButtonComponent {
   private readonly store = inject(Store);
 
-  public title = input.required<langKeys>();
+  public title = input.required<TranslationKey>();
   public icon = input<string>();
 
   public titleTranslated = computed(

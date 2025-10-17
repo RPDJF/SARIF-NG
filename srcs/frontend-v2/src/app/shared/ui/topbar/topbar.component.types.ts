@@ -1,6 +1,6 @@
-import { langCode } from '../../../state/i18n/i18n.state.types';
+import { LangCode } from '../../../state/i18n/i18n.state.types';
 
 export interface langButton {
-  langCode: langCode;
+  LangCode: LangCode;
   icon: string;
 }

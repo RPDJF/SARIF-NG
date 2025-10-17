@@ -31,6 +31,9 @@ module.exports = {
         primary: "linear-gradient(to right, #34D399, #22D3EE)",
         primary_dark: "linear-gradient(to right, #1B1A55, #9290C3)",
       },
+      fontFamily: {
+        sans: ['Inter', 'ui-sans-serif', 'system-ui'],
+      },
     },
   },
   plugins: [require("tailwind-scrollbar"), animations],

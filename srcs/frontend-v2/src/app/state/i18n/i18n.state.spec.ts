@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideStore, Store } from '@ngxs/store';
 import { I18nState, I18nStateModel } from './i18n.state';
 import { I18nUpdateLang } from './i18n.actions';
-import { langCode, langKeys } from './i18n.state.types';
+import { LangCode, TranslationKey } from './i18n.state.types';
 import english from '../../../assets/i18n/english.json';
 import french from '../../../assets/i18n/french.json';
 import portuguese from '../../../assets/i18n/portuguese.json';

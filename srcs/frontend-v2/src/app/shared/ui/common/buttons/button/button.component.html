@@ -1,12 +1,24 @@
-<a
-  class="bg-white dark:bg-background_dark hover:animate-scale
-    hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
-    font-semibold flex align-middle items-center gap-x-3 h-[40px]"
-  (click)="click.emit()"
-  [href]="href()"
->
-  @if (icon()) {
-    <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
-  }
-  <p>{{ titleTranslated() }}</p></a
->
+@if (href()) {
+  <a
+    class="bg-white dark:bg-background_dark hover:animate-scale
+      hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
+      font-semibold flex align-middle items-center gap-x-3 h-[40px]"
+    [href]="href()"
+  >
+    @if (icon()) {
+      <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
+    }
+    <p>{{ titleTranslated() }}</p></a
+  >
+} @else {
+  <button
+    class="bg-white dark:bg-background_dark hover:animate-scale
+      hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
+      font-semibold flex align-middle items-center gap-x-3 h-[40px]"
+  >
+    @if (icon()) {
+      <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
+    }
+    <p>{{ titleTranslated() }}</p>
+  </button>
+}

@@ -10,13 +10,13 @@
     <div
       class="flex flex-row items-center right-1 bg-navbar_dark rounded-xl p-2"
     >
-      @for (item of langButtonsConfig; track item.langCode) {
+      @for (item of langButtonsConfig; track item.LangCode) {
         <button
           class="p-2 h-full flex flex-row items-center text-sm font-medium
             rounded-lg hover:bg-panel_dark"
-          (click)="onLangChange(item.langCode)"
+          (click)="onLangChange(item.LangCode)"
         >
-          <span class="text-md">{{ item.langCode }}</span>
+          <span class="text-md">{{ item.LangCode }}</span>
           <span class="ml-1"> <img [src]="item.icon" class="w-5 h-5" /></span>
         </button>
       }
@@ -35,6 +35,7 @@
       <app-button
         title="header.usermenu.login"
         icon="assets/ui/login-door-1-svgrepo-com.svg"
+        (click)="showLoginModal()"
       >
       </app-button>
     }

@@ -1,8 +1,13 @@
 import { HttpClient } from '@angular/common/http';
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { I18nUpdateLang } from '../../../state/i18n/i18n.actions';
-import { langCode, langKeys } from './../../../state/i18n/i18n.state.types';
+import {
+  LangCode,
+  TranslationKey,
+  I18nCollection,
+} from './../../../state/i18n/i18n.state.types';
+import { I18nState } from '../../../state/i18n/i18n.state';
 
 @Injectable({
   providedIn: 'root',
@@ -10,27 +15,46 @@ import { langCode, langKeys } from './../../../state/i18n/i18n.state.types';
 export class I18nService {
   private httpClient = inject(HttpClient);
 
-  private readonly store = inject(Store);
+  readonly #store = inject(Store);
 
   constructor() {}
 
   init() {
-    const langCode =
+    const LangCode =
       typeof window !== 'undefined'
-        ? ((localStorage.getItem('lang') as langCode) ?? 'english')
+        ? ((localStorage.getItem('lang') as LangCode) ?? 'english')
         : 'english';
 
-    this.store.dispatch(
+    this.#store.dispatch(
       new I18nUpdateLang({
-        langCode,
+        LangCode,
         skipStorage: true,
       }),
     );
   }
 
-  public loadTranslate(code: langCode) {
-    return this.httpClient.get<Record<langKeys, string>>(
-      `assets/i18n/${code}.json`,
+  public loadTranslate(code: LangCode) {
+    return this.httpClient.get<I18nCollection>(`assets/i18n/${code}.json`);
+  }
+
+  private sanityCheck(key: TranslationKey, value: string) {
+    if (!value) {
+      console.error(`❌ missing translation for ${key} !`);
+      return `❌ !${key}`;
+    }
+    return value;
+  }
+
+  public translate(key: TranslationKey) {
+    return computed(() =>
+      this.sanityCheck(
+        key,
+        this.#store.selectSignal(I18nState.getI18n)()[key] || `❌ !${key}`,
+      ),
     );
+  }
+
+  public translateSnapshot(key: TranslationKey) {
+    return this.translate(key)();
   }
 }
