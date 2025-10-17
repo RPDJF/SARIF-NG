@@ -20,13 +20,13 @@ export interface UserStateModel {
     loginApiStatus: {
       code: undefined,
       message: undefined,
-      state: undefined
-    }
+      state: undefined,
+    },
   },
 })
 @Injectable()
 export class UserState {
-  private readonly userService = inject(UserService);
+  readonly #userService = inject(UserService);
 
   @Selector()
   static getState(state: UserStateModel) {
@@ -41,7 +41,7 @@ export class UserState {
   @Action(UserFetchMe)
   fetchMe(ctx: StateContext<UserStateModel>, {}: UserFetchMe) {
     const stateModel = ctx.getState();
-    this.userService.fetchMe().subscribe((value) => {
+    this.#userService.fetchMe().subscribe((value) => {
       const user = value as User;
       stateModel.me = user;
       ctx.patchState(stateModel);
@@ -55,11 +55,11 @@ export class UserState {
     stateModel.loginApiStatus.message = undefined;
     stateModel.loginApiStatus.state = 'loading';
     ctx.patchState(stateModel);
-    this.userService.login(payload).subscribe((value) => {
-      console.log("res", value);
+    this.#userService.login(payload).subscribe((value) => {
       stateModel.loginApiStatus.code = value.status;
       stateModel.loginApiStatus.message = value.details;
-      stateModel.loginApiStatus.state = value.status >= 200 && value.status < 300 ? 'success' : 'error';
+      stateModel.loginApiStatus.state =
+        value.status >= 200 && value.status < 300 ? 'success' : 'error';
       ctx.patchState(stateModel);
       // TODO: Implement login (until 2FA)
     });

@@ -1,4 +1,12 @@
-import { Component, forwardRef, input, model, output, signal, ViewEncapsulation } from '@angular/core';
+import {
+  Component,
+  forwardRef,
+  input,
+  model,
+  output,
+  signal,
+  ViewEncapsulation,
+} from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 
 @Component({
@@ -11,23 +19,22 @@ import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
       provide: NG_VALUE_ACCESSOR,
       useExisting: forwardRef(() => InputComponent),
       multi: true,
-    }
+    },
   ],
   encapsulation: ViewEncapsulation.None,
 })
 export class InputComponent implements ControlValueAccessor {
-
   label = input<string>();
   placeholder = input<string>();
   type = input<'text' | 'email' | 'password'>('text');
   name = input<string>();
-  required = input<boolean | string>();
+  required = input<boolean | string>();
   disabled = input<boolean>(false);
   disabledSignal = signal<boolean>(false);
   value = model<string>('');
 
-  private onChange = (val: string) => {};
-  private onTouched = () => {}; // maybe need to bind ?
+  #onChange = (val: string) => {};
+  #onTouched = () => {}; // maybe need to bind ?
 
   constructor() {
     this.disabledSignal.set(this.disabled());
@@ -38,11 +45,11 @@ export class InputComponent implements ControlValueAccessor {
   }
 
   registerOnChange(fn: any) {
-    this.onChange = fn;
+    this.#onChange = fn;
   }
 
   registerOnTouched(fn: any) {
-    this.onTouched = fn;
+    this.#onTouched = fn;
   }
 
   setDisabledState(isDisabled: boolean): void {
@@ -51,6 +58,6 @@ export class InputComponent implements ControlValueAccessor {
 
   handleInput(val: string) {
     this.value.set(val);
-    this.onChange(val);
+    this.#onChange(val);
   }
 }

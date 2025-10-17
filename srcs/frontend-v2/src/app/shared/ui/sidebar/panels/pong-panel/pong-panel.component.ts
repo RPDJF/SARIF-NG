@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component } from '@angular/core';
 import { I18nPipe } from '../../../../../core/pipes/i18n/i18n.pipe';
 
 @Component({

@@ -8,7 +8,7 @@
     @if (icon()) {
       <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
     }
-    <p>{{ titleTranslated() }}</p></a
+    <p>{{ (title() | translate)() }}</p></a
   >
 } @else {
   <button
@@ -19,6 +19,6 @@
     @if (icon()) {
       <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
     }
-    <p>{{ titleTranslated() }}</p>
+    <p>{{ (title() | translate)() }}</p>
   </button>
 }

@@ -1,31 +1,21 @@
 import { NgComponentOutlet } from '@angular/common';
-import {
-  Component,
-  computed,
-  inject,
-  input,
-  InputSignal,
-  signal,
-  Type,
-} from '@angular/core';
+import { Component, input, InputSignal, signal, Type } from '@angular/core';
 import { Router } from '@angular/router';
-import { Store } from '@ngxs/store';
-import { I18nState } from '../../../state/i18n/i18n.state';
 import { SidebarConfig, sidebarElement } from './sidebar.component.types';
+import { I18nPipe } from '../../../core/pipes/i18n/i18n.pipe';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   templateUrl: './sidebar.component.html',
-  imports: [NgComponentOutlet],
+  imports: [NgComponentOutlet, I18nPipe],
 })
 export class SidebarComponent {
   public config: InputSignal<SidebarConfig> = input.required();
 
   public readonly currentChild = signal<Type<unknown> | null>(null);
 
-  private router: Router = new Router();
-  private readonly store = inject(Store);
+  #router: Router = new Router();
 
   ngOnInit() {
     const bottom = this.config()
@@ -36,10 +26,6 @@ export class SidebarComponent {
     for (const item of this.config()) {
       if (!item.routerLink && !item.href && !item.content)
         throw 'RouterLink, content or href properties are required';
-      if (item.nameSignal) continue;
-      item.nameSignal = computed<string>(() => {
-        return this.store.selectSignal(I18nState.getI18n)()[item.name];
-      });
     }
   }
 
@@ -54,7 +40,7 @@ export class SidebarComponent {
 
   public onMenuClick(item: sidebarElement) {
     this.currentChild.set(item.content || null);
-    if (item.routerLink) this.router.navigate([item.routerLink]);
+    if (item.routerLink) this.#router.navigate([item.routerLink]);
     else if (item.href) window.open(item.href, '_blank');
   }
 }

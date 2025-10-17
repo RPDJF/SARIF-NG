@@ -1,4 +1,4 @@
-import { Component, effect, inject, output, signal } from '@angular/core';
+import { Component, inject, output, signal } from '@angular/core';
 import { InputComponent } from '../../../shared/ui/common/inputs/input/input.component';
 import { Store } from '@ngxs/store';
 import { UserLogin } from '../../../state/user/user.actions';
@@ -17,12 +17,6 @@ export class LoginModalComponent {
   password = signal<string>('');
 
   readonly #store = inject(Store);
-
-  constructor() {
-    effect(() => {
-      console.log(this.username());
-    });
-  }
 
   closeModal(): void {
     this.close.emit();

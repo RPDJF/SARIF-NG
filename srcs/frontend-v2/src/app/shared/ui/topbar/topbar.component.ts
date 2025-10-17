@@ -6,7 +6,7 @@ import { UserState } from '../../../state/user/user.state';
 import { ButtonComponent } from '../common/buttons/button/button.component';
 import { UserAvatarComponent } from '../common/user-avatar/user-avatar.component';
 import { langButton } from './topbar.component.types';
-import { LoginModalComponent } from "../../../modals/auth/login-modal/login-modal.component";
+import { LoginModalComponent } from '../../../modals/auth/login-modal/login-modal.component';
 import { ModalService } from '../../../core/services/modalService/modal.service';
 
 @Component({
@@ -18,10 +18,10 @@ import { ModalService } from '../../../core/services/modalService/modal.service'
 export class TopbarComponent {
   public isLoginModalVisible = signal(false);
 
-  private readonly store = inject(Store);
-  private readonly modalService = inject(ModalService);
+  readonly #store = inject(Store);
+  readonly #modalService = inject(ModalService);
 
-  public readonly userProfile = this.store.selectSignal(UserState.getMe);
+  public readonly userProfile = this.#store.selectSignal(UserState.getMe);
   public readonly langButtonsConfig: langButton[] = [
     {
       LangCode: 'english',
@@ -42,7 +42,7 @@ export class TopbarComponent {
   ];
 
   public onLangChange(LangCode: LangCode) {
-    this.store
+    this.#store
       .dispatch(
         new I18nUpdateLang({
           LangCode,
@@ -53,7 +53,7 @@ export class TopbarComponent {
 
   public showLoginModal() {
     this.isLoginModalVisible.set(true);
-    this.modalService.open(LoginModalComponent);
+    this.#modalService.open(LoginModalComponent);
   }
 
   public closeLoginModal() {

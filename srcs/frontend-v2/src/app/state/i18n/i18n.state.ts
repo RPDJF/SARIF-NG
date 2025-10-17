@@ -20,7 +20,7 @@ export interface I18nStateModel {
 })
 @Injectable()
 export class I18nState {
-  private i18nService = inject(I18nService);
+  #i18nService = inject(I18nService);
 
   @Selector()
   static getState(state: I18nStateModel) {
@@ -44,7 +44,7 @@ export class I18nState {
 
   @Action(I18nUpdateLang)
   updateLang(ctx: StateContext<I18nStateModel>, { payload }: I18nUpdateLang) {
-    return this.i18nService.loadTranslate(payload.LangCode).pipe(
+    return this.#i18nService.loadTranslate(payload.LangCode).pipe(
       tap((language) => {
         ctx.setState({ lang: payload.LangCode, i18n: language });
         if (!payload.skipStorage)

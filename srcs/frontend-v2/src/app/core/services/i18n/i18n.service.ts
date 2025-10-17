@@ -13,7 +13,7 @@ import { I18nState } from '../../../state/i18n/i18n.state';
   providedIn: 'root',
 })
 export class I18nService {
-  private httpClient = inject(HttpClient);
+  #httpClient = inject(HttpClient);
 
   readonly #store = inject(Store);
 
@@ -34,10 +34,10 @@ export class I18nService {
   }
 
   public loadTranslate(code: LangCode) {
-    return this.httpClient.get<I18nCollection>(`assets/i18n/${code}.json`);
+    return this.#httpClient.get<I18nCollection>(`assets/i18n/${code}.json`);
   }
 
-  private sanityCheck(key: TranslationKey, value: string) {
+  #sanityCheck(key: TranslationKey, value: string) {
     if (!value) {
       console.error(`❌ missing translation for ${key} !`);
       return `❌ !${key}`;
@@ -47,7 +47,7 @@ export class I18nService {
 
   public translate(key: TranslationKey) {
     return computed(() =>
-      this.sanityCheck(
+      this.#sanityCheck(
         key,
         this.#store.selectSignal(I18nState.getI18n)()[key] || `❌ !${key}`,
       ),

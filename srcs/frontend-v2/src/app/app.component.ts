@@ -17,8 +17,8 @@ import { UserFetchMe } from './state/user/user.actions';
   templateUrl: './app.component.html',
 })
 export class AppComponent implements OnInit {
-  private document = inject(DOCUMENT);
-  private readonly store = inject(Store);
+  #document = inject(DOCUMENT);
+  readonly #store = inject(Store);
 
   sidebarConfig: SidebarConfig = [
     {
@@ -55,7 +55,7 @@ export class AppComponent implements OnInit {
   ];
 
   ngOnInit(): void {
-    this.document.body.classList.add('dark');
-    this.store.dispatch(new UserFetchMe()).subscribe();
+    this.#document.body.classList.add('dark');
+    this.#store.dispatch(new UserFetchMe()).subscribe();
   }
 }
