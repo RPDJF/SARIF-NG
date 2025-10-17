@@ -1,0 +1,9 @@
+{
+    "/api": {
+        "target": "https://sarif.ruinformatique.ch",
+            "secure": false,
+            "logLevel": "debug",
+            "changeOrigin": true
+    }
+}
+
