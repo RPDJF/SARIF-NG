@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { provideHttpClient } from '@angular/common/http';
 import { provideStore } from '@ngxs/store';
-import { I18nState } from '../../../state/i18n/i18n.state';
-import { UserState } from '../../../state/user/user.state';
+import { I18nState } from '../../../core/state/i18n/i18n.state';
+import { UserState } from '../../../core/state/user/user.state';
 import { TopbarComponent } from './topbar.component';
 
 describe('TopbarComponent', () => {

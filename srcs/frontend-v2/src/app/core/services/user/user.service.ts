@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
-import { User } from '../../../state/user/user.state.types';
+import { User } from '../../../core/state/user/user.state.types';
 import {
   Enforce2faJSON,
   Enforce2faProp,
@@ -9,6 +9,9 @@ import {
   LoginJSON,
   LoginProp,
   LoginResponseJSON,
+  RegisterJSON,
+  RegisterProp,
+  RegisterResponseJSON,
 } from './user.service.types';
 
 @Injectable({
@@ -42,7 +45,6 @@ export class UserService {
       ? (loginBody.EmailAddress = prop.username)
       : (loginBody.DisplayName = prop.username);
 
-    loginBody.Password = prop.password;
     return this.#httpClient.post<LoginResponseJSON>(
       `${environment.CORE_ENDPOINT}/users/login`,
       loginBody,
@@ -58,6 +60,20 @@ export class UserService {
     return this.#httpClient.post<Enforce2faResponseJSON>(
       `${environment.CORE_ENDPOINT}/users/2fa`,
       enforce2faBody,
+    );
+  }
+
+  register({ email, password, username }: RegisterProp) {
+    const registerBody: RegisterJSON = {
+      ClientId: this.getClientId(),
+      DisplayName: username,
+      Password: password,
+      EmailAddress: email,
+    };
+
+    return this.#httpClient.post<RegisterResponseJSON>(
+      `${environment.CORE_ENDPOINT}/users/register`,
+      registerBody,
     );
   }
 }

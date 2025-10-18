@@ -1,8 +1,8 @@
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { TestBed } from '@angular/core/testing';
 import { NgxsModule } from '@ngxs/store';
-import { I18nState } from '../../../state/i18n/i18n.state';
-import { TranslationKey } from '../../../state/i18n/i18n.state.types';
+import { I18nState } from '../../../core/state/i18n/i18n.state';
+import { TranslationKey } from '../../../core/state/i18n/i18n.state.types';
 import { I18nPipe, I18nSnapshotPipe } from './i18n.pipe';
 
 describe('I18nPipe', () => {

@@ -2,13 +2,13 @@ import { DOCUMENT } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngxs/store';
+import { UserFetchMe } from './core/state/user/user.actions';
 import { FriendsPanelComponent } from './shared/ui/sidebar/panels/friends-panel/friends-panel.component';
 import { PongPanelComponent } from './shared/ui/sidebar/panels/pong-panel/pong-panel.component';
 import { SettingsPanelComponent } from './shared/ui/sidebar/panels/settings-panel/settings-panel.component';
 import { SidebarComponent } from './shared/ui/sidebar/sidebar.component';
 import { SidebarConfig } from './shared/ui/sidebar/sidebar.component.types';
 import { TopbarComponent } from './shared/ui/topbar/topbar.component';
-import { UserFetchMe } from './state/user/user.actions';
 
 @Component({
   selector: 'app-root',

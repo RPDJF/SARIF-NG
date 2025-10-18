@@ -8,8 +8,8 @@ import { provideStore } from '@ngxs/store';
 import { environment } from '../../environments/environment';
 import { routes } from './app.routes';
 import { I18nService } from './core/services/i18n/i18n.service';
-import { I18nState } from './state/i18n/i18n.state';
-import { UserState } from './state/user/user.state';
+import { I18nState } from './core/state/i18n/i18n.state';
+import { UserState } from './core/state/user/user.state';
 
 export const appConfig: ApplicationConfig = {
   providers: [

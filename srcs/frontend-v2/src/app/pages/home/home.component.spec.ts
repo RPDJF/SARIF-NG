@@ -1,9 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HomeComponent } from './home.component';
-import { provideStore } from '@ngxs/store';
-import { I18nState } from '../../state/i18n/i18n.state';
 import { provideHttpClient } from '@angular/common/http';
+import { provideStore } from '@ngxs/store';
+import { I18nState } from '../../core/state/i18n/i18n.state';
+import { HomeComponent } from './home.component';
 
 describe('HomeComponent', () => {
   let component: HomeComponent;

@@ -2,7 +2,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxsModule } from '@ngxs/store';
-import { I18nState } from '../../../../../state/i18n/i18n.state';
+import { I18nState } from '../../../../../core/state/i18n/i18n.state';
 import { ButtonComponent } from './button.component';
 
 describe('ButtonComponent', () => {

@@ -1,4 +1,4 @@
-import english from '../../../assets/i18n/english.json';
+import english from '../../../../assets/i18n/english.json';
 
 export type LangCode = 'english' | 'french' | 'portuguese' | 'russian';
 export type TranslationKey = keyof typeof english;

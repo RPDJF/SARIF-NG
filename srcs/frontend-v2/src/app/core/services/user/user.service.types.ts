@@ -1,4 +1,4 @@
-import { User } from '../../../state/user/user.state.types';
+import { User } from '../../../core/state/user/user.state.types';
 
 export interface LoginResponseJSON {
   detail: '2fa sent' | string;
@@ -10,7 +10,7 @@ export interface LoginResponseJSON {
 }
 
 export interface LoginJSON {
-  ClientId?: string;
+  ClientId: string;
   DisplayName?: string;
   EmailAddress?: string;
   Password: string;
@@ -37,4 +37,26 @@ export interface Enforce2faJSON {
 
 export interface Enforce2faProp {
   code: string;
+}
+
+export interface RegisterResponseJSON {
+  token: string;
+  sub: string;
+  data: Partial<User>;
+  iss: string;
+  iat: number;
+  exp: number;
+}
+
+export interface RegisterJSON {
+  ClientId: string;
+  DisplayName?: string;
+  EmailAddress?: string;
+  Password: string;
+}
+
+export interface RegisterProp {
+  email: string;
+  username: string;
+  password: string;
 }

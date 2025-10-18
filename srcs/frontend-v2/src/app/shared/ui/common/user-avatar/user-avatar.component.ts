@@ -1,5 +1,5 @@
 import { Component, input } from '@angular/core';
-import { User } from '../../../../state/user/user.state.types';
+import { User } from '../../../../core/state/user/user.state.types';
 
 @Component({
   selector: 'app-user-avatar',

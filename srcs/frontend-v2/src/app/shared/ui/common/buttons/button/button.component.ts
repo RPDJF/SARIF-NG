@@ -1,6 +1,6 @@
-import { Component, computed, inject, input, output } from '@angular/core';
-import { TranslationKey } from '../../../../../state/i18n/i18n.state.types';
+import { Component, input, output } from '@angular/core';
 import { I18nPipe } from '../../../../../core/pipes/i18n/i18n.pipe';
+import { TranslationKey } from '../../../../../core/state/i18n/i18n.state.types';
 
 @Component({
   selector: 'app-button',

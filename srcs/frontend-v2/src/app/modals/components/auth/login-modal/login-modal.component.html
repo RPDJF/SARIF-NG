@@ -1,0 +1,48 @@
+<div class="flex flex-col gap-y-8 justify-center items-center">
+  <form
+    class="w-80 text-black dark:text-white flex flex-col gap-y-4 items-center"
+    (ngSubmit)="onLoginButtonClick()"
+  >
+    <app-input
+      class="w-full"
+      type="text"
+      [placeholder]="
+        ('modal.components.auth.login.usernameLabel' | translate)()
+      "
+      [(value)]="username"
+      name="username"
+      required
+    />
+    <app-input
+      class="w-full"
+      type="password"
+      [placeholder]="
+        ('modal.components.auth.login.passwordLabel' | translate)()
+      "
+      [(value)]="password"
+      name="password"
+      required
+    />
+    <app-link-button (click)="openRegister.emit()">
+      {{ ('modal.components.auth.login.link.subscribePanel' | translate)() }}
+    </app-link-button>
+    <button
+      [disabled]="isLoading()"
+      class="min-w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4
+        focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm
+        w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600
+        dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+      type="submit"
+    >
+      {{ ('modal.components.auth.login.connexionButton' | translate)() }}
+    </button>
+    <!-- TODO: Support remember me
+    <label>
+      <input type="checkbox" checked="checked" name="remember" />
+      {{ ('Remember me' | translate)() }}
+    </label>
+    -->
+  </form>
+  <hr class="w-full" />
+  <app-google-signin-button />
+</div>

@@ -1,0 +1,24 @@
+@if (href()) {
+  <a
+    class="cursor-pointer hover:animate-squeeze hover:animate-duration-250
+      text-blue-400 hover:text-blue-500 text-xs flex align-middle items-center
+      gap-x-3 h-[40px]"
+    [href]="href()"
+  >
+    @if (icon()) {
+      <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
+    }
+    <ng-content></ng-content
+  ></a>
+} @else {
+  <a
+    class="cursor-pointer hover:animate-squeeze hover:animate-duration-250
+      text-blue-400 hover:text-blue-500 text-xs flex align-middle items-center
+      gap-x-3 h-[40px]"
+  >
+    @if (icon()) {
+      <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
+    }
+    <ng-content></ng-content>
+  </a>
+}

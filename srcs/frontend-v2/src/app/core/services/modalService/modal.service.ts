@@ -14,26 +14,47 @@ import { modalServiceOpenProp } from './modal.service.types';
   providedIn: 'root',
 })
 export class ModalService {
-  #modalRef: ComponentRef<ModalComponent<any>> | undefined;
   #modalChildRef: ComponentRef<any> | undefined;
   #appRef = inject(ApplicationRef);
   #envInjector = inject(EnvironmentInjector);
+  #modalRef: ComponentRef<ModalComponent> = createComponent(ModalComponent, {
+    environmentInjector: this.#envInjector,
+  });
 
   #removeModal() {
     if (this.#modalRef) {
       this.#appRef.detachView(this.#modalRef.hostView);
-      this.#appRef.detachView(this.#modalChildRef!.hostView);
-      this.#modalRef.location.nativeElement.remove();
-      this.#modalRef = undefined;
+      if (this.#modalChildRef)
+        this.#appRef.detachView(this.#modalChildRef.hostView);
+      this.#modalRef?.location.nativeElement.remove();
+      this.#modalChildRef = undefined;
     }
   }
 
-  #replaceModal<T extends ModalChildComponent>(
-    modalRef: ComponentRef<ModalComponent<T>>,
-  ) {
-    this.#removeModal();
-    this.#modalRef = modalRef;
-    this.#modalChildRef = modalRef.instance.childRef();
+  #attachChildModal<T extends ModalChildComponent>(childRef: ComponentRef<T>) {
+    if (!this.#modalRef) throw Error('Missing modal ref');
+    childRef.instance.close.subscribe(() => {
+      this.#removeModal();
+    });
+
+    // render modal
+    const viewContainer =
+      this.#modalRef.location.nativeElement.querySelector('.modal-body');
+    viewContainer.appendChild(childRef.location.nativeElement);
+    this.#appRef.attachView(childRef.hostView);
+    this.#appRef.attachView(this.#modalRef.hostView);
+    if (!this.#modalChildRef)
+      document.body.appendChild(this.#modalRef.location.nativeElement);
+    this.#modalChildRef = childRef;
+  }
+
+  #replaceModal<T extends ModalChildComponent>(childRef: ComponentRef<T>) {
+    if (this.#modalChildRef) {
+      this.#appRef.detachView(this.#modalChildRef.hostView);
+      this.#modalChildRef.location.nativeElement.remove();
+      this.#modalChildRef.destroy();
+    }
+    this.#attachChildModal(childRef);
   }
 
   open<T extends ModalChildComponent>({
@@ -43,35 +64,20 @@ export class ModalService {
     icon,
   }: modalServiceOpenProp<T>): ComponentRef<T> {
     // build modals
-    const modalRef = createComponent(ModalComponent<T>, {
-      environmentInjector: this.#envInjector,
-    });
-    modalRef.setInput('icon', icon);
-    modalRef.setInput('title', title);
+    this.#modalRef.setInput('icon', icon);
+    this.#modalRef.setInput('title', title);
     const childRef = createComponent<T>(component, {
       environmentInjector: this.#envInjector,
     });
-    modalRef.setInput('childRef', childRef);
     if (data) childRef.setInput('data', data);
 
     // handle modal closing
-    childRef.instance.close.subscribe(() => {
-      this.#removeModal();
-    });
-    modalRef.instance.close.subscribe(() => {
+    this.#modalRef.instance.close.subscribe(() => {
       this.#removeModal();
     });
 
     // replace current modal if exists
-    this.#replaceModal(modalRef);
-
-    // render modal
-    const viewContainer =
-      modalRef.location.nativeElement.querySelector('.modal-body');
-    viewContainer.appendChild(childRef.location.nativeElement);
-    this.#appRef.attachView(childRef.hostView);
-    document.body.appendChild(modalRef.location.nativeElement);
-    this.#appRef.attachView(modalRef.hostView);
+    this.#replaceModal(childRef);
 
     return childRef;
   }

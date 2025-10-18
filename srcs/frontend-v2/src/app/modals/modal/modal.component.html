@@ -1,18 +1,19 @@
 <div
-  class="z-40 fixed top-0 left-0 bottom-0 right-0 bg-black/40 flex items-center
-    justify-center backdrop-blur-sm"
+  class="fixed top-0 left-0 bottom-0 right-0 bg-black/40 flex items-center
+    justify-center backdrop-blur-sm animate-fade-in animate-duration-100"
   (click)="close.emit()"
 ></div>
 <div
-  class="z-50 fixed top-0 left-0 bottom-0 right-0 bg-background
+  class="fixed top-0 left-0 bottom-0 right-0 bg-background
     dark:bg-background_dark h-fit m-auto p-12 rounded-xl max-w-[500px] shadow-xl
-    overflow-visible w-min modal-body flex flex-col gap-y-8"
+    overflow-visible w-min modal-body flex flex-col gap-y-8 animate-fade-in-up
+    animate-duration-200"
   (click)="$event.stopPropagation()"
 >
   <div
-    class="dark:text-white absolute -top-4 -right-4 z-50 w-10 h-10 text-3xl
-      font-bold bg-background dark:bg-black/70 rounded-md flex items-center
-      justify-center cursor-pointer dark:hover:text-red-500 hover:text-red-500
+    class="dark:text-white absolute -top-4 -right-4 w-10 h-10 text-3xl font-bold
+      bg-background dark:bg-black/70 rounded-md flex items-center justify-center
+      cursor-pointer dark:hover:text-red-500 hover:text-red-500
       hover:bg-blue-100 dark:hover:bg-black/90 shadow-lg select-none
       focus:outline-none"
     (click)="close.emit()"

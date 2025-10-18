@@ -1,5 +1,5 @@
-import { Signal, Type } from '@angular/core';
-import { TranslationKey } from '../../../state/i18n/i18n.state.types';
+import { Type } from '@angular/core';
+import { TranslationKey } from '../../../core/state/i18n/i18n.state.types';
 
 export type sidebarElement = {
   name: TranslationKey;

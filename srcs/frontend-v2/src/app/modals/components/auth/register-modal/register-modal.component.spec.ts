@@ -2,23 +2,23 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { NgxsModule } from '@ngxs/store';
-import { I18nState } from '../../../../../core/state/i18n/i18n.state';
-import { PongPanelComponent } from './pong-panel.component';
+import { I18nState } from '../../../../core/state/i18n/i18n.state';
+import { RegisterModalComponent } from './register-modal.component';
 
-describe('PongPanelComponent', () => {
-  let component: PongPanelComponent;
-  let fixture: ComponentFixture<PongPanelComponent>;
+describe('RegisterModalComponent', () => {
+  let component: RegisterModalComponent;
+  let fixture: ComponentFixture<RegisterModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        PongPanelComponent,
-        HttpClientTestingModule,
         NgxsModule.forRoot([I18nState]),
+        RegisterModalComponent,
+        HttpClientTestingModule,
       ],
     }).compileComponents();
 
-    fixture = TestBed.createComponent(PongPanelComponent);
+    fixture = TestBed.createComponent(RegisterModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

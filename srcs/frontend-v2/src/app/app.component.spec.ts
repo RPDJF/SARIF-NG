@@ -1,8 +1,8 @@
-import { TestBed } from '@angular/core/testing';
-import { AppComponent } from './app.component';
 import { provideHttpClient } from '@angular/common/http';
-import { I18nState } from './state/i18n/i18n.state';
+import { TestBed } from '@angular/core/testing';
 import { provideStore } from '@ngxs/store';
+import { AppComponent } from './app.component';
+import { I18nState } from './core/state/i18n/i18n.state';
 
 describe('AppComponent', () => {
   beforeEach(async () => {

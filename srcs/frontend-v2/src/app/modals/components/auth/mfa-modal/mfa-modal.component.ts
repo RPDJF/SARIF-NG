@@ -1,8 +1,8 @@
 import { Component, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { I18nPipe } from '../../../core/pipes/i18n/i18n.pipe';
-import { InputComponent } from '../../../shared/ui/common/inputs/input/input.component';
-import { ModalChildComponent } from '../../modal-child/modal-child.component';
+import { I18nPipe } from '../../../../core/pipes/i18n/i18n.pipe';
+import { InputComponent } from '../../../../shared/ui/common/inputs/input/input.component';
+import { ModalChildComponent } from '../../../modal-child/modal-child.component';
 
 @Component({
   selector: 'app-mfa-modal',

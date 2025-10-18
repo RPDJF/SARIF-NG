@@ -1,8 +1,13 @@
 import { inject, Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { catchError, tap, throwError } from 'rxjs';
-import { UserService } from '../../core/services/user/user.service';
-import { UserEnforce2fa, UserFetchMe, UserLogin } from './user.actions';
+import { UserService } from '../../../core/services/user/user.service';
+import {
+  UserEnforce2fa,
+  UserFetchMe,
+  UserLogin,
+  UserRegister,
+} from './user.actions';
 import { User } from './user.state.types';
 
 type apiStatus = 'loading' | 'success' | 'error' | undefined;
@@ -13,6 +18,9 @@ export interface UserStateModel {
     code: number | undefined;
     detail: '2fa sent' | unknown | undefined;
     state: apiStatus;
+  };
+  registerApiStatus: {
+    status: apiStatus;
   };
   enforce2faApiStatus: {
     status: apiStatus;
@@ -27,6 +35,9 @@ export interface UserStateModel {
       code: undefined,
       detail: undefined,
       state: undefined,
+    },
+    registerApiStatus: {
+      status: undefined,
     },
     enforce2faApiStatus: {
       status: undefined,
@@ -131,5 +142,35 @@ export class UserState {
       }),
     );
     return enforce2fa$;
+  }
+
+  @Action(UserRegister)
+  register(ctx: StateContext<UserStateModel>, { payload }: UserRegister) {
+    const stateModel = ctx.getState();
+    if (stateModel.registerApiStatus.status === 'loading') return;
+    ctx.patchState({
+      registerApiStatus: {
+        status: 'loading',
+      },
+    });
+
+    const register$ = this.#userService.register(payload).pipe(
+      tap((value) => {
+        ctx.patchState({
+          registerApiStatus: {
+            status: 'success',
+          },
+        });
+      }),
+      catchError((error) => {
+        ctx.patchState({
+          registerApiStatus: {
+            status: 'error',
+          },
+        });
+        return throwError(() => error);
+      }),
+    );
+    return register$;
   }
 }

@@ -1,13 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { I18nUpdateLang } from '../../../state/i18n/i18n.actions';
-import { I18nState } from '../../../state/i18n/i18n.state';
+import { I18nUpdateLang } from '../../../core/state/i18n/i18n.actions';
+import { I18nState } from '../../../core/state/i18n/i18n.state';
 import {
   I18nCollection,
   LangCode,
   TranslationKey,
-} from './../../../state/i18n/i18n.state.types';
+} from './../../../core/state/i18n/i18n.state.types';
 
 @Injectable({
   providedIn: 'root',

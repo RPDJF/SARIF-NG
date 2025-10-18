@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { User } from '../../../../state/user/user.state.types';
+import { User } from '../../../../core/state/user/user.state.types';
 import { UserAvatarComponent } from './user-avatar.component';
 
 describe('UserAvatarComponent', () => {
