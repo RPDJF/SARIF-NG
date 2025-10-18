@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { ModalService } from '../../../core/services/modalService/modal.service';
-import { LoginModalComponent } from '../../../modals/auth/login-modal/login-modal.component';
+import { LoginModalComponent } from '../../../modals/components/login-modal/login-modal.component';
 import { I18nUpdateLang } from '../../../state/i18n/i18n.actions';
 import { LangCode } from '../../../state/i18n/i18n.state.types';
+import { UserLogin } from '../../../state/user/user.actions';
 import { UserState } from '../../../state/user/user.state';
 import { ButtonComponent } from '../common/buttons/button/button.component';
 import { UserAvatarComponent } from '../common/user-avatar/user-avatar.component';
@@ -50,9 +51,20 @@ export class TopbarComponent {
   }
 
   public showLoginModal() {
-    this.#modalService.open({
+    const modal = this.#modalService.open({
       component: LoginModalComponent,
       title: 'panel.loginPanel.panelTitle',
+    });
+
+    modal.instance.isLoading.set(
+      this.#store.selectSignal(UserState.isLoginApiLoading)(),
+    );
+
+    modal.instance.submit.subscribe((value) => {
+      this.#store.dispatch(new UserLogin(value)).subscribe(() => {
+        const apiRslt = this.#store.selectSnapshot(UserState.getLoginApiStatus);
+        console.log(apiRslt);
+      });
     });
   }
 }

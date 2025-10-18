@@ -51,7 +51,7 @@ export class I18nService {
         key,
         this.#store
           .selectSignal(I18nState.getI18n)()
-          [key].replaceAll('\n', '<br>') || `❌ !${key}`,
+          [key]?.replaceAll('\n', '<br>') || `❌ !${key}`,
       ),
     );
   }

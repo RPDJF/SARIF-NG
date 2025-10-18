@@ -1,12 +1,12 @@
 <div
   class="z-40 fixed top-0 left-0 bottom-0 right-0 bg-black/40 flex items-center
     justify-center backdrop-blur-sm"
-  (click)="close()"
+  (click)="close.emit()"
 ></div>
 <div
   class="z-50 fixed top-0 left-0 bottom-0 right-0 bg-background
     dark:bg-background_dark h-fit m-auto p-12 rounded-xl max-w-[500px] shadow-xl
-    overflow-visible w-min"
+    overflow-visible w-min modal-body flex flex-col gap-y-8"
   (click)="$event.stopPropagation()"
 >
   <div
@@ -15,7 +15,7 @@
       justify-center cursor-pointer dark:hover:text-red-500 hover:text-red-500
       hover:bg-blue-100 dark:hover:bg-black/90 shadow-lg select-none
       focus:outline-none"
-    (click)="close()"
+    (click)="close.emit()"
   >
     ×
   </div>
@@ -28,6 +28,5 @@
         <h1 class="text-xl" [innerHTML]="(title | translate)()"></h1>
       }
     </div>
-    <ng-container *ngComponentOutlet="componentChild()"></ng-container>
   </div>
 </div>

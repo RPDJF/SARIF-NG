@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
+import { catchError, tap, throwError } from 'rxjs';
 import { UserService } from '../../core/services/user/user.service';
 import { UserFetchMe, UserLogin } from './user.actions';
 import { User } from './user.state.types';
@@ -38,6 +39,16 @@ export class UserState {
     return state.me;
   }
 
+  @Selector()
+  static getLoginApiStatus(state: UserStateModel) {
+    return state.loginApiStatus;
+  }
+
+  @Selector()
+  static isLoginApiLoading(state: UserStateModel) {
+    return state.loginApiStatus.state === 'loading';
+  }
+
   @Action(UserFetchMe)
   fetchMe(ctx: StateContext<UserStateModel>, {}: UserFetchMe) {
     const stateModel = ctx.getState();
@@ -51,17 +62,38 @@ export class UserState {
   @Action(UserLogin)
   login(ctx: StateContext<UserStateModel>, { payload }: UserLogin) {
     const stateModel = ctx.getState();
-    stateModel.loginApiStatus.code = undefined;
-    stateModel.loginApiStatus.message = undefined;
-    stateModel.loginApiStatus.state = 'loading';
-    ctx.patchState(stateModel);
-    this.#userService.login(payload).subscribe((value) => {
-      stateModel.loginApiStatus.code = value.status;
-      stateModel.loginApiStatus.message = value.details;
-      stateModel.loginApiStatus.state =
-        value.status >= 200 && value.status < 300 ? 'success' : 'error';
-      ctx.patchState(stateModel);
-      // TODO: Implement login (until 2FA)
+    if (stateModel.loginApiStatus.state === 'loading') return;
+    ctx.patchState({
+      loginApiStatus: {
+        code: undefined,
+        message: undefined,
+        state: 'loading',
+      },
     });
+
+    const login$ = this.#userService.login(payload).pipe(
+      tap((value) => {
+        ctx.patchState({
+          loginApiStatus: {
+            code: value.status,
+            message: value.details,
+            state:
+              value.status >= 200 && value.status < 300 ? 'success' : 'error',
+          },
+        });
+      }),
+      catchError((error) => {
+        ctx.patchState({
+          loginApiStatus: {
+            code: error.status,
+            message: error.message ?? 'Login failed',
+            state: 'error',
+          },
+        });
+        return throwError(() => error);
+      }),
+    );
+    return login$;
+    // TODO: Implement login (until 2FA)
   }
 }

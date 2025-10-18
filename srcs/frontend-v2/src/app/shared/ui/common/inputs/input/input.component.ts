@@ -3,7 +3,6 @@ import {
   forwardRef,
   input,
   model,
-  output,
   signal,
   ViewEncapsulation,
 } from '@angular/core';
