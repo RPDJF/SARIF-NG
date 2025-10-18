@@ -21,15 +21,15 @@
         </button>
       }
     </div>
-    @if (userProfile()) {
+    @if (userProfile(); as userProfile) {
       <div
         class="flex flex-row gap-4 items-center cursor-pointer
           hover:dark:bg-panel_dark rounded-xl p-2"
       >
         <p class="text-lg font-semibold text-gray-800 dark:text-gray-200">
-          {{ userProfile()?.DisplayName }}
+          {{ userProfile.DisplayName }}
         </p>
-        <app-user-avatar [user]="userProfile()!"></app-user-avatar>
+        <app-user-avatar [user]="userProfile"></app-user-avatar>
       </div>
     } @else {
       <app-button

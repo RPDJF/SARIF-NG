@@ -1,4 +1,4 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { I18nPipe } from '../../../core/pipes/i18n/i18n.pipe';
 import { InputComponent } from '../../../shared/ui/common/inputs/input/input.component';
@@ -16,6 +16,7 @@ export class LoginModalComponent extends ModalChildComponent {
   password = signal<string>('');
   isLoading = signal(false);
   override submit = output<LoginModalResult>();
+  override data = input();
 
   onLoginButtonClick() {
     this.submit.emit({

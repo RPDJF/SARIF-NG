@@ -1,3 +1,3 @@
-import { loginProp } from "../../../core/services/user/user.service.types";
+import { LoginProp } from '../../../core/services/user/user.service.types';
 
-export type LoginModalResult = loginProp;
+export type LoginModalResult = LoginProp;

@@ -1,4 +1,7 @@
-import { loginProp } from "../../core/services/user/user.service.types";
+import {
+  Enforce2faProp,
+  LoginProp,
+} from '../../core/services/user/user.service.types';
 
 export class UserFetchMe {
   static readonly type = '[User] Fetch me';
@@ -6,6 +9,11 @@ export class UserFetchMe {
 }
 
 export class UserLogin {
-  static readonly type = "[User] Login";
-  constructor(readonly payload: loginProp) {}
+  static readonly type = '[User] Login';
+  constructor(readonly payload: LoginProp) {}
+}
+
+export class UserEnforce2fa {
+  static readonly type = '[User] Enforce2fa';
+  constructor(readonly payload: Enforce2faProp) {}
 }

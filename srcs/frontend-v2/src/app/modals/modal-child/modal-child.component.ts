@@ -1,4 +1,9 @@
-import { Component, output, OutputEmitterRef } from '@angular/core';
+import {
+  Component,
+  InputSignal,
+  output,
+  OutputEmitterRef,
+} from '@angular/core';
 
 @Component({
   selector: 'app-modal-child',
@@ -7,9 +12,6 @@ import { Component, output, OutputEmitterRef } from '@angular/core';
 })
 export abstract class ModalChildComponent {
   abstract submit: OutputEmitterRef<any>;
+  abstract data: InputSignal<any>;
   close = output();
-
-  closeModal(): void {
-    this.close.emit();
-  }
 }

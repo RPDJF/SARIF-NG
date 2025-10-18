@@ -2,26 +2,34 @@ import { inject, Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { catchError, tap, throwError } from 'rxjs';
 import { UserService } from '../../core/services/user/user.service';
-import { UserFetchMe, UserLogin } from './user.actions';
+import { UserEnforce2fa, UserFetchMe, UserLogin } from './user.actions';
 import { User } from './user.state.types';
 
+type apiStatus = 'loading' | 'success' | 'error' | undefined;
+
 export interface UserStateModel {
-  me: User | null;
+  me: User | undefined;
   loginApiStatus: {
     code: number | undefined;
-    message: string | undefined;
-    state: 'loading' | 'success' | 'error' | undefined;
+    detail: '2fa sent' | unknown | undefined;
+    state: apiStatus;
+  };
+  enforce2faApiStatus: {
+    status: apiStatus;
   };
 }
 
 @State<UserStateModel>({
   name: 'user',
   defaults: {
-    me: null,
+    me: undefined,
     loginApiStatus: {
       code: undefined,
-      message: undefined,
+      detail: undefined,
       state: undefined,
+    },
+    enforce2faApiStatus: {
+      status: undefined,
     },
   },
 })
@@ -51,12 +59,11 @@ export class UserState {
 
   @Action(UserFetchMe)
   fetchMe(ctx: StateContext<UserStateModel>, {}: UserFetchMe) {
-    const stateModel = ctx.getState();
-    this.#userService.fetchMe().subscribe((value) => {
-      const user = value as User;
-      stateModel.me = user;
-      ctx.patchState(stateModel);
-    });
+    return this.#userService.fetchMe().pipe(
+      tap((user) => {
+        ctx.patchState({ me: user });
+      }),
+    );
   }
 
   @Action(UserLogin)
@@ -66,7 +73,7 @@ export class UserState {
     ctx.patchState({
       loginApiStatus: {
         code: undefined,
-        message: undefined,
+        detail: undefined,
         state: 'loading',
       },
     });
@@ -76,7 +83,7 @@ export class UserState {
         ctx.patchState({
           loginApiStatus: {
             code: value.status,
-            message: value.details,
+            detail: value.detail,
             state:
               value.status >= 200 && value.status < 300 ? 'success' : 'error',
           },
@@ -86,7 +93,7 @@ export class UserState {
         ctx.patchState({
           loginApiStatus: {
             code: error.status,
-            message: error.message ?? 'Login failed',
+            detail: error.message ?? 'Login failed',
             state: 'error',
           },
         });
@@ -94,6 +101,35 @@ export class UserState {
       }),
     );
     return login$;
-    // TODO: Implement login (until 2FA)
+  }
+
+  @Action(UserEnforce2fa)
+  enforce2fa(ctx: StateContext<UserStateModel>, { payload }: UserEnforce2fa) {
+    const stateModel = ctx.getState();
+    if (stateModel.enforce2faApiStatus.status === 'loading') return;
+    ctx.patchState({
+      enforce2faApiStatus: {
+        status: 'loading',
+      },
+    });
+
+    const enforce2fa$ = this.#userService.enforce2fa(payload).pipe(
+      tap((value) => {
+        ctx.patchState({
+          enforce2faApiStatus: {
+            status: 'success',
+          },
+        });
+      }),
+      catchError((error) => {
+        ctx.patchState({
+          enforce2faApiStatus: {
+            status: 'error',
+          },
+        });
+        return throwError(() => error);
+      }),
+    );
+    return enforce2fa$;
   }
 }
