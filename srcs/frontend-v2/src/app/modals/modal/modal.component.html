@@ -4,9 +4,9 @@
   (click)="close.emit()"
 ></div>
 <div
-  class="fixed top-0 left-0 bottom-0 right-0 bg-background
-    dark:bg-background_dark h-fit m-auto p-12 rounded-xl max-w-[500px] shadow-xl
-    overflow-visible w-min modal-body flex flex-col gap-y-8 animate-fade-in-up
+  class="fixed top-0 left-0 bottom-0 right-0 max-h-[90vh] bg-background
+    dark:bg-background_dark h-fit m-auto rounded-xl max-w-[500px] shadow-xl
+    overflow-visible w-min flex flex-col gap-y-8 animate-fade-in-up
     animate-duration-200"
   (click)="$event.stopPropagation()"
 >
@@ -20,7 +20,10 @@
   >
     ×
   </div>
-  <div class="text-black dark:text-white text-center flex flex-col gap-y-4">
+  <div
+    class="text-black dark:text-white text-center flex flex-col gap-y-4
+      overflow-scroll h-full p-12 modal-body"
+  >
     <div class="flex flex-col items-center gap-y-2">
       @if (icon(); as icon) {
         <img class="w-16 h-16 dark:invert" [src]="icon" />
