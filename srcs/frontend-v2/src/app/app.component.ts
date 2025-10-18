@@ -1,5 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { DOCUMENT, isPlatformBrowser } from '@angular/common';
+import { Component, inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngxs/store';
 import { UserFetchMe } from './core/state/user/user.actions';
@@ -19,6 +19,7 @@ import { TopbarComponent } from './shared/ui/topbar/topbar.component';
 export class AppComponent implements OnInit {
   #document = inject(DOCUMENT);
   readonly #store = inject(Store);
+  readonly platformId = inject(PLATFORM_ID);
 
   sidebarConfig: SidebarConfig = [
     {
@@ -56,6 +57,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.#document.body.classList.add('dark');
-    this.#store.dispatch(new UserFetchMe()).subscribe();
+    if (isPlatformBrowser(this.platformId))
+      this.#store.dispatch(new UserFetchMe()).subscribe();
   }
 }
