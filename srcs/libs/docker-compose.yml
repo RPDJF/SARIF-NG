@@ -1,5 +1,5 @@
 services:
-  libs:
+  sarif-ng-libs:
     build: ./
     container_name: sarif-ng-libs
     environment:
@@ -7,9 +7,9 @@ services:
     networks:
       - sarifng-net
     volumes:
-      - sarif-libs:/libs/
+      - sarifng-libs:/libs/
 
 volumes:
-  sarif-libs:
+  sarif-ng-libs:
     name: sarif-libs
     driver: local

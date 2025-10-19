@@ -1,5 +1,5 @@
 services:
-  oauth2:
+  sarif-ng-oauth2:
     build: ./
     container_name: sarif-ng-oauth2
     environment:
@@ -11,13 +11,13 @@ services:
     networks:
       - sarifng-net
     volumes:
-      - sarif-libs:/libs
+      - sarifng-libs:/libs
       - sarifng-ssl:/ssl
     depends_on:
-      libs:
+      sarif-ng-libs:
         condition: service_completed_successfully
         restart: true
-      frontend-builder:
+      sarif-ng-frontend-builder:
         condition: service_completed_successfully
         restart: true
     restart: on-failure

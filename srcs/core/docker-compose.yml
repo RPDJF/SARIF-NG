@@ -11,17 +11,17 @@
 # **************************************************************************** #
 
 services:
-  core:
+  sarif-ng-core:
     container_name: sarif-ng-core
     networks:
       - sarifng-net
     volumes:
       - sarifng-ssl:/ssl
       - sarifng-data:/data
-      - sarif-libs:/libs
-      - sarif-frontend:/var/www/sarif-frontend
+      - sarifng-libs:/libs
+      - sarifng-frontend:/var/www/sarif-frontend
     ports:
-      - "443:443"
+      #- "443:443"
       #- "80:80" can be enabled with USE_TLS=false
     build:
       context: .
@@ -32,10 +32,10 @@ services:
       - API_KEY
       - TZ=Europe/Zurich
     depends_on:
-      libs:
+      sarif-ng-libs:
         condition: service_completed_successfully
         restart: true
-      frontend-builder:
+      sarif-ng-frontend-builder:
         condition: service_completed_successfully
         restart: true
     restart: always

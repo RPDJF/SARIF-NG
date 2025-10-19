@@ -1,5 +1,5 @@
 services:
-  pong:
+  sarif-ng-pong:
     container_name: sarif-ng-pong
     networks:
       - sarifng-net
@@ -8,13 +8,13 @@ services:
     environment:
       - API_KEY
     volumes:
-      - sarif-libs:/libs
+      - sarifng-libs:/libs
       - sarifng-ssl:/ssl
     depends_on:
-      libs:
+      sarif-ng-libs:
         condition: service_completed_successfully
         restart: true
-      frontend-builder:
+      sarif-ng-frontend-builder:
         condition: service_completed_successfully
         restart: true
     restart: on-failure

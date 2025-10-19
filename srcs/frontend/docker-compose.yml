@@ -1,18 +1,18 @@
 services:
-  frontend-builder:
+  sarif-ng-frontend-builder:
     build: ./
     container_name: sarif-ng-frontend
     environment:
       - TZ=Europe/Zurich
     volumes:
-      - sarif-frontend:/var/www/sarif-frontend
+      - sarifng-frontend:/var/www/sarif-frontend
     networks:
       - sarifng-net
     restart: on-failure
 
 volumes:
-  sarif-frontend:
-    name: "sarif-frontend"
+  sarifng-sarif-frontend:
+    name: "sarifng-sarif-frontend"
     driver: local
 # networks:
 #   sarifng-net:

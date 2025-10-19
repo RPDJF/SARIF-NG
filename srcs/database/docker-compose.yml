@@ -11,14 +11,14 @@
 # **************************************************************************** #
 
 services:
-  database:
+  sarif-ng-database:
     container_name: sarif-ng-database
     networks:
       - sarifng-net
     volumes:
       - sarifng-ssl:/ssl
       - sarifng-data:/data
-      - sarif-libs:/libs/
+      - sarifng-libs:/libs/
     build: ./
     env_file:
       - ../.env
@@ -28,9 +28,9 @@ services:
       - TZ=Europe/Zurich
     restart: on-failure
     depends_on:
-      libs:
+      sarif-ng-libs:
         condition: service_completed_successfully
         restart: true
-      frontend-builder:
+      sarif-ng-frontend-builder:
         condition: service_completed_successfully
         restart: true

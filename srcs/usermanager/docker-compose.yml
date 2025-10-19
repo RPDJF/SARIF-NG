@@ -1,5 +1,5 @@
 services:
-  usermanager:
+  sarif-ng-usermanager:
     build: ./
     container_name: sarif-ng-usermanager
     environment:
@@ -11,13 +11,13 @@ services:
     networks:
       - sarifng-net
     volumes:
-      - sarif-libs:/libs/
+      - sarifng-libs:/libs/
       - sarifng-ssl:/ssl
     depends_on:
-      libs:
+      sarif-ng-libs:
         condition: service_completed_successfully
         restart: true
-      frontend-builder:
+      sarif-g-frontend-builder:
         condition: service_completed_successfully
         restart: true
     restart: on-failure

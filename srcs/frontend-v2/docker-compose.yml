@@ -1,5 +1,5 @@
 services:
-  frontend-v2:
+  sarif-ng-frontend-v2:
     build: ./
     container_name: sarif-ng-frontend-v2
     environment:
