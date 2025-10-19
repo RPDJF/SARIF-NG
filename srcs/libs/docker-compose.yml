@@ -1,11 +1,11 @@
 services:
   libs:
     build: ./
-    container_name: libs
+    container_name: sarif-ng-libs
     environment:
       - TZ=Europe/Zurich
     networks:
-      - sarifntw
+      - sarifng-net
     volumes:
       - sarif-libs:/libs/
 

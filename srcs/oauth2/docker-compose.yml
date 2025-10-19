@@ -1,7 +1,7 @@
 services:
   oauth2:
     build: ./
-    container_name: oauth2
+    container_name: sarif-ng-oauth2
     environment:
       - TZ=Europe/Zurich
       - API_KEY
@@ -9,10 +9,10 @@ services:
       - .env
       - ../.env
     networks:
-      - sarifntw
+      - sarifng-net
     volumes:
       - sarif-libs:/libs
-      - ssl:/ssl
+      - sarifng-ssl:/ssl
     depends_on:
       libs:
         condition: service_completed_successfully

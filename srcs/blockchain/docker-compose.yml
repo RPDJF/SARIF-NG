@@ -1,8 +1,8 @@
 services:
   blockchain:
-    container_name: blockchain
+    container_name: sarif-ng-blockchain
     networks:
-      - sarifntw
+      - sarifng-net
     build:
       context: ./
       args:
@@ -15,7 +15,7 @@ services:
       - API_KEY
     volumes:
       - sarif-libs:/libs/
-      - ssl:/ssl
+      - sarifng-ssl:/ssl
     restart: on-failure
     depends_on:
       libs:

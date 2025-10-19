@@ -12,12 +12,12 @@
 
 services:
   database:
-    container_name: database
+    container_name: sarif-ng-database
     networks:
-      - sarifntw
+      - sarifng-net
     volumes:
-      - ssl:/ssl
-      - data:/data
+      - sarifng-ssl:/ssl
+      - sarifng-data:/data
       - sarif-libs:/libs/
     build: ./
     env_file:

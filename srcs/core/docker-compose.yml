@@ -12,12 +12,12 @@
 
 services:
   core:
-    container_name: core
+    container_name: sarif-ng-core
     networks:
-      - sarifntw
+      - sarifng-net
     volumes:
-      - ssl:/ssl
-      - data:/data
+      - sarifng-ssl:/ssl
+      - sarifng-data:/data
       - sarif-libs:/libs
       - sarif-frontend:/var/www/sarif-frontend
     ports:

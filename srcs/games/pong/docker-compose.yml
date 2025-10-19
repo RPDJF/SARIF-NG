@@ -1,15 +1,15 @@
 services:
   pong:
-    container_name: pong
+    container_name: sarif-ng-pong
     networks:
-      - sarifntw
+      - sarifng-net
     build: ./
     env_file: ../../.env
     environment:
       - API_KEY
     volumes:
       - sarif-libs:/libs
-      - ssl:/ssl
+      - sarifng-ssl:/ssl
     depends_on:
       libs:
         condition: service_completed_successfully

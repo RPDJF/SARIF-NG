@@ -1,14 +1,14 @@
 services:
   frontend-v2:
     build: ./
-    container_name: frontend-v2
+    container_name: sarif-ng-frontend-v2
     environment:
       - TZ=Europe/Zurich
     env_file:
       - .env
       - ../.env/
     networks:
-      - sarifntw
+      - sarifng-net
     volumes:
-      - ssl:/ssl
+      - sarifng-ssl:/ssl
     restart: on-failure
