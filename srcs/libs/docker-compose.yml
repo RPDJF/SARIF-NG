@@ -10,6 +10,6 @@ services:
       - sarifng-libs:/libs/
 
 volumes:
-  sarif-ng-libs:
+  sarifng-libs:
     name: sarif-libs
     driver: local
