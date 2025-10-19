@@ -10,7 +10,7 @@
 #                                                                              #
 # **************************************************************************** #
 
-NAME = sarif
+NAME = sarif-ng
 
 DATADIR = data
 SSLDIR = ssl
@@ -27,12 +27,12 @@ build:
 	mkdir -p ${DATADIR}
 	mkdir -p ${SSLDIR}
 	docker compose -p ${NAME} -f ./srcs/docker-compose.yml build
-	@if [ ! -f "${SSLDIR}/sarif.crt" ] || [ ! -f "${SSLDIR}/sarif.key" ]; then \
+	@if [ ! -f "${SSLDIR}/sarif-ng.crt" ] || [ ! -f "${SSLDIR}/sarif-ng.key" ]; then \
 			echo "Generating self-signed certificate..."; \
 			openssl req -x509 -newkey rsa:2048 -nodes \
-					-keyout "${SSLDIR}/sarif.key" -out "${SSLDIR}/sarif.crt" -days 365 \
-					-subj "/C=CH/ST=Vaud/L=Lausanne/O=42/OU=42/CN=sarif.42lausanne.ch" \
-					-addext "subjectAltName=DNS:sarif.42lausanne.ch,DNS:*.sarif.42lausanne.ch"; \
+					-keyout "${SSLDIR}/sarif-ng.key" -out "${SSLDIR}/sarif-ng.crt" -days 365 \
+					-subj "/C=CH/ST=Vaud/L=Lausanne/O=42/OU=42/CN=sarif-ng.42lausanne.ch" \
+					-addext "subjectAltName=DNS:sarif-ng.42lausanne.ch,DNS:*.sarif-ng.42lausanne.ch"; \
 	fi
 
 up: build
