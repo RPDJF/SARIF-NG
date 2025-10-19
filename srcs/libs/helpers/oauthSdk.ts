@@ -1,5 +1,5 @@
-import axios from "axios";
 import type { AxiosResponse } from "axios";
+import axios from "axios";
 import https from "https";
 import type { UsersSdkToken } from "./usersSdk.ts";
 
@@ -9,15 +9,15 @@ export interface Oauth2sdkConfig {
 }
 
 export interface Oauth2sdkDbEntry {
-	SubjectID: string,
-	IssuerName: string,
-	EmailAddress: string,
-	FullName: string,
-	FirstName: string,
-	FamilyName: string,
-	TokenHash: string,
-	IssueTime: number,
-	ExpirationTime: number,
+	SubjectID: string;
+	IssuerName: string;
+	EmailAddress: string;
+	FullName: string;
+	FirstName: string;
+	FamilyName: string;
+	TokenHash: string;
+	IssueTime: number;
+	ExpirationTime: number;
 }
 
 export interface Oauth2sdkLoginResponse {
@@ -25,7 +25,7 @@ export interface Oauth2sdkLoginResponse {
 	state: string;
 }
 
-export interface Oauth2sdkCallbackResponse extends UsersSdkToken { }
+export interface Oauth2sdkCallbackResponse extends UsersSdkToken {}
 
 export interface Oauth2sdkSessionResponse {
 	state: string;
@@ -57,8 +57,8 @@ export interface Oauth2sdkSessionResponse {
 
 export const defaultConfig: Oauth2sdkConfig = {
 	apiKey: process.env.API_KEY || "",
-	serverUrl: process.env.OAUTH2_URL || "https://oauth2:3000",
-}
+	serverUrl: process.env.OAUTH2_URL || "https://sarif-ng-oauth2:3000",
+};
 
 class Oauth2sdk {
 	private _config: Oauth2sdkConfig;
@@ -68,16 +68,24 @@ class Oauth2sdk {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param method method to use
 	 * @param endpoint api endpoint to call
 	 * @param params optional parameters to pass to the endpoint
 	 * @returns a promise reponse from axios for template type T
 	 * @example apiRequest<Oauth2sdkLoginResponse>("get", "login")
 	 */
-	private async apiRequest<T>(method: "get" | "post", endpoint: string, params?: URLSearchParams): Promise<AxiosResponse<T>> {
-		const httpsAgent = new https.Agent({ rejectUnauthorized:  !(process.env.IGNORE_TLS?.toLowerCase() === "true") });
-		const url = `${this._config.serverUrl}/oauth/${endpoint}${params ? `?${params.toString()}` : ""}`;
+	private async apiRequest<T>(
+		method: "get" | "post",
+		endpoint: string,
+		params?: URLSearchParams
+	): Promise<AxiosResponse<T>> {
+		const httpsAgent = new https.Agent({
+			rejectUnauthorized: !(process.env.IGNORE_TLS?.toLowerCase() === "true"),
+		});
+		const url = `${this._config.serverUrl}/oauth/${endpoint}${
+			params ? `?${params.toString()}` : ""
+		}`;
 		return axios({
 			httpsAgent,
 			method,
@@ -89,11 +97,13 @@ class Oauth2sdk {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param client_id the user's client ID to get the login URL
 	 * @returns a promise of type `Oauth2sdkLoginResponse` containing the login URL and state
 	 */
-	public async getLogin(client_id: string): Promise<AxiosResponse<Oauth2sdkLoginResponse>> {
+	public async getLogin(
+		client_id: string
+	): Promise<AxiosResponse<Oauth2sdkLoginResponse>> {
 		return this.apiRequest<Oauth2sdkLoginResponse>(
 			"get",
 			"login",
@@ -102,12 +112,15 @@ class Oauth2sdk {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param code the authorization code received from the callback URL
 	 * @param state the state parameter to verify the callback from the callback URL
 	 * @returns a promise of type `Oauth2sdkCallbackResponse` containing the session information
 	 */
-	public async getCallback(code: string, state: string): Promise<AxiosResponse<Oauth2sdkCallbackResponse>> {
+	public async getCallback(
+		code: string,
+		state: string
+	): Promise<AxiosResponse<Oauth2sdkCallbackResponse>> {
 		return this.apiRequest<Oauth2sdkCallbackResponse>(
 			"get",
 			"callback",
@@ -116,15 +129,14 @@ class Oauth2sdk {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param state the state parameter to get the session information
 	 * @returns a promise of type `Oauth2sdkSessionResponse` containing the session information
 	 */
-	public async getSession(state: string): Promise<AxiosResponse<Oauth2sdkSessionResponse>> {
-		return this.apiRequest<Oauth2sdkSessionResponse>(
-			"get",
-			`session/${state}`
-		);
+	public async getSession(
+		state: string
+	): Promise<AxiosResponse<Oauth2sdkSessionResponse>> {
+		return this.apiRequest<Oauth2sdkSessionResponse>("get", `session/${state}`);
 	}
 }
 

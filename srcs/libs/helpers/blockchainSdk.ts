@@ -1,21 +1,20 @@
+import type { AxiosResponse } from "axios";
 import axios from "axios";
 import https from "https";
-import type { AxiosResponse, InternalAxiosRequestConfig } from "axios";
-import type { Match, Match_complete } from "../interfaces/Match.ts";
-import type { Tournament_full, Tournament_lite, Tournament_metadata } from "../interfaces/Tournament.ts";
 import type { blockMatch } from "../interfaces/Blockchain.ts";
+import type { Match } from "../interfaces/Match.ts";
 
-export type UUIDv4 = string
+export type UUIDv4 = string;
 
-export type ContractHash = string
+export type ContractHash = string;
 
-export type TXHash = string
+export type TXHash = string;
 
 interface bc_sdk_options {
 	params?: string;
 	timeout?: number;
 	headers?: Record<string, string>;
-	body?: any
+	body?: any;
 }
 
 export interface BlockchainConfig {
@@ -25,30 +24,41 @@ export interface BlockchainConfig {
 
 export const default_config: BlockchainConfig = {
 	api_key: process.env.API_KEY || "",
-	server_url: process.env.BLOCKCHAIN_URL || "https://blockchain:8080"
-}
+	server_url: process.env.BLOCKCHAIN_URL || "https://sarif-ng-blockchain:8080",
+};
 
 export default class BlockchainSDK {
 	private _config: BlockchainConfig;
 
-	private param_str = "{?PARAMS}"
+	private param_str = "{?PARAMS}";
 
 	constructor(config?: BlockchainConfig) {
 		this._config = config || default_config;
 	}
 
-	private async api_request<T>(method: "GET" | "POST", route: "add-match-score" | "add-tournament-score" | "deploy" | "match-score" | "tournament-match-score" | "tournament-scores", endpoint?: string, options?: bc_sdk_options): Promise<AxiosResponse<T>> {
+	private async api_request<T>(
+		method: "GET" | "POST",
+		route:
+			| "add-match-score"
+			| "add-tournament-score"
+			| "deploy"
+			| "match-score"
+			| "tournament-match-score"
+			| "tournament-scores",
+		endpoint?: string,
+		options?: bc_sdk_options
+	): Promise<AxiosResponse<T>> {
 		if (options?.body) {
-			if (!options.headers)
-				options.headers = {};
+			if (!options.headers) options.headers = {};
 		}
-		const httpsAgent = new https.Agent({ rejectUnauthorized:  !(process.env.IGNORE_TLS?.toLowerCase() === "true") });
+		const httpsAgent = new https.Agent({
+			rejectUnauthorized: !(process.env.IGNORE_TLS?.toLowerCase() === "true"),
+		});
 
-		let url = `${this._config.server_url}/${route}`
-		if (endpoint)
-			url = url + endpoint
+		let url = `${this._config.server_url}/${route}`;
+		if (endpoint) url = url + endpoint;
 		if (endpoint && options?.params)
-			url = url.replace(this.param_str, options?.params)
+			url = url.replace(this.param_str, options?.params);
 		return await axios({
 			httpsAgent,
 			method,
@@ -59,7 +69,7 @@ export default class BlockchainSDK {
 				...options?.headers,
 			},
 			data: options?.body,
-		})
+		});
 	}
 
 	private switcheroo(finished_match: Match): blockMatch {
@@ -68,8 +78,8 @@ export default class BlockchainSDK {
 			winner: finished_match.WPlayerID as string,
 			loser: finished_match.LPlayerID as string,
 			winnerScore: finished_match.WScore,
-			loserScore: finished_match.LScore
-		}
+			loserScore: finished_match.LScore,
+		};
 	}
 
 	private rectify(b_match: blockMatch): Partial<Match> {
@@ -78,26 +88,50 @@ export default class BlockchainSDK {
 			WPlayerID: b_match.winner,
 			LPlayerID: b_match.loser,
 			WScore: b_match.winnerScore,
-			LScore: b_match.loserScore
-		}
+			LScore: b_match.loserScore,
+		};
 	}
 
-	public async deploy(hash: string | undefined): Promise<AxiosResponse<ContractHash>> {
+	public async deploy(
+		hash: string | undefined
+	): Promise<AxiosResponse<ContractHash>> {
 		if (hash === undefined)
-			return await this.api_request<ContractHash>("POST", "deploy", undefined, { body: "", timeout: 15000, headers: { "Content-Type": "application/json" } })
-		return await this.api_request<ContractHash>("POST", "deploy", undefined, { body: hash, timeout: 15000, headers: { "Content-Type": "application/json" } })
+			return await this.api_request<ContractHash>("POST", "deploy", undefined, {
+				body: "",
+				timeout: 15000,
+				headers: { "Content-Type": "application/json" },
+			});
+		return await this.api_request<ContractHash>("POST", "deploy", undefined, {
+			body: hash,
+			timeout: 15000,
+			headers: { "Content-Type": "application/json" },
+		});
 	}
 
-	public async add_match_score(finished_match: Match): Promise<AxiosResponse<TXHash>> {
-		if (typeof finished_match.WPlayerID !== "string" || typeof finished_match.LPlayerID !== "string")
-			throw "One of the PlayerID's is not a string."
-		return await this.api_request<TXHash>("POST", "add-match-score", undefined, { body: this.switcheroo(finished_match), timeout: 15000 })
+	public async add_match_score(
+		finished_match: Match
+	): Promise<AxiosResponse<TXHash>> {
+		if (
+			typeof finished_match.WPlayerID !== "string" ||
+			typeof finished_match.LPlayerID !== "string"
+		)
+			throw "One of the PlayerID's is not a string.";
+		return await this.api_request<TXHash>(
+			"POST",
+			"add-match-score",
+			undefined,
+			{ body: this.switcheroo(finished_match), timeout: 15000 }
+		);
 	}
 
 	public async get_match_score(identifier: UUIDv4): Promise<Partial<Match>> {
-		const req: blockMatch = await this.api_request<blockMatch>("GET", "match-score", `/id/${this.param_str}`, { params: identifier })
-			.then(response => response.data)
-		req.id = identifier
-		return this.rectify(req)
+		const req: blockMatch = await this.api_request<blockMatch>(
+			"GET",
+			"match-score",
+			`/id/${this.param_str}`,
+			{ params: identifier }
+		).then((response) => response.data);
+		req.id = identifier;
+		return this.rectify(req);
 	}
 }
