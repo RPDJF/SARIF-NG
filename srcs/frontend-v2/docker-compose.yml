@@ -5,7 +5,6 @@ services:
     environment:
       - TZ=Europe/Zurich
     env_file:
-      - .env
       - ../.env/
     networks:
       - bw-services
