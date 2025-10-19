@@ -12,9 +12,10 @@ WORKDIR /app
 # App source
 COPY src ./src
 COPY package.json ./
-COPY package-lock.json ./
 COPY server.ts ./
 COPY .nvmrc ./
+COPY environments ./
+COPY postcss.config.js ./
 
 # Angular
 COPY angular.json ./
