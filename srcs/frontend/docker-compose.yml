@@ -11,7 +11,7 @@ services:
     restart: on-failure
 
 volumes:
-  sarifng-sarif-frontend:
+  sarifng-frontend:
     name: "sarifng-sarif-frontend"
     driver: local
 # networks:
