@@ -54,6 +54,14 @@ await fastify.register(websocketPlugin);
 await fastify.register(await import("@fastify/http-proxy"), {
 	upstream: `https://frontend-v2:4200`,
 	//prefix: `/v2`, uncomment for frontend v2 ton run on /v2
+	httpMethods: [
+		"GET",
+		"POST",
+		"PUT",
+		"DELETE",
+		"HEAD",
+		"PATCH",
+	] as fft.HTTPMethods[],
 	http2: false,
 });
 await load_modules();
