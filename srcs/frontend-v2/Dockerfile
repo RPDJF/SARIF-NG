@@ -14,7 +14,7 @@ COPY src ./src
 COPY package.json ./
 COPY server.ts ./
 COPY .nvmrc ./
-COPY environments ./
+COPY environments ./environments
 COPY postcss.config.js ./
 
 # Angular
