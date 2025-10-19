@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 import { I18nPipe } from '../../../../core/pipes/i18n/i18n.pipe';
 
 @Component({
@@ -7,4 +7,6 @@ import { I18nPipe } from '../../../../core/pipes/i18n/i18n.pipe';
   imports: [I18nPipe],
   templateUrl: './google-signin-button.component.html',
 })
-export class GoogleSigninButtonComponent {}
+export class GoogleSigninButtonComponent {
+  click = output();
+}

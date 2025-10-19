@@ -7,7 +7,8 @@ import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { provideStore } from '@ngxs/store';
 import { environment } from '../../environments/environment';
 import { routes } from './app.routes';
-import { I18nService } from './core/services/i18n/i18n.service';
+import { I18nService } from './core/services/i18nService/i18n.service';
+import { AuthentificationState } from './core/state/authentification/authentification.state';
 import { I18nState } from './core/state/i18n/i18n.state';
 import { UserState } from './core/state/user/user.state';
 
@@ -17,8 +18,11 @@ export const appConfig: ApplicationConfig = {
     provideClientHydration(),
     provideHttpClient(withFetch()),
     environment.ENVIRONMENT === 'production'
-      ? provideStore([I18nState, UserState])
-      : provideStore([I18nState, UserState], withNgxsReduxDevtoolsPlugin()),
+      ? provideStore([I18nState, UserState, AuthentificationState])
+      : provideStore(
+          [I18nState, UserState, AuthentificationState],
+          withNgxsReduxDevtoolsPlugin(),
+        ),
     {
       provide: APP_INITIALIZER,
       useFactory: (i18nService: I18nService) => {

@@ -65,5 +65,5 @@
     -->
   </form>
   <hr class="w-full" />
-  <app-google-signin-button />
+  <app-google-signin-button (click)="oauth2Register.emit()" />
 </div>

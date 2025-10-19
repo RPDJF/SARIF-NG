@@ -26,6 +26,7 @@ export class LoginModalComponent extends ModalChildComponent {
   password = signal<string>('');
   isLoading = signal(false);
   openRegister = output();
+  oauth2Login = output();
 
   onLoginButtonClick() {
     this.submit.emit({

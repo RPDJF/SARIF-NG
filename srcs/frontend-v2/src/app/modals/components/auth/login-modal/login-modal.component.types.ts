@@ -1,3 +1,3 @@
-import { LoginServiceProp } from '../../../../core/services/user/user.service.types';
+import { AuthentificationServiceLoginProp } from '../../../../core/services/authentificationService/authentification.service.types';
 
-export type LoginModalResult = LoginServiceProp;
+export type LoginModalResult = AuthentificationServiceLoginProp;

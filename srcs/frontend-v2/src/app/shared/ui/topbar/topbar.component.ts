@@ -1,17 +1,22 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngxs/store';
-import { I18nService } from '../../../core/services/i18n/i18n.service';
+import { I18nService } from '../../../core/services/i18nService/i18n.service';
 import { ModalService } from '../../../core/services/modalService/modal.service';
 import { NotificationService } from '../../../core/services/notificationService/notification.service';
 import { NotificationServiceProp } from '../../../core/services/notificationService/notification.service.types';
+import {
+  AuthentificationEnforce2fa,
+  AuthentificationFetchOauth2LoginUrl,
+  AuthentificationLogin,
+  AuthentificationRegister,
+} from '../../../core/state/authentification/authentification.actions';
+import {
+  AuthentificationState,
+  AuthentificationStateModel,
+} from '../../../core/state/authentification/authentification.state';
 import { I18nUpdateLang } from '../../../core/state/i18n/i18n.actions';
 import { LangCode } from '../../../core/state/i18n/i18n.state.types';
-import {
-  UserEnforce2fa,
-  UserFetchMe,
-  UserLogin,
-  UserRegister,
-} from '../../../core/state/user/user.actions';
+import { UserFetchMe } from '../../../core/state/user/user.actions';
 import { UserState } from '../../../core/state/user/user.state';
 import { LoginModalComponent } from '../../../modals/components/auth/login-modal/login-modal.component';
 import { MfaModalComponent } from '../../../modals/components/auth/mfa-modal/mfa-modal.component';
@@ -71,18 +76,18 @@ export class TopbarComponent {
 
     /*modal.instance.isLoading
       .set
-      this.#store.selectSignal(UserState.isLoginApiLoading)(),
+      this.#store.selectSignal(AuthentificationState.isLoginApiLoading)(),
       ();*/
 
     modal.instance.submit.subscribe((value) => {
-      this.#store.dispatch(new UserRegister(value)).subscribe({
+      this.#store.dispatch(new AuthentificationRegister(value)).subscribe({
         complete: () => {
           modal.instance.close.emit();
           this.#store.dispatch(new UserFetchMe()).subscribe();
         },
         error: () => {
           const registerApiStatus = this.#store.selectSnapshot(
-            UserState.getRegisterApiStatus,
+            AuthentificationState.getRegisterApiStatus,
           );
           let notificationProp: NotificationServiceProp = {
             title: this.#i18nService.translateSnapshot(
@@ -112,6 +117,41 @@ export class TopbarComponent {
     });
 
     modal.instance.openLogin.subscribe(() => this.showLoginModal());
+
+    modal.instance.oauth2Register.subscribe(() => {
+      this.#store
+        .dispatch(new AuthentificationFetchOauth2LoginUrl())
+        .subscribe({
+          next: (store: any) => {
+            const value = store.authentification as AuthentificationStateModel;
+            window.location.href = value.oauth2LoginUrl!;
+          },
+          error: () => {
+            const oauth2LoginUrlApiStatus = this.#store.selectSnapshot(
+              AuthentificationState.getOauth2LoginUrlApiStatus,
+            );
+            let notificationProp: NotificationServiceProp = {
+              title: this.#i18nService.translateSnapshot(
+                'notification.generic.errorTitle',
+              ),
+              type: 'error',
+            };
+            switch (
+              oauth2LoginUrlApiStatus.normalizedSarifHttpResponse?.status
+            ) {
+              default:
+                notificationProp = {
+                  ...notificationProp,
+                  body: this.#i18nService.translateSnapshot(
+                    'notification.generic.errorMessage',
+                  ),
+                };
+                break;
+            }
+            this.#notificationService.showNotification(notificationProp);
+          },
+        });
+    });
   }
 
   public showLoginModal() {
@@ -121,15 +161,15 @@ export class TopbarComponent {
     });
 
     modal.instance.isLoading.set(
-      this.#store.selectSignal(UserState.isLoginApiLoading)(),
+      this.#store.selectSignal(AuthentificationState.isLoginApiLoading)(),
     );
 
     modal.instance.submit.subscribe((value) => {
-      this.#store.dispatch(new UserLogin(value)).subscribe({
+      this.#store.dispatch(new AuthentificationLogin(value)).subscribe({
         complete: () => this.show2faModal(),
         error: () => {
           const loginApiStatus = this.#store.selectSnapshot(
-            UserState.getLoginApiStatus,
+            AuthentificationState.getLoginApiStatus,
           );
           let notificationProp: NotificationServiceProp = {
             title: this.#i18nService.translateSnapshot(
@@ -160,11 +200,48 @@ export class TopbarComponent {
     });
 
     modal.instance.openRegister.subscribe(() => this.showRegisterModal());
+
+    modal.instance.oauth2Login.subscribe(() => {
+      this.#store
+        .dispatch(new AuthentificationFetchOauth2LoginUrl())
+        .subscribe({
+          next: (store: any) => {
+            const value = store.authentification as AuthentificationStateModel;
+            window.location.href = value.oauth2LoginUrl!;
+          },
+          error: () => {
+            const oauth2LoginUrlApiStatus = this.#store.selectSnapshot(
+              AuthentificationState.getOauth2LoginUrlApiStatus,
+            );
+            let notificationProp: NotificationServiceProp = {
+              title: this.#i18nService.translateSnapshot(
+                'notification.generic.errorTitle',
+              ),
+              type: 'error',
+            };
+            switch (
+              oauth2LoginUrlApiStatus.normalizedSarifHttpResponse?.status
+            ) {
+              default:
+                notificationProp = {
+                  ...notificationProp,
+                  body: this.#i18nService.translateSnapshot(
+                    'notification.generic.errorMessage',
+                  ),
+                };
+                break;
+            }
+            this.#notificationService.showNotification(notificationProp);
+          },
+        });
+    });
   }
 
   private show2faModal() {
     // sanity check
-    const apiRslt = this.#store.selectSnapshot(UserState.getLoginApiStatus);
+    const apiRslt = this.#store.selectSnapshot(
+      AuthentificationState.getLoginApiStatus,
+    );
     if (apiRslt.status !== 'success')
       throw 'Opening 2faModal but api result not defined';
     if (apiRslt.normalizedSarifHttpResponse!.detail !== '2fa sent')
@@ -176,14 +253,14 @@ export class TopbarComponent {
     });
 
     modal.instance.submit.subscribe((code) => {
-      this.#store.dispatch(new UserEnforce2fa({ code })).subscribe({
+      this.#store.dispatch(new AuthentificationEnforce2fa({ code })).subscribe({
         complete: () => {
           modal.instance.close.emit();
           this.#store.dispatch(new UserFetchMe()).subscribe();
         },
         error: () => {
           const enforce2faApiStatus = this.#store.selectSnapshot(
-            UserState.getEnforce2faApiStatus,
+            AuthentificationState.getEnforce2faApiStatus,
           );
           let notificationProp: NotificationServiceProp = {
             title: this.#i18nService.translateSnapshot(

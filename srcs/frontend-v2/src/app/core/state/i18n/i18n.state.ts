@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { catchError, of, tap } from 'rxjs';
 import english from '../../../../assets/i18n/english.json';
-import { I18nService } from '../../../core/services/i18n/i18n.service';
+import { I18nService } from '../../../core/services/i18nService/i18n.service';
 import { I18nUpdateLang } from './i18n.actions';
 import { I18nCollection, LangCode, TranslationKey } from './i18n.state.types';
 

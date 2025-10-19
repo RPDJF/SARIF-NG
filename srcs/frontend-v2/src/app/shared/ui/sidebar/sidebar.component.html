@@ -2,7 +2,7 @@
   class="bg-navbar border-panel dark:bg-navbar_dark dark:border-panel_dark fixed
     bottom-0 top-0 border-r pt-16 dark:border-r flex"
 >
-  <div
+  <ul
     class="flex flex-col flex-grow overflow-y-auto scrollbar-none w-24 min-w-24"
   >
     @for (item of config(); track item.name) {
@@ -28,7 +28,7 @@
         {{ (item.name | translate)() }}
       </li>
     }
-  </div>
+  </ul>
   <div
     [class]="
       'overflow-hidden transition-all bg-panel_dark rounded-xl h-full mt-8 ' +
