@@ -52,7 +52,7 @@ await fastify.register(fastifyMultipart, {
 await fastify.register(cors);
 await fastify.register(websocketPlugin);
 await fastify.register(await import("@fastify/http-proxy"), {
-	upstream: `https://frontend-v2:4200`,
+	upstream: `https://sarif-ng-frontend-v2:4200`,
 	//prefix: `/v2`, uncomment for frontend v2 ton run on /v2
 	httpMethods: [
 		"GET",
