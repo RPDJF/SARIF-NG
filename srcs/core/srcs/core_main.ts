@@ -49,13 +49,13 @@ await fastify.register(fastifyMultipart, {
 		fileSize: 8 * 1024 * 1024,
 	},
 });
+await fastify.register(cors);
+await fastify.register(websocketPlugin);
 await fastify.register(await import("@fastify/http-proxy"), {
 	upstream: `https://frontend-v2:4200`,
 	//prefix: `/v2`, uncomment for frontend v2 ton run on /v2
 	http2: false,
 });
-await fastify.register(cors);
-await fastify.register(websocketPlugin);
 await load_modules();
 
 betterFastify(fastify);
