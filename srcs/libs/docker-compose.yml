@@ -11,5 +11,5 @@ services:
 
 volumes:
   sarifng-libs:
-    name: sarif-libs
+    name: sarif-ng-libs
     driver: local

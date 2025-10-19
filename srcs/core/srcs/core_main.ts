@@ -32,8 +32,6 @@ const folder: string[] = fs.readdirSync(subfolder);
 
 const ts_files: string[] = folder.filter((file) => file.endsWith(".ts"));
 
-await fastify.register(cors);
-
 async function load_modules() {
 	// uncomment for frontend v1
 	// await registerFrontendModule(fastify);
@@ -56,6 +54,7 @@ await fastify.register(await import("@fastify/http-proxy"), {
 	//prefix: `/v2`, uncomment for frontend v2 ton run on /v2
 	http2: false,
 });
+await fastify.register(cors);
 await fastify.register(websocketPlugin);
 await load_modules();
 
