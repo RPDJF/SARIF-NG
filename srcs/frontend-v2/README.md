@@ -5,11 +5,6 @@ It replaces the old vanilla TypeScript frontend.
 
 ---
 
-## ⚠️ Docker Setup
-
-In order to load `frontend-v2` instead of the old `frontend` module, you need to manually change your route from:
-`https://localhost` to `https://localhost/v2`
-
 ## ⚠️ Development Setup
 
 Before coding, make sure to use the correct Node version for this module:

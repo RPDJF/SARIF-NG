@@ -29,6 +29,6 @@ COPY docker-entrypoint.sh ./
 
 RUN npm i -g @angular/cli@17
 RUN npm i
-RUN ng build --base-href /v2/
+RUN ng build
 
 ENTRYPOINT ["/bin/sh", "./docker-entrypoint.sh"]

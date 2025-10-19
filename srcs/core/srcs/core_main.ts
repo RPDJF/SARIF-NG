@@ -11,7 +11,6 @@ import fs from "node:fs";
 import path from "node:path";
 import { betterFastify } from "../../libs/helpers/fastifyHelper.ts";
 import Logger from "../../libs/helpers/loggers.ts";
-import registerFrontendModule from "./modules/frontend.ts";
 
 if (process.env.KEY_PATH === undefined || process.env.CERT_PATH === undefined) {
 	Logger.error("KEY_PATH and/or CERT_PATH are not defined. Exiting.");
@@ -36,7 +35,8 @@ const ts_files: string[] = folder.filter((file) => file.endsWith(".ts"));
 await fastify.register(cors);
 
 async function load_modules() {
-	await registerFrontendModule(fastify);
+	// uncomment for frontend v1
+	// await registerFrontendModule(fastify);
 	for (const file of ts_files) {
 		const file_path: string = path.join(subfolder, file);
 		const module_routes = await import(`file://${file_path}`);
@@ -53,7 +53,7 @@ await fastify.register(fastifyMultipart, {
 });
 await fastify.register(await import("@fastify/http-proxy"), {
 	upstream: `https://frontend-v2:4200`,
-	prefix: `/v2`,
+	//prefix: `/v2`, uncomment for frontend v2 ton run on /v2
 	http2: false,
 });
 await fastify.register(websocketPlugin);

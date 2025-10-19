@@ -11,7 +11,6 @@ include:
   - ./frontend/docker-compose.yml
   - ./blockchain/docker-compose.yml
   - ./games/pong/docker-compose.yml
-  - ./frontend-v2/docker-compose.yml
 
 networks:
   sarifntw:
