@@ -2,7 +2,7 @@ services:
   sarif-ng-blockchain:
     container_name: sarif-ng-blockchain
     networks:
-      - sarifng-net
+      - bw-services
     build:
       context: ./
       args:

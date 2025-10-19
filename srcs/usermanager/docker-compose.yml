@@ -9,7 +9,7 @@ services:
       - .env
       - ../.env
     networks:
-      - sarifng-net
+      - bw-services
     volumes:
       - sarifng-libs:/libs/
       - sarifng-ssl:/ssl

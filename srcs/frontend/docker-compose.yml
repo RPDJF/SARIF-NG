@@ -7,7 +7,7 @@ services:
     volumes:
       - sarifng-frontend:/var/www/sarif-frontend
     networks:
-      - sarifng-net
+      - bw-services
     restart: on-failure
 
 volumes:
@@ -15,6 +15,6 @@ volumes:
     name: "sarifng-sarif-frontend"
     driver: local
 # networks:
-#   sarifng-net:
+#   bw-services:
 #     name: "SARIF-NG Bridge"
 #     driver: bridge

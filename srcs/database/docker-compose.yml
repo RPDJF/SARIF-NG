@@ -14,7 +14,7 @@ services:
   sarif-ng-database:
     container_name: sarif-ng-database
     networks:
-      - sarifng-net
+      - bw-services
     volumes:
       - sarifng-ssl:/ssl
       - sarifng-data:/data

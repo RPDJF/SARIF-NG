@@ -8,7 +8,7 @@ services:
       - .env
       - ../.env/
     networks:
-      - sarifng-net
+      - bw-services
     volumes:
       - sarifng-ssl:/ssl
     restart: on-failure

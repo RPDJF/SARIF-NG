@@ -2,7 +2,7 @@ services:
   sarif-ng-pong:
     container_name: sarif-ng-pong
     networks:
-      - sarifng-net
+      - bw-services
     build: ./
     env_file: ../../.env
     environment:
