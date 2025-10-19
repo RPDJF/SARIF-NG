@@ -1,0 +1,46 @@
+<div
+  class="text-white z-50 fixed top-24 right-12 animate-duration-200"
+  [class.animate-fade-in-left]="!closing()"
+  [class.animate-fade-out-right]="closing()"
+>
+  <div
+    class="overflow-hidden relative border-2 p-4 pb-5 flex flex-row
+      justify-start items-center gap-x-4 w-fit min-w-64 rounded-xl"
+    [class.bg-green-600]="type() === 'success'"
+    [class.border-green-500]="type() === 'success'"
+    [class.bg-red-600]="type() === 'error'"
+    [class.border-red-500]="type() === 'error'"
+    [class.bg-yellow-600]="type() === 'warning'"
+    [class.border-yellow-500]="type() === 'warning'"
+    [class.bg-blue-600]="type() === 'information' || type() === 'loading'"
+    [class.border-blue-500]="type() === 'information' || type() === 'loading'"
+  >
+    <img
+      class="invert w-8 h-8 object-contain"
+      [src]="iconComputed()"
+      [alt]="type + ' icon'"
+    />
+    <div>
+      <p class="font-bold text-lg">
+        {{ this.title() }}
+      </p>
+      @if (body(); as body) {
+        <p class="text-sm max-w-96">
+          {{ body }}
+        </p>
+      }
+    </div>
+    <div
+      class="absolute bottom-0 left-0 h-1 bg-white transition-all
+        duration-[5000ms]"
+      [class.w-0]="!init()"
+      [class.w-full]="init()"
+    ></div>
+    <div
+      class="absolute top-1 right-2 text-xl select-none cursor-pointer"
+      (click)="close.emit()"
+    >
+      ×
+    </div>
+  </div>
+</div>

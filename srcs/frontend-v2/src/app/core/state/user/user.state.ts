@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { catchError, tap, throwError } from 'rxjs';
 import { UserService } from '../../../core/services/user/user.service';
+import { ServiceApiStatus } from '../../interfaces/http.interfaces';
 import {
   UserEnforce2fa,
   UserFetchMe,
@@ -10,21 +11,11 @@ import {
 } from './user.actions';
 import { User } from './user.state.types';
 
-type apiStatus = 'loading' | 'success' | 'error' | undefined;
-
 export interface UserStateModel {
   me: User | undefined;
-  loginApiStatus: {
-    code: number | undefined;
-    detail: '2fa sent' | unknown | undefined;
-    state: apiStatus;
-  };
-  registerApiStatus: {
-    status: apiStatus;
-  };
-  enforce2faApiStatus: {
-    status: apiStatus;
-  };
+  loginApiStatus: ServiceApiStatus;
+  registerApiStatus: ServiceApiStatus;
+  enforce2faApiStatus: ServiceApiStatus;
 }
 
 @State<UserStateModel>({
@@ -32,9 +23,7 @@ export interface UserStateModel {
   defaults: {
     me: undefined,
     loginApiStatus: {
-      code: undefined,
-      detail: undefined,
-      state: undefined,
+      status: undefined,
     },
     registerApiStatus: {
       status: undefined,
@@ -64,12 +53,22 @@ export class UserState {
   }
 
   @Selector()
+  static getRegisterApiStatus(state: UserStateModel) {
+    return state.registerApiStatus;
+  }
+
+  @Selector()
+  static getEnforce2faApiStatus(state: UserStateModel) {
+    return state.enforce2faApiStatus;
+  }
+
+  @Selector()
   static isLoginApiLoading(state: UserStateModel) {
-    return state.loginApiStatus.state === 'loading';
+    return state.loginApiStatus.status === 'loading';
   }
 
   @Action(UserFetchMe)
-  fetchMe(ctx: StateContext<UserStateModel>, {}: UserFetchMe) {
+  userFetchMe(ctx: StateContext<UserStateModel>, {}: UserFetchMe) {
     return this.#userService.fetchMe().pipe(
       tap((user) => {
         ctx.patchState({ me: user });
@@ -78,14 +77,13 @@ export class UserState {
   }
 
   @Action(UserLogin)
-  login(ctx: StateContext<UserStateModel>, { payload }: UserLogin) {
+  userLogin(ctx: StateContext<UserStateModel>, { payload }: UserLogin) {
     const stateModel = ctx.getState();
-    if (stateModel.loginApiStatus.state === 'loading') return;
+    if (stateModel.loginApiStatus.status === 'loading') return;
     ctx.patchState({
       loginApiStatus: {
-        code: undefined,
-        detail: undefined,
-        state: 'loading',
+        normalizedSarifHttpResponse: undefined,
+        status: 'loading',
       },
     });
 
@@ -93,9 +91,8 @@ export class UserState {
       tap((value) => {
         ctx.patchState({
           loginApiStatus: {
-            code: value.status,
-            detail: value.detail,
-            state:
+            normalizedSarifHttpResponse: value,
+            status:
               value.status >= 200 && value.status < 300 ? 'success' : 'error',
           },
         });
@@ -103,9 +100,11 @@ export class UserState {
       catchError((error) => {
         ctx.patchState({
           loginApiStatus: {
-            code: error.status,
-            detail: error.message ?? 'Login failed',
-            state: 'error',
+            normalizedSarifHttpResponse: {
+              status: error.status,
+              detail: error.message ?? 'Login failed',
+            },
+            status: 'error',
           },
         });
         return throwError(() => error);
@@ -115,7 +114,10 @@ export class UserState {
   }
 
   @Action(UserEnforce2fa)
-  enforce2fa(ctx: StateContext<UserStateModel>, { payload }: UserEnforce2fa) {
+  userEnforce2fa(
+    ctx: StateContext<UserStateModel>,
+    { payload }: UserEnforce2fa,
+  ) {
     const stateModel = ctx.getState();
     if (stateModel.enforce2faApiStatus.status === 'loading') return;
     ctx.patchState({
@@ -135,6 +137,10 @@ export class UserState {
       catchError((error) => {
         ctx.patchState({
           enforce2faApiStatus: {
+            normalizedSarifHttpResponse: {
+              status: error.status,
+              detail: error.message ?? '2FA failed',
+            },
             status: 'error',
           },
         });
@@ -145,7 +151,7 @@ export class UserState {
   }
 
   @Action(UserRegister)
-  register(ctx: StateContext<UserStateModel>, { payload }: UserRegister) {
+  userRegister(ctx: StateContext<UserStateModel>, { payload }: UserRegister) {
     const stateModel = ctx.getState();
     if (stateModel.registerApiStatus.status === 'loading') return;
     ctx.patchState({
@@ -165,6 +171,10 @@ export class UserState {
       catchError((error) => {
         ctx.patchState({
           registerApiStatus: {
+            normalizedSarifHttpResponse: {
+              status: error.status,
+              detail: error.message ?? 'Register failed',
+            },
             status: 'error',
           },
         });

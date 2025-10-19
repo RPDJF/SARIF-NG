@@ -1,61 +1,32 @@
-import { User } from '../../../core/state/user/user.state.types';
-
-export interface LoginResponseJSON {
-  detail: '2fa sent' | string;
-  status: number;
-  module: string;
-  type: string;
-  title: string;
-  instance: string;
-}
-
-export interface LoginJSON {
+export interface LoginApiPayload {
   ClientId: string;
   DisplayName?: string;
   EmailAddress?: string;
   Password: string;
 }
 
-export interface LoginProp {
+export interface LoginServiceProp {
   username: string;
   password: string;
 }
 
-export interface Enforce2faResponseJSON {
-  token: string;
-  sub: string;
-  data: Partial<User>;
-  iss: string;
-  iat: number;
-  exp: number;
-}
-
-export interface Enforce2faJSON {
+export interface Enforce2faApiPayload {
   ClientId: string;
   Code: string;
 }
 
-export interface Enforce2faProp {
+export interface Enforce2faServiceProp {
   code: string;
 }
 
-export interface RegisterResponseJSON {
-  token: string;
-  sub: string;
-  data: Partial<User>;
-  iss: string;
-  iat: number;
-  exp: number;
-}
-
-export interface RegisterJSON {
+export interface RegisterApiPayload {
   ClientId: string;
   DisplayName?: string;
   EmailAddress?: string;
   Password: string;
 }
 
-export interface RegisterProp {
+export interface RegisterServiceProp {
   email: string;
   username: string;
   password: string;

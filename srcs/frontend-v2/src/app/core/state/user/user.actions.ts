@@ -1,7 +1,7 @@
 import {
-  Enforce2faProp,
-  LoginProp,
-  RegisterProp,
+  Enforce2faServiceProp,
+  LoginServiceProp,
+  RegisterServiceProp,
 } from '../../../core/services/user/user.service.types';
 
 export class UserFetchMe {
@@ -11,15 +11,15 @@ export class UserFetchMe {
 
 export class UserLogin {
   static readonly type = '[User] Login';
-  constructor(readonly payload: LoginProp) {}
+  constructor(readonly payload: LoginServiceProp) {}
 }
 
 export class UserEnforce2fa {
   static readonly type = '[User] Enforce2fa';
-  constructor(readonly payload: Enforce2faProp) {}
+  constructor(readonly payload: Enforce2faServiceProp) {}
 }
 
 export class UserRegister {
   static readonly type = '[User] Register';
-  constructor(readonly payload: RegisterProp) {}
+  constructor(readonly payload: RegisterServiceProp) {}
 }

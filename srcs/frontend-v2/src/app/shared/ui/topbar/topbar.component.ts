@@ -1,10 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { I18nService } from '../../../core/services/i18n/i18n.service';
 import { ModalService } from '../../../core/services/modalService/modal.service';
-import { UserService } from '../../../core/services/user/user.service';
+import { NotificationService } from '../../../core/services/notificationService/notification.service';
+import { NotificationServiceProp } from '../../../core/services/notificationService/notification.service.types';
 import { I18nUpdateLang } from '../../../core/state/i18n/i18n.actions';
 import { LangCode } from '../../../core/state/i18n/i18n.state.types';
 import {
+  UserEnforce2fa,
   UserFetchMe,
   UserLogin,
   UserRegister,
@@ -26,7 +29,8 @@ import { langButton } from './topbar.component.types';
 export class TopbarComponent {
   readonly #store = inject(Store);
   readonly #modalService = inject(ModalService);
-  readonly #userService = inject(UserService);
+  readonly #notificationService = inject(NotificationService);
+  readonly #i18nService = inject(I18nService);
 
   public readonly userProfile = this.#store.selectSignal(UserState.getMe);
 
@@ -76,6 +80,34 @@ export class TopbarComponent {
           modal.instance.close.emit();
           this.#store.dispatch(new UserFetchMe()).subscribe();
         },
+        error: () => {
+          const registerApiStatus = this.#store.selectSnapshot(
+            UserState.getRegisterApiStatus,
+          );
+          let notificationProp: NotificationServiceProp = {
+            title: this.#i18nService.translateSnapshot(
+              'modal.components.auth.register.notification.registerErrorTitle',
+            ),
+            type: 'error',
+          };
+          switch (registerApiStatus.normalizedSarifHttpResponse?.status) {
+            case 409:
+              notificationProp = {
+                ...notificationProp,
+                body: this.#i18nService.translateSnapshot(
+                  'modal.components.auth.register.notification.registerCredentialTaken',
+                ),
+              };
+              break;
+            default:
+              notificationProp = {
+                ...notificationProp,
+                body: this.#i18nService.translateSnapshot('errors.generic'),
+              };
+              break;
+          }
+          this.#notificationService.showNotification(notificationProp);
+        },
       });
     });
 
@@ -95,6 +127,35 @@ export class TopbarComponent {
     modal.instance.submit.subscribe((value) => {
       this.#store.dispatch(new UserLogin(value)).subscribe({
         complete: () => this.show2faModal(),
+        error: () => {
+          const loginApiStatus = this.#store.selectSnapshot(
+            UserState.getLoginApiStatus,
+          );
+          let notificationProp: NotificationServiceProp = {
+            title: this.#i18nService.translateSnapshot(
+              'modal.components.auth.login.notification.loginErrorTitle',
+            ),
+            type: 'error',
+          };
+          switch (loginApiStatus.normalizedSarifHttpResponse?.status) {
+            case 400:
+            case 401:
+              notificationProp = {
+                ...notificationProp,
+                body: this.#i18nService.translateSnapshot(
+                  'modal.components.auth.login.notification.loginBadCredentials',
+                ),
+              };
+              break;
+            default:
+              notificationProp = {
+                ...notificationProp,
+                body: this.#i18nService.translateSnapshot('errors.generic'),
+              };
+              break;
+          }
+          this.#notificationService.showNotification(notificationProp);
+        },
       });
     });
 
@@ -104,20 +165,51 @@ export class TopbarComponent {
   private show2faModal() {
     // sanity check
     const apiRslt = this.#store.selectSnapshot(UserState.getLoginApiStatus);
-    if (!apiRslt.state) throw 'Opening 2faModal but api result not defined';
-    if (apiRslt.detail !== '2fa sent')
+    if (apiRslt.status !== 'success')
+      throw 'Opening 2faModal but api result not defined';
+    if (apiRslt.normalizedSarifHttpResponse!.detail !== '2fa sent')
       throw 'Unkown api result detail for login';
     const modal = this.#modalService.open({
       component: MfaModalComponent,
-      title: 'modal.2faPanel.title',
+      title: 'modal.components.auth.2faPanel.title',
       icon: 'assets/ui/two-factor-authentication-svgrepo-com.svg',
     });
 
     modal.instance.submit.subscribe((code) => {
-      this.#userService.enforce2fa({ code }).subscribe({
+      this.#store.dispatch(new UserEnforce2fa({ code })).subscribe({
         complete: () => {
           modal.instance.close.emit();
           this.#store.dispatch(new UserFetchMe()).subscribe();
+        },
+        error: () => {
+          const enforce2faApiStatus = this.#store.selectSnapshot(
+            UserState.getEnforce2faApiStatus,
+          );
+          let notificationProp: NotificationServiceProp = {
+            title: this.#i18nService.translateSnapshot(
+              'modal.components.auth.login.notification.loginErrorTitle',
+            ),
+            type: 'error',
+          };
+          switch (enforce2faApiStatus.normalizedSarifHttpResponse?.status) {
+            case 400:
+            case 404:
+            case 401:
+              notificationProp = {
+                ...notificationProp,
+                body: this.#i18nService.translateSnapshot(
+                  'modal.components.auth.2faPanel.error.invalidCode',
+                ),
+              };
+              break;
+            default:
+              notificationProp = {
+                ...notificationProp,
+                body: this.#i18nService.translateSnapshot('errors.generic'),
+              };
+              break;
+          }
+          this.#notificationService.showNotification(notificationProp);
         },
       });
     });

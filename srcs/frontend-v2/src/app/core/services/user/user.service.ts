@@ -3,15 +3,16 @@ import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { User } from '../../../core/state/user/user.state.types';
 import {
-  Enforce2faJSON,
-  Enforce2faProp,
-  Enforce2faResponseJSON,
-  LoginJSON,
-  LoginProp,
-  LoginResponseJSON,
-  RegisterJSON,
-  RegisterProp,
-  RegisterResponseJSON,
+  NormalizedSarifHttpResponse,
+  NormalizedSarifJwtToken,
+} from '../../interfaces/http.interfaces';
+import {
+  Enforce2faApiPayload,
+  Enforce2faServiceProp,
+  LoginApiPayload,
+  LoginServiceProp,
+  RegisterApiPayload,
+  RegisterServiceProp,
 } from './user.service.types';
 
 @Injectable({
@@ -35,8 +36,8 @@ export class UserService {
     return this.#httpClient.get<User>(`${environment.CORE_ENDPOINT}/users/me`);
   }
 
-  login(prop: LoginProp) {
-    const loginBody: LoginJSON = {
+  login(prop: LoginServiceProp) {
+    const loginBody: LoginApiPayload = {
       Password: prop.password,
       ClientId: this.getClientId(),
     };
@@ -45,33 +46,33 @@ export class UserService {
       ? (loginBody.EmailAddress = prop.username)
       : (loginBody.DisplayName = prop.username);
 
-    return this.#httpClient.post<LoginResponseJSON>(
+    return this.#httpClient.post<NormalizedSarifHttpResponse>(
       `${environment.CORE_ENDPOINT}/users/login`,
       loginBody,
     );
   }
 
-  enforce2fa({ code }: Enforce2faProp) {
-    const enforce2faBody: Enforce2faJSON = {
+  enforce2fa({ code }: Enforce2faServiceProp) {
+    const enforce2faBody: Enforce2faApiPayload = {
       ClientId: this.getClientId(),
       Code: code,
     };
 
-    return this.#httpClient.post<Enforce2faResponseJSON>(
+    return this.#httpClient.post<NormalizedSarifJwtToken>(
       `${environment.CORE_ENDPOINT}/users/2fa`,
       enforce2faBody,
     );
   }
 
-  register({ email, password, username }: RegisterProp) {
-    const registerBody: RegisterJSON = {
+  register({ email, password, username }: RegisterServiceProp) {
+    const registerBody: RegisterApiPayload = {
       ClientId: this.getClientId(),
       DisplayName: username,
       Password: password,
       EmailAddress: email,
     };
 
-    return this.#httpClient.post<RegisterResponseJSON>(
+    return this.#httpClient.post<NormalizedSarifJwtToken>(
       `${environment.CORE_ENDPOINT}/users/register`,
       registerBody,
     );
