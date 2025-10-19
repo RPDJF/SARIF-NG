@@ -13,9 +13,8 @@ include:
   - ./games/pong/docker-compose.yml
 
 networks:
-  sarifng-net:
-    name: "SARIF-NG Bridge"
-    driver: bridge
+  bw-services:
+    external: true
 
 volumes:
   sarifng-ssl:
