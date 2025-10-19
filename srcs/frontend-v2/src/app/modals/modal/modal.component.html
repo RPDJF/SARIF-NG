@@ -7,7 +7,7 @@
   class="fixed top-0 left-0 bottom-0 right-0 max-h-[90vh] bg-background
     dark:bg-background_dark h-fit m-auto rounded-xl max-w-[500px] shadow-xl
     overflow-visible w-min flex flex-col gap-y-8 animate-fade-in-up
-    animate-duration-200"
+    animate-duration-200 p-6"
   (click)="$event.stopPropagation()"
 >
   <div
@@ -22,7 +22,8 @@
   </div>
   <div
     class="text-black dark:text-white text-center flex flex-col gap-y-4
-      overflow-scroll h-full p-12 modal-body"
+      overflow-auto scrollbar-thin scrollbar-corner-transparent
+      scrollbar-thumb-current scrollbar-track-transparent h-full p-6 modal-body"
   >
     <div class="flex flex-col items-center gap-y-2">
       @if (icon(); as icon) {
