@@ -19,7 +19,6 @@ services:
       - sarifng-ssl:/ssl
       - sarifng-data:/data
       - sarifng-libs:/libs
-      - sarifng-frontend:/var/www/sarif-frontend
     #ports:
     #- "443:443"
     #- "80:80" can be enabled with USE_TLS=false
