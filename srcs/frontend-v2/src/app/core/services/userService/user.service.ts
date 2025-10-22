@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { User } from '../../state/user/user.state.types';
+import { catchError, of } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -24,5 +25,9 @@ export class UserService {
     return this.#httpClient.get<User>(`${environment.CORE_ENDPOINT}/users/me`);
   }
 
-  // TODO: Move all authentification API Calls to a AuthentificationService
+  logout() {
+    return this.#httpClient
+      .get<undefined>(`${environment.CORE_ENDPOINT}/users/logout`)
+      .pipe(catchError(() => of(undefined)));
+  }
 }

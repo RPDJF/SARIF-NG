@@ -38,7 +38,7 @@
   >
     <div class="w-72">
       @if (currentChild()) {
-        <ng-container *ngComponentOutlet="currentChild()" />
+        <ng-content *ngComponentOutlet="currentChild()" />
       }
     </div>
   </div>

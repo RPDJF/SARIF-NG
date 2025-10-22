@@ -3,7 +3,7 @@ import { Action, Selector, State, StateContext } from '@ngxs/store';
 import { tap } from 'rxjs';
 import { ServiceApiStatus } from '../../interfaces/http.interfaces';
 import { UserService } from '../../services/userService/user.service';
-import { UserFetchMe } from './user.actions';
+import { UserFetchMe, UserLogout } from './user.actions';
 import { User } from './user.state.types';
 
 export interface UserStateModel {
@@ -44,9 +44,25 @@ export class UserState {
 
   @Action(UserFetchMe)
   userFetchMe(ctx: StateContext<UserStateModel>, {}: UserFetchMe) {
-    return this.#userService.fetchMe().pipe(
-      tap((user) => {
-        ctx.patchState({ me: user });
+    return this.#userService.fetchMe().pipe<User>(
+      tap({
+        next: (user) => {
+          ctx.patchState({ me: user });
+          localStorage.setItem('isLogged', 'true');
+        },
+        error: () => {
+          localStorage.removeItem('isLogged');
+        },
+      }),
+    );
+  }
+
+  @Action(UserLogout)
+  userLogout(ctx: StateContext<UserStateModel>, {}: UserLogout) {
+    return this.#userService.logout().pipe(
+      tap(() => {
+        ctx.patchState({ me: undefined });
+        localStorage.removeItem('isLogged');
       }),
     );
   }

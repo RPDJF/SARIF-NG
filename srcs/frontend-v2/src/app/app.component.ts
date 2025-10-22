@@ -9,12 +9,15 @@ import { SettingsPanelComponent } from './shared/ui/sidebar/panels/settings-pane
 import { SidebarComponent } from './shared/ui/sidebar/sidebar.component';
 import { SidebarConfig } from './shared/ui/sidebar/sidebar.component.types';
 import { TopbarComponent } from './shared/ui/topbar/topbar.component';
+import { provideIcons } from '@ng-icons/core';
+import * as lucideIcons from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, SidebarComponent, TopbarComponent],
   templateUrl: './app.component.html',
+  viewProviders: [provideIcons(lucideIcons)],
 })
 export class AppComponent implements OnInit {
   #document = inject(DOCUMENT);
@@ -57,7 +60,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.#document.body.classList.add('dark');
-    if (isPlatformBrowser(this.platformId))
-      this.#store.dispatch(new UserFetchMe()).subscribe();
+    if (isPlatformBrowser(this.platformId)) {
+      if (localStorage.getItem('isLogged'))
+        this.#store.dispatch(new UserFetchMe()).subscribe();
+    }
   }
 }

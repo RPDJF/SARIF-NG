@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { Store } from '@ngxs/store';
 import { I18nService } from '../../../core/services/i18nService/i18n.service';
 import { ModalService } from '../../../core/services/modalService/modal.service';
@@ -16,7 +16,7 @@ import {
 } from '../../../core/state/authentification/authentification.state';
 import { I18nUpdateLang } from '../../../core/state/i18n/i18n.actions';
 import { LangCode } from '../../../core/state/i18n/i18n.state.types';
-import { UserFetchMe } from '../../../core/state/user/user.actions';
+import { UserFetchMe, UserLogout } from '../../../core/state/user/user.actions';
 import { UserState } from '../../../core/state/user/user.state';
 import { LoginModalComponent } from '../../../modals/components/auth/login-modal/login-modal.component';
 import { MfaModalComponent } from '../../../modals/components/auth/mfa-modal/mfa-modal.component';
@@ -24,11 +24,22 @@ import { RegisterModalComponent } from '../../../modals/components/auth/register
 import { ButtonComponent } from '../common/buttons/button/button.component';
 import { UserAvatarComponent } from '../common/user-avatar/user-avatar.component';
 import { langButton } from './topbar.component.types';
+import { DropdownMenuComponent } from '../common/dropdown-menu/dropdown-menu.component';
+import { I18nPipe } from '../../../core/pipes/i18n/i18n.pipe';
+import { DropdownMenuButtonComponent } from '../common/dropdown-menu/components/dropdown-menu-button/dropdown-menu-button.component';
+import { NgIcon } from '@ng-icons/core';
 
 @Component({
   selector: 'app-topbar',
   standalone: true,
-  imports: [UserAvatarComponent, ButtonComponent],
+  imports: [
+    UserAvatarComponent,
+    ButtonComponent,
+    DropdownMenuComponent,
+    I18nPipe,
+    DropdownMenuButtonComponent,
+    NgIcon,
+  ],
   templateUrl: './topbar.component.html',
 })
 export class TopbarComponent {
@@ -37,9 +48,11 @@ export class TopbarComponent {
   readonly #notificationService = inject(NotificationService);
   readonly #i18nService = inject(I18nService);
 
-  public readonly userProfile = this.#store.selectSignal(UserState.getMe);
+  readonly openDropwdownMenu = signal(false);
 
-  public readonly langButtonsConfig: langButton[] = [
+  readonly userProfile = this.#store.selectSignal(UserState.getMe);
+
+  readonly langButtonsConfig: langButton[] = [
     {
       LangCode: 'english',
       icon: 'assets/ui/flags/united-kingdom-svgrepo-com.svg',
@@ -290,5 +303,9 @@ export class TopbarComponent {
         },
       });
     });
+  }
+
+  public logout() {
+    this.#store.dispatch(new UserLogout()).subscribe();
   }
 }

@@ -2,23 +2,23 @@
   <a
     class="bg-white dark:bg-background_dark hover:animate-scale
       hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
-      font-semibold flex align-middle items-center gap-x-3 h-[40px]"
+      font-semibold flex align-middle items-center gap-x-3 h-[40px] w-full"
     [href]="href()"
   >
     @if (icon()) {
       <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
     }
-    <p>{{ (title() | translate)() }}</p></a
-  >
+    <ng-content></ng-content
+  ></a>
 } @else {
   <button
     class="bg-white dark:bg-background_dark hover:animate-scale
       hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
-      font-semibold flex align-middle items-center gap-x-3 h-[40px]"
+      font-semibold flex align-middle items-center gap-x-3 h-[40px] w-full"
   >
     @if (icon()) {
       <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
     }
-    <p>{{ (title() | translate)() }}</p>
+    <ng-content></ng-content>
   </button>
 }

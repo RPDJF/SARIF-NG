@@ -21,22 +21,42 @@
         </button>
       }
     </div>
-    @if (userProfile(); as userProfile) {
-      <div
-        class="flex flex-row gap-4 items-center cursor-pointer
-          hover:dark:bg-panel_dark rounded-xl p-2"
-      >
-        <p class="text-lg font-semibold text-gray-800 dark:text-gray-200">
-          {{ userProfile.DisplayName }}
-        </p>
-        <app-user-avatar [user]="userProfile"></app-user-avatar>
+    @if (userProfile()) {
+      <div>
+        <div
+          (click)="openDropwdownMenu.set(!openDropwdownMenu())"
+          class="flex flex-row gap-4 items-center cursor-pointer
+            hover:dark:bg-panel_dark rounded-xl p-2"
+          [class.dark:bg-panel_dark]="openDropwdownMenu()"
+        >
+          <p class="text-lg font-semibold text-gray-800 dark:text-gray-200">
+            {{ userProfile()?.DisplayName }}
+          </p>
+          <app-user-avatar [user]="userProfile()!"></app-user-avatar>
+        </div>
+        @if (openDropwdownMenu()) {
+          <app-dropdown-menu (close)="openDropwdownMenu.set(false)">
+            <app-dropdown-menu-button
+              ><ng-icon name="lucideUserRound" />Mon
+              profil</app-dropdown-menu-button
+            >
+            <app-dropdown-menu-button
+              ><ng-icon name="lucideUserRoundPen" />Modifier mon
+              profil</app-dropdown-menu-button
+            >
+            <app-dropdown-menu-button (click)="logout()"
+              ><ng-icon name="lucideLogOut" /> Se
+              déconnecter</app-dropdown-menu-button
+            >
+          </app-dropdown-menu>
+        }
       </div>
     } @else {
       <app-button
-        title="header.usermenu.login"
         icon="assets/ui/login-door-1-svgrepo-com.svg"
         (click)="showLoginModal()"
       >
+        {{ ('header.usermenu.login' | translate)() }}
       </app-button>
     }
   </div>
