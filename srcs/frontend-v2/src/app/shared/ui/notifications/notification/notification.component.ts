@@ -44,18 +44,14 @@ export class NotificationComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (!this.loading()) {
-      requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        this.closing.set(true);
         setTimeout(() => {
-          this.closing.set(true);
-          requestAnimationFrame(() => {
-            setTimeout(() => {
-              this.close.emit();
-            }, 200);
-          });
-        }, 5000);
-        this.init.set(true);
-      });
-    }
+          this.close.emit();
+        }, 200);
+      }, 5000);
+      this.init.set(true);
+    });
   }
 }
