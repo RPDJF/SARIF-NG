@@ -1,4 +1,3 @@
-import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewChecked,
   Component,
@@ -6,7 +5,6 @@ import {
   HostListener,
   inject,
   output,
-  PLATFORM_ID,
 } from '@angular/core';
 
 @Component({
@@ -16,7 +14,6 @@ import {
   templateUrl: './dropdown-menu.component.html',
 })
 export class DropdownMenuComponent implements AfterViewChecked {
-  #platfromId = inject(PLATFORM_ID);
   #eRef = inject(ElementRef);
 
   ready = false;
@@ -24,7 +21,6 @@ export class DropdownMenuComponent implements AfterViewChecked {
 
   @HostListener('document:click', ['$event'])
   clickout(event: MouseEvent) {
-    if (!isPlatformBrowser(this.#platfromId)) return;
     if (this.#eRef.nativeElement.contains(event.target)) {
       this.close.emit();
     } else {

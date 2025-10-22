@@ -1,11 +1,9 @@
-import { isPlatformBrowser } from '@angular/common';
 import {
   ApplicationRef,
   createComponent,
   EnvironmentInjector,
   inject,
   Injectable,
-  PLATFORM_ID,
 } from '@angular/core';
 import { NotificationComponent } from '../../../shared/ui/notifications/notification/notification.component';
 import { NotificationServiceProp } from './notification.service.types';
@@ -14,7 +12,6 @@ import { NotificationServiceProp } from './notification.service.types';
   providedIn: 'root',
 })
 export class NotificationService {
-  #platformId = inject(PLATFORM_ID);
   #appRef = inject(ApplicationRef);
   #environmentInjector = inject(EnvironmentInjector);
 
@@ -41,7 +38,6 @@ export class NotificationService {
     });
 
     this.#appRef.attachView(notificationComponent.hostView);
-    if (isPlatformBrowser(this.#platformId))
-      document.body.appendChild(notificationComponent.location.nativeElement);
+    document.body.appendChild(notificationComponent.location.nativeElement);
   }
 }

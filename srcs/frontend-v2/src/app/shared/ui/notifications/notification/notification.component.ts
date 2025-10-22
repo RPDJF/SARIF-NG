@@ -1,12 +1,9 @@
-import { isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   Component,
   computed,
-  inject,
   input,
   output,
-  PLATFORM_ID,
   signal,
 } from '@angular/core';
 import { NotificationType } from '../../../../core/services/notificationService/notification.service.types';
@@ -18,8 +15,6 @@ import { NotificationType } from '../../../../core/services/notificationService/
   templateUrl: './notification.component.html',
 })
 export class NotificationComponent implements AfterViewInit {
-  #platformId = inject(PLATFORM_ID);
-
   type = input<NotificationType>('information');
   title = input<string>(this.type());
   icon = input<string>();
@@ -49,20 +44,18 @@ export class NotificationComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (isPlatformBrowser(this.#platformId)) {
-      if (!this.loading()) {
-        requestAnimationFrame(() => {
-          setTimeout(() => {
-            this.closing.set(true);
-            requestAnimationFrame(() => {
-              setTimeout(() => {
-                this.close.emit();
-              }, 200);
-            });
-          }, 5000);
-          this.init.set(true);
-        });
-      }
+    if (!this.loading()) {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          this.closing.set(true);
+          requestAnimationFrame(() => {
+            setTimeout(() => {
+              this.close.emit();
+            }, 200);
+          });
+        }, 5000);
+        this.init.set(true);
+      });
     }
   }
 }
