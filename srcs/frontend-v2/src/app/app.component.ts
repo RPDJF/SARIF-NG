@@ -9,15 +9,12 @@ import { SettingsPanelComponent } from './shared/ui/sidebar/panels/settings-pane
 import { SidebarComponent } from './shared/ui/sidebar/sidebar.component';
 import { SidebarConfig } from './shared/ui/sidebar/sidebar.component.types';
 import { TopbarComponent } from './shared/ui/topbar/topbar.component';
-import { provideIcons } from '@ng-icons/core';
-import * as lucideIcons from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [RouterOutlet, SidebarComponent, TopbarComponent],
   templateUrl: './app.component.html',
-  viewProviders: [provideIcons(lucideIcons)],
 })
 export class AppComponent implements OnInit {
   #document = inject(DOCUMENT);

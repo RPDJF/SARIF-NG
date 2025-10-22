@@ -15,7 +15,6 @@ import { UserState } from './core/state/user/user.state';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideClientHydration(),
     provideHttpClient(withFetch()),
     environment.ENVIRONMENT === 'production'
       ? provideStore([I18nState, UserState, AuthentificationState])

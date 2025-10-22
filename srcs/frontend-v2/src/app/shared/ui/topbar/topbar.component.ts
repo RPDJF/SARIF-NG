@@ -27,7 +27,8 @@ import { langButton } from './topbar.component.types';
 import { DropdownMenuComponent } from '../common/dropdown-menu/dropdown-menu.component';
 import { I18nPipe } from '../../../core/pipes/i18n/i18n.pipe';
 import { DropdownMenuButtonComponent } from '../common/dropdown-menu/components/dropdown-menu-button/dropdown-menu-button.component';
-import { NgIcon } from '@ng-icons/core';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import { lucideLogOut, lucideUserRound, lucideUserRoundPen } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-topbar',
@@ -41,6 +42,7 @@ import { NgIcon } from '@ng-icons/core';
     NgIcon,
   ],
   templateUrl: './topbar.component.html',
+  viewProviders: [provideIcons({lucideUserRound, lucideUserRoundPen, lucideLogOut})]
 })
 export class TopbarComponent {
   readonly #store = inject(Store);
