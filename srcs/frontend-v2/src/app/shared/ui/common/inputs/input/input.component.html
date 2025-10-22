@@ -1,19 +1,73 @@
-<!-- prettier-ignore -->
-<input
-  [class]="
-    'text-sm rounded-lg block w-full p-2.5 bg-gray-50 dark:bg-gray-700 border ' +
-    (!validView()
-      ? 'border-red-500 focus:border-red-500 focus:ring-red-500 \
-        dark:border-red-600 dark:focus:ring-red-500 dark:focus:border-red-500'
-      : ' border-gray-300 text-gray-900 focus:ring-blue-500 \
-        focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 \
-        dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500')
-  "
-  [type]="type()"
-  [disabled]="disabledSignal()"
-  [placeholder]="placeholder()"
-  [value]="value()"
-  (input)="handleInput($any($event.target).value)"
-  [name]="name()"
-  [required]="required() || required() === ''"
-/>
+<div class="relative flex justify-center items-center">
+  <!-- prettier-ignore -->
+  <input
+    [class]="
+      'text-sm rounded-lg block w-full p-2.5 bg-gray-50 dark:bg-gray-700 border ' +
+      (!validView()
+        ? 'border-red-500 focus:border-red-500 focus:ring-red-500 \
+          dark:border-red-600 dark:focus:ring-red-500 dark:focus:border-red-500'
+        : ' border-gray-300 text-gray-900 focus:ring-blue-500 \
+          focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 \
+          dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500')
+    "
+    [type]="type()"
+    [disabled]="disabledSignal()"
+    [placeholder]="placeholder()"
+    [value]="value()"
+    (input)="handleInput($any($event.target).value)"
+    [name]="name()"
+    [required]="required() || required() === ''"
+  >
+  @if (!validView()) {
+    <div
+      class="fixed -right-[370px] text-left bg-background
+        dark:bg-background_dark border border-panel dark:border-panel_dark
+        rounded-xl p-4"
+    >
+      <div
+        class="absolute -left-2 rotate-45 my-auto top-0 bottom-0 h-4 w-4
+          bg-background dark:bg-background_dark border-b border-l border-panel
+          dark:border-panel_dark"
+      ></div>
+      <ul>
+        @switch (type()) {
+          @case ('password') {
+            @if (inputPasswordValidatorConfigSignal(); as passwordConfig) {
+              @if (passwordConfig.minCharacters) {
+                <li class="flex gap-x-2 items-center">
+                  <span class="bg-green-50 rounded-full h-2 w-2"></span>
+                  {{ ('passwordStrength.minLength' | translate)() }}
+                </li>
+              }
+              @if (passwordConfig.minUpper) {
+                <li class="flex gap-x-2 items-center">
+                  <span class="bg-green-50 rounded-full h-2 w-2"></span>
+                  {{ ('passwordStrength.hasUppercase' | translate)() }}
+                </li>
+              }
+              @if (passwordConfig.minLower) {
+                <li class="flex gap-x-2 items-center">
+                  <span class="bg-green-50 rounded-full h-2 w-2"></span>
+                  {{ ('passwordStrength.hasLowercase' | translate)() }}
+                </li>
+              }
+              @if (passwordConfig.minNumber) {
+                <li class="flex gap-x-2 items-center">
+                  <span class="bg-green-50 rounded-full h-2 w-2"></span>
+                  {{ ('passwordStrength.hasNumber' | translate)() }}
+                </li>
+              }
+              @if (passwordConfig.minSpecial) {
+                <li class="flex gap-x-2 items-center">
+                  <span class="bg-green-50 rounded-full h-2 w-2"></span>
+                  {{ ('passwordStrength.hasSpecialChar' | translate)() }}
+                </li>
+              }
+            }
+          }
+          @case ('email') {}
+        }
+      </ul>
+    </div>
+  }
+</div>
