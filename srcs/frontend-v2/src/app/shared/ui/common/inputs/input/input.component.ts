@@ -1,8 +1,11 @@
 import {
   Component,
+  computed,
+  effect,
   forwardRef,
   input,
   model,
+  output,
   signal,
   ViewEncapsulation,
 } from '@angular/core';
@@ -29,14 +32,39 @@ export class InputComponent implements ControlValueAccessor {
   name = input<string>();
   required = input<boolean | string>();
   disabled = input<boolean>(false);
+  validator = input<(text: string) => boolean>();
   disabledSignal = signal<boolean>(false);
-  value = model<string>('');
 
-  #onChange = (val: string) => {};
+  value = model<string>('');
+  validChange = output<boolean>();
+
+  isTriggered = signal(false);
+
+  valid = computed(() => {
+    const validator = this.validator();
+    if (!validator) return true;
+    const value = this.value();
+
+    if (this.required() && !value.trim()) return false;
+    const isValid = validator(this.value());
+    return isValid;
+  });
+
+  validView = computed(() => {
+    if (!this.isTriggered()) return true;
+    return this.valid();
+  });
+
+  #onChange = (val: string) => {
+    if (!this.isTriggered()) this.isTriggered.set(true);
+  };
   #onTouched = () => {}; // maybe need to bind ?
 
   constructor() {
     this.disabledSignal.set(this.disabled());
+    effect(() => {
+      this.validChange.emit(this.valid());
+    });
   }
 
   writeValue(val: string) {
