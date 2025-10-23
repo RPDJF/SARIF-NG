@@ -26,7 +26,11 @@ export interface InputPasswordValidatorConfig {
   minCharacters: number;
 }
 
-export interface InputPasswordValidatorStatus {
+export interface InputValidatorStatus {
+  isValid: boolean;
+}
+
+export interface InputPasswordValidatorStatus extends InputValidatorStatus {
   minUpper: boolean;
   minLower: boolean;
   minSpecial: boolean;
@@ -36,37 +40,44 @@ export interface InputPasswordValidatorStatus {
 
 export abstract class InputValidator {
   abstract isValid(value: string): boolean;
+  abstract get status(): InputValidatorStatus;
 }
 
 export class InputPasswordValidator extends InputValidator {
   #config: InputPasswordValidatorConfig;
-  #minUpper: boolean = false;
-  #minLower: boolean = false;
-  #minSpecial: boolean = false;
-  #minNumber: boolean = false;
-  #minCharacters: boolean = false;
+
+  #status: InputPasswordValidatorStatus = {
+    isValid: false,
+    minCharacters: false,
+    minLower: false,
+    minNumber: false,
+    minSpecial: false,
+    minUpper: false,
+  };
+
   override isValid(password: string): boolean {
-    this.#minCharacters = password.length < this.#config.minCharacters;
-    this.#minUpper =
-      password.length - password.replace(/[A-Z]/g, '').length <
+    this.#status.minCharacters = password.length >= this.#config.minCharacters;
+    this.#status.minUpper =
+      password.length - password.replace(/[A-Z]/g, '').length >=
       this.#config.minUpper;
-    this.#minLower =
-      password.length - password.replace(/[a-z]/g, '').length <
+    this.#status.minLower =
+      password.length - password.replace(/[a-z]/g, '').length >=
       this.#config.minLower;
-    this.#minNumber =
-      password.length - password.replace(/[0-9]/g, '').length <
+    this.#status.minNumber =
+      password.length - password.replace(/[0-9]/g, '').length >=
       this.#config.minNumber;
-    this.#minSpecial =
+    this.#status.minSpecial =
       password.length -
-        password.replace(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, '').length <
+        password.replace(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, '').length >=
       this.#config.minSpecial;
-    return (
-      this.minCharacters &&
-      this.minUpper &&
-      this.minLower &&
-      this.minNumber &&
-      this.minSpecial
-    );
+    console.log(this.#status);
+    let rslt =
+      this.#status.minCharacters &&
+      this.#status.minUpper &&
+      this.#status.minLower &&
+      this.#status.minNumber &&
+      this.#status.minSpecial;
+    return (this.#status.isValid = rslt);
   }
 
   constructor(config?: Partial<InputPasswordValidatorConfig>) {
@@ -81,19 +92,35 @@ export class InputPasswordValidator extends InputValidator {
     };
   }
 
-  get minUpper() {
-    return this.#minUpper;
+  override get status(): InputPasswordValidatorStatus {
+    return { ...this.#status };
   }
-  get minLower() {
-    return this.#minLower;
+}
+
+export type InputEmailValidatorStatus = InputValidatorStatus;
+
+export class InputEmailValidator extends InputValidator {
+  #status: InputEmailValidatorStatus = {
+    isValid: false,
+  };
+
+  override isValid(email: string): boolean {
+    this.#status.isValid = Boolean(
+      email
+        .toLowerCase()
+        .match(
+          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+        ),
+    );
+
+    return this.#status.isValid;
   }
-  get minSpecial() {
-    return this.#minSpecial;
+
+  constructor() {
+    super();
   }
-  get minNumber() {
-    return this.#minNumber;
-  }
-  get minCharacters() {
-    return this.#minCharacters;
+
+  override get status(): InputEmailValidatorStatus {
+    return { ...this.#status };
   }
 }

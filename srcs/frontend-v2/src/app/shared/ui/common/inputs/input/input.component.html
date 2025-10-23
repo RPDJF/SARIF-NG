@@ -1,6 +1,6 @@
 <div class="relative flex justify-center items-center">
   <!-- prettier-ignore -->
-  <input
+  <input #inputEl
     [class]="
       'text-sm rounded-lg block w-full p-2.5 bg-gray-50 dark:bg-gray-700 border ' +
       (!validView()
@@ -10,13 +10,15 @@
           focus:border-blue-500 dark:border-gray-600 dark:placeholder-gray-400 \
           dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500')
     "
-    [type]="type()"
+    [type]="typeNormalize()"
     [disabled]="disabledSignal()"
     [placeholder]="placeholder()"
     [value]="value()"
     (input)="handleInput($any($event.target).value)"
     [name]="name()"
     [required]="required() || required() === ''"
+    (focus)="update(true)"
+    (blur)="update(false)"
   >
   @if (!validView()) {
     <div
@@ -33,39 +35,97 @@
         @switch (type()) {
           @case ('password') {
             @if (inputPasswordValidatorConfigSignal(); as passwordConfig) {
-              @if (passwordConfig.minCharacters) {
-                <li class="flex gap-x-2 items-center">
-                  <span class="bg-green-50 rounded-full h-2 w-2"></span>
-                  {{ ('passwordStrength.minLength' | translate)() }}
-                </li>
-              }
-              @if (passwordConfig.minUpper) {
-                <li class="flex gap-x-2 items-center">
-                  <span class="bg-green-50 rounded-full h-2 w-2"></span>
-                  {{ ('passwordStrength.hasUppercase' | translate)() }}
-                </li>
-              }
-              @if (passwordConfig.minLower) {
-                <li class="flex gap-x-2 items-center">
-                  <span class="bg-green-50 rounded-full h-2 w-2"></span>
-                  {{ ('passwordStrength.hasLowercase' | translate)() }}
-                </li>
-              }
-              @if (passwordConfig.minNumber) {
-                <li class="flex gap-x-2 items-center">
-                  <span class="bg-green-50 rounded-full h-2 w-2"></span>
-                  {{ ('passwordStrength.hasNumber' | translate)() }}
-                </li>
-              }
-              @if (passwordConfig.minSpecial) {
-                <li class="flex gap-x-2 items-center">
-                  <span class="bg-green-50 rounded-full h-2 w-2"></span>
-                  {{ ('passwordStrength.hasSpecialChar' | translate)() }}
-                </li>
+              @if (validatorResult(); as passwordValidatorResult) {
+                @if (passwordConfig.minCharacters) {
+                  <li class="flex gap-x-2 items-center">
+                    <span
+                      class="rounded-full h-2 w-2"
+                      [class.bg-red-500]="
+                        !$any(passwordValidatorResult).minCharacters
+                      "
+                      [class.bg-green-500]="
+                        $any(passwordValidatorResult).minCharacters
+                      "
+                    ></span>
+                    {{ ('passwordStrength.minLength' | translate)() }}
+                  </li>
+                }
+                @if (passwordConfig.minUpper) {
+                  <li class="flex gap-x-2 items-center">
+                    <span
+                      class="rounded-full h-2 w-2"
+                      [class.bg-red-500]="
+                        !$any(passwordValidatorResult).minUpper
+                      "
+                      [class.bg-green-500]="
+                        $any(passwordValidatorResult).minUpper
+                      "
+                    ></span>
+                    {{ ('passwordStrength.hasUppercase' | translate)() }}
+                  </li>
+                }
+                @if (passwordConfig.minLower) {
+                  <li class="flex gap-x-2 items-center">
+                    <span
+                      class="rounded-full h-2 w-2"
+                      [class.bg-red-500]="
+                        !$any(passwordValidatorResult).minLower
+                      "
+                      [class.bg-green-500]="
+                        $any(passwordValidatorResult).minLower
+                      "
+                    ></span>
+                    {{ ('passwordStrength.hasLowercase' | translate)() }}
+                  </li>
+                }
+                @if (passwordConfig.minNumber) {
+                  <li class="flex gap-x-2 items-center">
+                    <span
+                      class="rounded-full h-2 w-2"
+                      [class.bg-red-500]="
+                        !$any(passwordValidatorResult).minNumber
+                      "
+                      [class.bg-green-500]="
+                        $any(passwordValidatorResult).minNumber
+                      "
+                    ></span>
+                    {{ ('passwordStrength.hasNumber' | translate)() }}
+                  </li>
+                }
+                @if (passwordConfig.minSpecial) {
+                  <li class="flex gap-x-2 items-center">
+                    <span
+                      class="rounded-full h-2 w-2"
+                      [class.bg-red-500]="
+                        !$any(passwordValidatorResult).minSpecial
+                      "
+                      [class.bg-green-500]="
+                        $any(passwordValidatorResult).minSpecial
+                      "
+                    ></span>
+                    {{ ('passwordStrength.hasSpecialChar' | translate)() }}
+                  </li>
+                }
               }
             }
           }
-          @case ('email') {}
+          @case ('email') {
+            @if (validatorResult(); as emailValidatorResult) {
+              <li class="flex gap-x-2 items-center">
+                <span
+                  class="rounded-full h-2 w-2"
+                  [class.bg-red-500]="!emailValidatorResult.isValid"
+                  [class.bg-green-500]="emailValidatorResult.isValid"
+                ></span>
+                {{
+                  (
+                    'modal.components.auth.register.validation.emailFormatError'
+                    | translate
+                  )()
+                }}
+              </li>
+            }
+          }
         }
       </ul>
     </div>

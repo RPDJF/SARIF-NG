@@ -2,17 +2,21 @@ import {
   Component,
   computed,
   effect,
+  ElementRef,
   forwardRef,
   input,
   model,
   OnInit,
   output,
   signal,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { I18nPipe } from '../../../../../core/pipes/i18n/i18n.pipe';
 import {
+  InputEmailValidator,
+  InputEmailValidatorStatus,
   InputPasswordValidator,
   InputPasswordValidatorConfig,
   InputPasswordValidatorStatus,
@@ -34,16 +38,35 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class InputComponent implements ControlValueAccessor, OnInit {
+  /* -- VIEW CHILDS -- */
+  @ViewChild('inputEl') inputEl!: ElementRef<HTMLInputElement>;
+
+  /* -- IO and related signals -- */
+
   label = input<string>();
   placeholder = input<string>();
-  type = input<'text' | 'email' | 'password'>('text');
+  type = input<'text' | 'email' | 'password' | 'username'>('text');
+  typeNormalize = computed(() => {
+    if (this.type() === 'username') return 'text';
+    return this.type();
+  });
   name = input<string>();
   required = input<boolean | string>();
   disabled = input<boolean>(false);
   disabledSignal = signal<boolean>(false);
+  value = model<string>('');
+  validChange = output<boolean>();
 
+  isTriggered = signal(false);
+
+  focus = model(false);
+
+  /* -- VALIDATORS -- */
+
+  // CONFIGS
   inputPasswordValidatorConfig = input<Partial<InputPasswordValidatorConfig>>();
   inputPasswordValidatorConfigSignal = computed(() => {
+    if (this.type() !== 'password') return undefined;
     let config: InputPasswordValidatorConfig = {
       minCharacters: 8,
       minUpper: 1,
@@ -55,47 +78,37 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     if (inputConfig) config = { ...config, ...inputConfig };
     return config;
   });
+  // VALIDATORS
   validator = input<InputValidator>();
   validatorSignal = signal<InputValidator | undefined>(undefined);
-  validatorResult = computed(() => {
-    if (this.type() === 'password') {
-      const validator = this.validatorSignal() as InputPasswordValidator;
-      const value = this.value();
-      const config = this.inputPasswordValidatorConfigSignal();
-      return {
-        minCharacters: validator.minCharacters,
-        minUpper: validator.min
-        minLower:
-          value.length - value.replace(/[a-z]/g, '').length < config.minLower,
-        minNumber:
-          value.length - value.replace(/[0-9]/g, '').length < config.minNumber,
-        minSpecial:
-          value.length -
-            value.replace(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, '').length <
-          config.minSpecial,
-      } as InputPasswordValidatorStatus;
-    }
-    return undefined;
+  validatorResult = computed<
+    InputPasswordValidatorStatus | InputEmailValidatorStatus | undefined
+  >(() => {
+    this.value();
+    const validator = this.validatorSignal();
+    if (!validator) return undefined;
+    validator.isValid(this.value());
+    return validator.status;
   });
-  value = model<string>('');
-  validChange = output<boolean>();
-
-  isTriggered = signal(false);
-
+  // VALIDATOR RESULTS
   valid = computed(() => {
     const validator = this.validatorSignal();
     if (!validator) return true;
     const value = this.value();
 
-    console.log(validator);
     if (this.required() && !value.trim()) return false;
-    const isValid = validator.isValid;
+    const isValid = validator.isValid(this.value());
+    console.log(isValid);
     return isValid;
   });
 
+  update(status: boolean) {
+    this.focus.set(status);
+  }
+
   validView = computed(() => {
     if (!this.isTriggered()) return true;
-    return this.valid();
+    return this.valid() || !this.focus();
   });
 
   /* -- INIT INPUT --  */
@@ -103,7 +116,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   #loadDefaultValidator(): InputValidator | undefined {
     switch (this.type()) {
       case 'email':
-        return undefined;
+        return new InputEmailValidator();
       case 'password':
         return new InputPasswordValidator();
     }
@@ -133,14 +146,6 @@ export class InputComponent implements ControlValueAccessor, OnInit {
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         ),
     );
-  }
-
-  #passwordValidator(text: string) {
-    const config = this.inputPasswordValidatorConfigSignal();
-
-    switch (typeof this.validatorResult()) {
-      case InputPasswordValidatorStatus:
-    }
   }
 
   /* -- INPUT WRAPPERS -- */
