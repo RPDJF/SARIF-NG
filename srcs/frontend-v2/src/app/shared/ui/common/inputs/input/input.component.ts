@@ -2,14 +2,12 @@ import {
   Component,
   computed,
   effect,
-  ElementRef,
   forwardRef,
   input,
   model,
   OnInit,
   output,
   signal,
-  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
@@ -38,9 +36,6 @@ import {
   encapsulation: ViewEncapsulation.None,
 })
 export class InputComponent implements ControlValueAccessor, OnInit {
-  /* -- VIEW CHILDS -- */
-  @ViewChild('inputEl') inputEl!: ElementRef<HTMLInputElement>;
-
   /* -- IO and related signals -- */
 
   label = input<string>();
@@ -54,12 +49,16 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   required = input<boolean | string>();
   disabled = input<boolean>(false);
   disabledSignal = signal<boolean>(false);
+  autocomplete = input(false);
   value = model<string>('');
   validChange = output<boolean>();
 
   isTriggered = signal(false);
 
   focus = model(false);
+
+  /* other signals -- */
+  triggeredOnce = signal(false);
 
   /* -- VALIDATORS -- */
 
@@ -102,11 +101,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
     return isValid;
   });
 
-  update(status: boolean) {
-    this.focus.set(status);
-  }
-
-  validView = computed(() => {
+  showTooltip = computed(() => {
     if (!this.isTriggered()) return true;
     return this.valid() || !this.focus();
   });
@@ -134,18 +129,6 @@ export class InputComponent implements ControlValueAccessor, OnInit {
       let validator = this.validatorSignal();
       if (validator) this.validChange.emit(validator.isValid(this.value()));
     });
-  }
-
-  /* -- DEFAULT VALIDATORS -- */
-
-  #emailValidator(text: string) {
-    return Boolean(
-      text
-        .toLowerCase()
-        .match(
-          /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        ),
-    );
   }
 
   /* -- INPUT WRAPPERS -- */

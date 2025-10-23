@@ -1,9 +1,9 @@
 <div class="relative flex justify-center items-center">
   <!-- prettier-ignore -->
-  <input #inputEl
+  <input
     [class]="
       'text-sm rounded-lg block w-full p-2.5 bg-gray-50 dark:bg-gray-700 border ' +
-      (!validView()
+      (!valid() && isTriggered()
         ? 'border-red-500 focus:border-red-500 focus:ring-red-500 \
           dark:border-red-600 dark:focus:ring-red-500 dark:focus:border-red-500'
         : ' border-gray-300 text-gray-900 focus:ring-blue-500 \
@@ -17,117 +17,116 @@
     (input)="handleInput($any($event.target).value)"
     [name]="name()"
     [required]="required() || required() === ''"
-    (focus)="update(true)"
-    (blur)="update(false)"
+    (focus)="focus.set(true)"
+    (blur)="focus.set(false)"
+    [autocomplete]="autocomplete()"
   >
-  @if (!validView()) {
+
+  <div
+    class="fixed -right-[370px] text-left bg-background dark:bg-background_dark
+      border border-panel dark:border-panel_dark rounded-xl p-4
+      animate-fade-in-right animate-duration-200"
+    [class.animate-fade-in-right]="!showTooltip()"
+    [class.animate-fade-out-left]="showTooltip()"
+    [class.invisible]="!isTriggered()"
+  >
     <div
-      class="fixed -right-[370px] text-left bg-background
-        dark:bg-background_dark border border-panel dark:border-panel_dark
-        rounded-xl p-4"
-    >
-      <div
-        class="absolute -left-2 rotate-45 my-auto top-0 bottom-0 h-4 w-4
-          bg-background dark:bg-background_dark border-b border-l border-panel
-          dark:border-panel_dark"
-      ></div>
-      <ul>
-        @switch (type()) {
-          @case ('password') {
-            @if (inputPasswordValidatorConfigSignal(); as passwordConfig) {
-              @if (validatorResult(); as passwordValidatorResult) {
-                @if (passwordConfig.minCharacters) {
-                  <li class="flex gap-x-2 items-center">
-                    <span
-                      class="rounded-full h-2 w-2"
-                      [class.bg-red-500]="
-                        !$any(passwordValidatorResult).minCharacters
-                      "
-                      [class.bg-green-500]="
-                        $any(passwordValidatorResult).minCharacters
-                      "
-                    ></span>
-                    {{ ('passwordStrength.minLength' | translate)() }}
-                  </li>
-                }
-                @if (passwordConfig.minUpper) {
-                  <li class="flex gap-x-2 items-center">
-                    <span
-                      class="rounded-full h-2 w-2"
-                      [class.bg-red-500]="
-                        !$any(passwordValidatorResult).minUpper
-                      "
-                      [class.bg-green-500]="
-                        $any(passwordValidatorResult).minUpper
-                      "
-                    ></span>
-                    {{ ('passwordStrength.hasUppercase' | translate)() }}
-                  </li>
-                }
-                @if (passwordConfig.minLower) {
-                  <li class="flex gap-x-2 items-center">
-                    <span
-                      class="rounded-full h-2 w-2"
-                      [class.bg-red-500]="
-                        !$any(passwordValidatorResult).minLower
-                      "
-                      [class.bg-green-500]="
-                        $any(passwordValidatorResult).minLower
-                      "
-                    ></span>
-                    {{ ('passwordStrength.hasLowercase' | translate)() }}
-                  </li>
-                }
-                @if (passwordConfig.minNumber) {
-                  <li class="flex gap-x-2 items-center">
-                    <span
-                      class="rounded-full h-2 w-2"
-                      [class.bg-red-500]="
-                        !$any(passwordValidatorResult).minNumber
-                      "
-                      [class.bg-green-500]="
-                        $any(passwordValidatorResult).minNumber
-                      "
-                    ></span>
-                    {{ ('passwordStrength.hasNumber' | translate)() }}
-                  </li>
-                }
-                @if (passwordConfig.minSpecial) {
-                  <li class="flex gap-x-2 items-center">
-                    <span
-                      class="rounded-full h-2 w-2"
-                      [class.bg-red-500]="
-                        !$any(passwordValidatorResult).minSpecial
-                      "
-                      [class.bg-green-500]="
-                        $any(passwordValidatorResult).minSpecial
-                      "
-                    ></span>
-                    {{ ('passwordStrength.hasSpecialChar' | translate)() }}
-                  </li>
-                }
+      class="absolute -left-2 rotate-45 my-auto top-0 bottom-0 h-4 w-4
+        bg-background dark:bg-background_dark border-b border-l border-panel
+        dark:border-panel_dark"
+    ></div>
+    <ul>
+      @switch (type()) {
+        @case ('password') {
+          @if (inputPasswordValidatorConfigSignal(); as passwordConfig) {
+            @if (validatorResult(); as passwordValidatorResult) {
+              @if (passwordConfig.minCharacters) {
+                <li class="flex gap-x-2 items-center">
+                  <span
+                    class="rounded-full h-2 w-2"
+                    [class.bg-red-500]="
+                      !$any(passwordValidatorResult).minCharacters
+                    "
+                    [class.bg-green-500]="
+                      $any(passwordValidatorResult).minCharacters
+                    "
+                  ></span>
+                  {{ ('passwordStrength.minLength' | translate)() }}
+                </li>
+              }
+              @if (passwordConfig.minUpper) {
+                <li class="flex gap-x-2 items-center">
+                  <span
+                    class="rounded-full h-2 w-2"
+                    [class.bg-red-500]="!$any(passwordValidatorResult).minUpper"
+                    [class.bg-green-500]="
+                      $any(passwordValidatorResult).minUpper
+                    "
+                  ></span>
+                  {{ ('passwordStrength.hasUppercase' | translate)() }}
+                </li>
+              }
+              @if (passwordConfig.minLower) {
+                <li class="flex gap-x-2 items-center">
+                  <span
+                    class="rounded-full h-2 w-2"
+                    [class.bg-red-500]="!$any(passwordValidatorResult).minLower"
+                    [class.bg-green-500]="
+                      $any(passwordValidatorResult).minLower
+                    "
+                  ></span>
+                  {{ ('passwordStrength.hasLowercase' | translate)() }}
+                </li>
+              }
+              @if (passwordConfig.minNumber) {
+                <li class="flex gap-x-2 items-center">
+                  <span
+                    class="rounded-full h-2 w-2"
+                    [class.bg-red-500]="
+                      !$any(passwordValidatorResult).minNumber
+                    "
+                    [class.bg-green-500]="
+                      $any(passwordValidatorResult).minNumber
+                    "
+                  ></span>
+                  {{ ('passwordStrength.hasNumber' | translate)() }}
+                </li>
+              }
+              @if (passwordConfig.minSpecial) {
+                <li class="flex gap-x-2 items-center">
+                  <span
+                    class="rounded-full h-2 w-2"
+                    [class.bg-red-500]="
+                      !$any(passwordValidatorResult).minSpecial
+                    "
+                    [class.bg-green-500]="
+                      $any(passwordValidatorResult).minSpecial
+                    "
+                  ></span>
+                  {{ ('passwordStrength.hasSpecialChar' | translate)() }}
+                </li>
               }
             }
           }
-          @case ('email') {
-            @if (validatorResult(); as emailValidatorResult) {
-              <li class="flex gap-x-2 items-center">
-                <span
-                  class="rounded-full h-2 w-2"
-                  [class.bg-red-500]="!emailValidatorResult.isValid"
-                  [class.bg-green-500]="emailValidatorResult.isValid"
-                ></span>
-                {{
-                  (
-                    'modal.components.auth.register.validation.emailFormatError'
-                    | translate
-                  )()
-                }}
-              </li>
-            }
+        }
+        @case ('email') {
+          @if (validatorResult(); as emailValidatorResult) {
+            <li class="flex gap-x-2 items-center">
+              <span
+                class="rounded-full h-2 w-2"
+                [class.bg-red-500]="!emailValidatorResult.isValid"
+                [class.bg-green-500]="emailValidatorResult.isValid"
+              ></span>
+              {{
+                (
+                  'modal.components.auth.register.validation.emailFormatError'
+                  | translate
+                )()
+              }}
+            </li>
           }
         }
-      </ul>
-    </div>
-  }
+      }
+    </ul>
+  </div>
 </div>
