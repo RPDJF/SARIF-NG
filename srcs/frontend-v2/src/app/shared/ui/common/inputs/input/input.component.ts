@@ -12,20 +12,21 @@ import {
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { I18nPipe } from '../../../../../core/pipes/i18n/i18n.pipe';
+import { InputTooltipComponent } from './components/input-tooltip/input-tooltip.component';
 import {
   InputConfirmValidator,
   InputEmailValidator,
-  InputEmailValidatorStatus,
   InputPasswordValidator,
   InputPasswordValidatorConfig,
-  InputPasswordValidatorStatus,
+  inputType,
   InputValidator,
+  InputValidatorStatus,
 } from './input.component.types';
 
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [I18nPipe],
+  imports: [I18nPipe, InputTooltipComponent],
   templateUrl: './input.component.html',
   providers: [
     {
@@ -41,14 +42,7 @@ export class InputComponent implements ControlValueAccessor, OnInit {
 
   label = input<string>();
   placeholder = input<string>();
-  type = input<
-    | 'text'
-    | 'email'
-    | 'confirm_email'
-    | 'password'
-    | 'confirm_password'
-    | 'username'
-  >('text');
+  type = input<inputType>('text');
   typeNormalize = computed(() => {
     switch (this.type()) {
       case 'username':
@@ -105,12 +99,10 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   // VALIDATORS
   validator = input<InputValidator>();
   validatorSignal = signal<InputValidator | undefined>(undefined);
-  validatorResult = computed<
-    InputPasswordValidatorStatus | InputEmailValidatorStatus | undefined
-  >(() => {
+  validatorResult = computed<InputValidatorStatus>(() => {
     this.value();
     const validator = this.validatorSignal();
-    if (!validator) return undefined;
+    if (!validator) return { isValid: false };
     validator.isValid(this.value());
     return validator.status;
   });

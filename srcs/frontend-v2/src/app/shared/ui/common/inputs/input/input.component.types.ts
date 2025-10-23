@@ -1,3 +1,11 @@
+export type inputType =
+  | 'text'
+  | 'email'
+  | 'confirm_email'
+  | 'password'
+  | 'confirm_password'
+  | 'username';
+
 export interface InputPasswordValidatorConfig {
   /**
    * Minimum uppercase characters
