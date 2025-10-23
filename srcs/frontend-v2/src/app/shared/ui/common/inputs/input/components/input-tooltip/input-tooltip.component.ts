@@ -13,8 +13,9 @@ import {
   templateUrl: './input-tooltip.component.html',
 })
 export class InputTooltipComponent {
-  // TODO: Use angular overlay to position
-  @HostBinding('class') hostClass = 'fixed -right-[370px]';
+  // TODO: Use angular overlay to position, remove hidden and xl: prefixes when ready
+  @HostBinding('class') hostClass =
+    'hidden xl:block xl:absolute -right-[415px]';
 
   type = input.required<inputType>();
   passwordConfig = input<InputPasswordValidatorConfig>();

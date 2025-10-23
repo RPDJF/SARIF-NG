@@ -11,7 +11,6 @@ import {
   ViewEncapsulation,
 } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { I18nPipe } from '../../../../../core/pipes/i18n/i18n.pipe';
 import { InputTooltipComponent } from './components/input-tooltip/input-tooltip.component';
 import {
   InputConfirmValidator,
@@ -26,7 +25,7 @@ import {
 @Component({
   selector: 'app-input',
   standalone: true,
-  imports: [I18nPipe, InputTooltipComponent],
+  imports: [InputTooltipComponent],
   templateUrl: './input.component.html',
   providers: [
     {
