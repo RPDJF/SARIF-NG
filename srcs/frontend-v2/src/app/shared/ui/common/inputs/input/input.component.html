@@ -3,7 +3,7 @@
   <input
     [class]="
       'text-sm rounded-lg block w-full p-2.5 bg-gray-50 dark:bg-gray-700 border ' +
-      (!valid() && isTriggered()
+      (showRedinput()
         ? 'border-red-500 focus:border-red-500 focus:ring-red-500 \
           dark:border-red-600 dark:focus:ring-red-500 dark:focus:border-red-500'
         : ' border-gray-300 text-gray-900 focus:ring-blue-500 \
@@ -19,37 +19,33 @@
     [required]="required() || required() === ''"
     (focus)="focus.set(true)"
     (blur)="focus.set(false)"
-    [autocomplete]="autocomplete()"
+    [autocomplete]="autocompleteComputed() ? 'on' : 'off'"
   >
 
-  <div
-    class="fixed -right-[370px] text-left bg-background dark:bg-background_dark
-      border border-panel dark:border-panel_dark rounded-xl p-4
-      animate-fade-in-right animate-duration-200"
-    [class.animate-fade-in-right]="!showTooltip()"
-    [class.animate-fade-out-left]="showTooltip()"
-    [class.invisible]="!isTriggered()"
-  >
+  @if (validatorResult(); as validatorResult) {
     <div
-      class="absolute -left-2 rotate-45 my-auto top-0 bottom-0 h-4 w-4
-        bg-background dark:bg-background_dark border-b border-l border-panel
-        dark:border-panel_dark"
-    ></div>
-    <ul>
-      @switch (type()) {
-        @case ('password') {
-          @if (inputPasswordValidatorConfigSignal(); as passwordConfig) {
-            @if (validatorResult(); as passwordValidatorResult) {
+      class="fixed -right-[370px] text-left bg-background
+        dark:bg-background_dark border border-panel dark:border-panel_dark
+        rounded-xl p-4 animate-fade-in-right animate-duration-200"
+      [class.animate-fade-in-right]="!showTooltip()"
+      [class.animate-fade-out-left]="showTooltip()"
+      [class.invisible]="!isTriggered()"
+    >
+      <div
+        class="absolute -left-2 rotate-45 my-auto top-0 bottom-0 h-4 w-4
+          bg-background dark:bg-background_dark border-b border-l border-panel
+          dark:border-panel_dark"
+      ></div>
+      <ul>
+        @switch (type()) {
+          @case ('password') {
+            @if (inputPasswordValidatorConfigSignal(); as passwordConfig) {
               @if (passwordConfig.minCharacters) {
                 <li class="flex gap-x-2 items-center">
                   <span
                     class="rounded-full h-2 w-2"
-                    [class.bg-red-500]="
-                      !$any(passwordValidatorResult).minCharacters
-                    "
-                    [class.bg-green-500]="
-                      $any(passwordValidatorResult).minCharacters
-                    "
+                    [class.bg-red-500]="!$any(validatorResult).minCharacters"
+                    [class.bg-green-500]="$any(validatorResult).minCharacters"
                   ></span>
                   {{ ('passwordStrength.minLength' | translate)() }}
                 </li>
@@ -58,10 +54,8 @@
                 <li class="flex gap-x-2 items-center">
                   <span
                     class="rounded-full h-2 w-2"
-                    [class.bg-red-500]="!$any(passwordValidatorResult).minUpper"
-                    [class.bg-green-500]="
-                      $any(passwordValidatorResult).minUpper
-                    "
+                    [class.bg-red-500]="!$any(validatorResult).minUpper"
+                    [class.bg-green-500]="$any(validatorResult).minUpper"
                   ></span>
                   {{ ('passwordStrength.hasUppercase' | translate)() }}
                 </li>
@@ -70,10 +64,8 @@
                 <li class="flex gap-x-2 items-center">
                   <span
                     class="rounded-full h-2 w-2"
-                    [class.bg-red-500]="!$any(passwordValidatorResult).minLower"
-                    [class.bg-green-500]="
-                      $any(passwordValidatorResult).minLower
-                    "
+                    [class.bg-red-500]="!$any(validatorResult).minLower"
+                    [class.bg-green-500]="$any(validatorResult).minLower"
                   ></span>
                   {{ ('passwordStrength.hasLowercase' | translate)() }}
                 </li>
@@ -82,12 +74,8 @@
                 <li class="flex gap-x-2 items-center">
                   <span
                     class="rounded-full h-2 w-2"
-                    [class.bg-red-500]="
-                      !$any(passwordValidatorResult).minNumber
-                    "
-                    [class.bg-green-500]="
-                      $any(passwordValidatorResult).minNumber
-                    "
+                    [class.bg-red-500]="!$any(validatorResult).minNumber"
+                    [class.bg-green-500]="$any(validatorResult).minNumber"
                   ></span>
                   {{ ('passwordStrength.hasNumber' | translate)() }}
                 </li>
@@ -96,26 +84,21 @@
                 <li class="flex gap-x-2 items-center">
                   <span
                     class="rounded-full h-2 w-2"
-                    [class.bg-red-500]="
-                      !$any(passwordValidatorResult).minSpecial
-                    "
-                    [class.bg-green-500]="
-                      $any(passwordValidatorResult).minSpecial
-                    "
+                    [class.bg-red-500]="!$any(validatorResult).minSpecial"
+                    [class.bg-green-500]="$any(validatorResult).minSpecial"
                   ></span>
                   {{ ('passwordStrength.hasSpecialChar' | translate)() }}
                 </li>
               }
             }
           }
-        }
-        @case ('email') {
-          @if (validatorResult(); as emailValidatorResult) {
+
+          @case ('email') {
             <li class="flex gap-x-2 items-center">
               <span
                 class="rounded-full h-2 w-2"
-                [class.bg-red-500]="!emailValidatorResult.isValid"
-                [class.bg-green-500]="emailValidatorResult.isValid"
+                [class.bg-red-500]="!validatorResult.isValid"
+                [class.bg-green-500]="validatorResult.isValid"
               ></span>
               {{
                 (
@@ -125,8 +108,23 @@
               }}
             </li>
           }
+          @case ('confirm_password') {
+            <li class="flex gap-x-2 items-center">
+              <span
+                class="rounded-full h-2 w-2"
+                [class.bg-red-500]="!validatorResult.isValid"
+                [class.bg-green-500]="validatorResult.isValid"
+              ></span>
+              {{
+                (
+                  'modal.components.auth.register.validation.passwordMismatch'
+                  | translate
+                )()
+              }}
+            </li>
+          }
         }
-      }
-    </ul>
-  </div>
+      </ul>
+    </div>
+  }
 </div>

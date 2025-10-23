@@ -11,6 +11,7 @@
       "
       [(value)]="username"
       name="username"
+      [autocomplete]="false"
       required
     />
     <app-input
@@ -21,6 +22,7 @@
       "
       [(value)]="email"
       name="email"
+      [autocomplete]="false"
       required
     />
     <app-input
@@ -31,16 +33,19 @@
       "
       [(value)]="password"
       name="password"
+      [autocomplete]="false"
       required
     />
     <app-input
       class="w-full"
-      type="password"
+      type="confirm_password"
       [placeholder]="
         ('modal.components.auth.register.confirmPasswordLabel' | translate)()
       "
       [(value)]="confirmPassword"
-      name="password-repeat"
+      [confirmValue]="password()"
+      name="confirm_password"
+      [autocomplete]="false"
       required
     />
     <app-link-button (click)="openLogin.emit()">

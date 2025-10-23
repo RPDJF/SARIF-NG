@@ -13,6 +13,7 @@ import {
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { I18nPipe } from '../../../../../core/pipes/i18n/i18n.pipe';
 import {
+  InputConfirmValidator,
   InputEmailValidator,
   InputEmailValidatorStatus,
   InputPasswordValidator,
@@ -40,8 +41,23 @@ export class InputComponent implements ControlValueAccessor, OnInit {
 
   label = input<string>();
   placeholder = input<string>();
-  type = input<'text' | 'email' | 'password' | 'username'>('text');
+  type = input<
+    | 'text'
+    | 'email'
+    | 'confirm_email'
+    | 'password'
+    | 'confirm_password'
+    | 'username'
+  >('text');
   typeNormalize = computed(() => {
+    switch (this.type()) {
+      case 'username':
+        return 'text';
+      case 'confirm_password':
+        return 'password';
+      case 'confirm_email':
+        return 'email';
+    }
     if (this.type() === 'username') return 'text';
     return this.type();
   });
@@ -49,16 +65,25 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   required = input<boolean | string>();
   disabled = input<boolean>(false);
   disabledSignal = signal<boolean>(false);
-  autocomplete = input(false);
+  autocomplete = input<boolean | undefined>(undefined);
+  autocompleteComputed = computed(() => {
+    const autocomplete = this.autocomplete();
+    if (autocomplete !== undefined) return autocomplete;
+    switch (this.type()) {
+      case 'username':
+      case 'email':
+        return false;
+    }
+    return true;
+  });
+  confirmValue = input<string | undefined>(undefined);
   value = model<string>('');
   validChange = output<boolean>();
 
+  /* other signals -- */
   isTriggered = signal(false);
 
-  focus = model(false);
-
-  /* other signals -- */
-  triggeredOnce = signal(false);
+  focus = signal(false);
 
   /* -- VALIDATORS -- */
 
@@ -93,16 +118,33 @@ export class InputComponent implements ControlValueAccessor, OnInit {
   valid = computed(() => {
     const validator = this.validatorSignal();
     if (!validator) return true;
-    const value = this.value();
 
+    const value = this.value();
     if (this.required() && !value.trim()) return false;
-    const isValid = validator.isValid(this.value());
-    console.log(isValid);
-    return isValid;
+    return this.confirmValue()
+      ? validator.isValid(value, this.confirmValue())
+      : validator.isValid(value);
+  });
+
+  isTriggeredComputed = computed(() => {
+    const type = this.type();
+    if (!this.isTriggered())
+      return type === 'confirm_email' || type === 'confirm_password';
+    return true;
+  });
+
+  showRedinput = computed(() => {
+    return this.isTriggeredComputed() && !this.valid();
   });
 
   showTooltip = computed(() => {
-    if (!this.isTriggered()) return true;
+    const type = this.type();
+    if (
+      !this.isTriggeredComputed() &&
+      type !== 'confirm_email' &&
+      type !== 'confirm_password'
+    )
+      return true;
     return this.valid() || !this.focus();
   });
 
@@ -114,6 +156,9 @@ export class InputComponent implements ControlValueAccessor, OnInit {
         return new InputEmailValidator();
       case 'password':
         return new InputPasswordValidator();
+      case 'confirm_email':
+      case 'confirm_password':
+        return new InputConfirmValidator();
     }
     return undefined;
   }

@@ -39,7 +39,7 @@ export interface InputPasswordValidatorStatus extends InputValidatorStatus {
 }
 
 export abstract class InputValidator {
-  abstract isValid(value: string): boolean;
+  abstract isValid(value: string, confirm?: string): boolean;
   abstract get status(): InputValidatorStatus;
 }
 
@@ -70,14 +70,12 @@ export class InputPasswordValidator extends InputValidator {
       password.length -
         password.replace(/[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/g, '').length >=
       this.#config.minSpecial;
-    console.log(this.#status);
-    let rslt =
+    return (this.#status.isValid =
       this.#status.minCharacters &&
       this.#status.minUpper &&
       this.#status.minLower &&
       this.#status.minNumber &&
-      this.#status.minSpecial;
-    return (this.#status.isValid = rslt);
+      this.#status.minSpecial);
   }
 
   constructor(config?: Partial<InputPasswordValidatorConfig>) {
@@ -97,6 +95,27 @@ export class InputPasswordValidator extends InputValidator {
   }
 }
 
+export type InputConfirmValidatorStatus = InputValidatorStatus;
+
+export class InputConfirmValidator extends InputValidator {
+  #status: InputConfirmValidatorStatus = {
+    isValid: false,
+  };
+
+  override isValid(value: string, confirm: string): boolean {
+    if (!value && !confirm) return true;
+    return (this.#status.isValid = value === confirm);
+  }
+
+  constructor() {
+    super();
+  }
+
+  override get status(): InputEmailValidatorStatus {
+    return { ...this.#status };
+  }
+}
+
 export type InputEmailValidatorStatus = InputValidatorStatus;
 
 export class InputEmailValidator extends InputValidator {
@@ -105,15 +124,13 @@ export class InputEmailValidator extends InputValidator {
   };
 
   override isValid(email: string): boolean {
-    this.#status.isValid = Boolean(
+    return (this.#status.isValid = Boolean(
       email
         .toLowerCase()
         .match(
           /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
         ),
-    );
-
-    return this.#status.isValid;
+    ));
   }
 
   constructor() {
