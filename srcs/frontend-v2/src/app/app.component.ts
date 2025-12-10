@@ -1,7 +1,5 @@
-import { DOCUMENT } from '@angular/common';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { Store } from '@ngxs/store';
 import { FriendsPanelComponent } from './shared/ui/sidebar/panels/friends-panel/friends-panel.component';
 import { PongPanelComponent } from './shared/ui/sidebar/panels/pong-panel/pong-panel.component';
 import { SettingsPanelComponent } from './shared/ui/sidebar/panels/settings-panel/settings-panel.component';
@@ -15,10 +13,7 @@ import { TopbarComponent } from './shared/ui/topbar/topbar.component';
   imports: [RouterOutlet, SidebarComponent, TopbarComponent],
   templateUrl: './app.component.html',
 })
-export class AppComponent implements OnInit {
-  #document = inject(DOCUMENT);
-  readonly #store = inject(Store);
-
+export class AppComponent {
   sidebarConfig: SidebarConfig = [
     {
       name: 'navbar.home.label',
@@ -52,8 +47,4 @@ export class AppComponent implements OnInit {
       bottom: true,
     },
   ];
-
-  ngOnInit(): void {
-    this.#document.body.classList.add('dark');
-  }
 }

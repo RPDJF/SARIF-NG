@@ -1,6 +1,7 @@
 import { APP_INITIALIZER, ApplicationConfig, inject } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
+import { DOCUMENT } from '@angular/common';
 import { provideHttpClient, withFetch } from '@angular/common/http';
 import { withNgxsReduxDevtoolsPlugin } from '@ngxs/devtools-plugin';
 import { provideStore } from '@ngxs/store';
@@ -15,6 +16,9 @@ import { I18nState } from './core/state/i18n/i18n.state';
 import { UserState } from './core/state/user/user.state';
 
 function hydrateFactory() {
+  // TODO: create a propoer service for dark mod handling
+  const document = inject(DOCUMENT);
+  document.body.classList.add('dark');
   const hydrationServices: Array<HydratableService> = [
     inject(UserService),
     inject(I18nService),
