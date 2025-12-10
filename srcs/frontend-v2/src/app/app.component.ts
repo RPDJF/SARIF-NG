@@ -2,7 +2,6 @@ import { DOCUMENT } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { Store } from '@ngxs/store';
-import { UserFetchMe } from './core/state/user/user.actions';
 import { FriendsPanelComponent } from './shared/ui/sidebar/panels/friends-panel/friends-panel.component';
 import { PongPanelComponent } from './shared/ui/sidebar/panels/pong-panel/pong-panel.component';
 import { SettingsPanelComponent } from './shared/ui/sidebar/panels/settings-panel/settings-panel.component';
@@ -56,7 +55,5 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.#document.body.classList.add('dark');
-    if (localStorage.getItem('isLogged'))
-      this.#store.dispatch(new UserFetchMe()).subscribe();
   }
 }

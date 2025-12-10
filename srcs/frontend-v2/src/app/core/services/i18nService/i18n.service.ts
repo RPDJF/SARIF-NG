@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { computed, inject, Injectable } from '@angular/core';
 import { Store } from '@ngxs/store';
+import { Observable } from 'rxjs';
 import { I18nUpdateLang } from '../../state/i18n/i18n.actions';
 import { I18nState } from '../../state/i18n/i18n.state';
 import {
@@ -8,24 +9,23 @@ import {
   LangCode,
   TranslationKey,
 } from '../../state/i18n/i18n.state.types';
+import { HydratableService } from '../hydratableService/hydratableService';
 
 @Injectable({
   providedIn: 'root',
 })
-export class I18nService {
+export class I18nService extends HydratableService {
   #httpClient = inject(HttpClient);
 
   readonly #store = inject(Store);
 
-  constructor() {}
-
-  init() {
+  hydrateService(): Observable<void> {
     const LangCode =
       typeof window !== 'undefined'
         ? ((localStorage.getItem('lang') as LangCode) ?? 'english')
         : 'english';
 
-    this.#store.dispatch(
+    return this.#store.dispatch(
       new I18nUpdateLang({
         LangCode,
         skipStorage: true,
