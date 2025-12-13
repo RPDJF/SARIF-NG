@@ -51,21 +51,14 @@
     <app-link-button (click)="openLogin.emit()">
       {{ ('modal.components.auth.register.link.loginPanel' | translate)() }}
     </app-link-button>
-    <button
-      [disabled]="isLoading()"
-      class="min-w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4
-        focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm
-        w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600
-        dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-      type="submit"
-    >
+    <app-button class="w-full" [disabled]="isLoading()" type="submit">
       {{ ('modal.components.auth.register.registerButton' | translate)() }}
-    </button>
+    </app-button>
 
     <!-- TODO: Support remember me
     <label>
       <input type="checkbox" checked="checked" name="remember" />
-      {{ ('Remember me' | translate)() }}
+      {{ ('Se souvenir de moi' | translate)() }}
     </label>
     -->
   </form>

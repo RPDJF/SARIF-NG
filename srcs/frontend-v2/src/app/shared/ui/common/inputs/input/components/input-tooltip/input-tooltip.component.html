@@ -18,7 +18,15 @@
                 [class.bg-red-500]="!$any(validatorResult).minCharacters"
                 [class.bg-green-500]="$any(validatorResult).minCharacters"
               ></span>
-              {{ ('passwordStrength.minLength' | translate)() }}
+              {{
+                (
+                  'Au moins {num} caractères'
+                  | translate
+                    : {
+                        num: passwordConfig.minCharacters,
+                      }
+                )()
+              }}
             </li>
           }
           @if (passwordConfig.minUpper) {
@@ -28,7 +36,12 @@
                 [class.bg-red-500]="!$any(validatorResult).minUpper"
                 [class.bg-green-500]="$any(validatorResult).minUpper"
               ></span>
-              {{ ('passwordStrength.hasUppercase' | translate)() }}
+              {{
+                (
+                  'Au moins {num} majuscules'
+                  | translate: { num: passwordConfig.minUpper }
+                )()
+              }}
             </li>
           }
           @if (passwordConfig.minLower) {
@@ -38,7 +51,12 @@
                 [class.bg-red-500]="!$any(validatorResult).minLower"
                 [class.bg-green-500]="$any(validatorResult).minLower"
               ></span>
-              {{ ('passwordStrength.hasLowercase' | translate)() }}
+              {{
+                (
+                  'Au moins {num} minuscules'
+                  | translate: { num: passwordConfig.minLower }
+                )()
+              }}
             </li>
           }
           @if (passwordConfig.minNumber) {
@@ -48,7 +66,12 @@
                 [class.bg-red-500]="!$any(validatorResult).minNumber"
                 [class.bg-green-500]="$any(validatorResult).minNumber"
               ></span>
-              {{ ('passwordStrength.hasNumber' | translate)() }}
+              {{
+                (
+                  'Au moins {num} numéros'
+                  | translate: { num: passwordConfig.minNumber }
+                )()
+              }}
             </li>
           }
           @if (passwordConfig.minSpecial) {
@@ -58,7 +81,12 @@
                 [class.bg-red-500]="!$any(validatorResult).minSpecial"
                 [class.bg-green-500]="$any(validatorResult).minSpecial"
               ></span>
-              {{ ('passwordStrength.hasSpecialChar' | translate)() }}
+              {{
+                (
+                  'Au moins {num} caractères spéciaux (!@#$%)'
+                  | translate: { num: passwordConfig.minSpecial }
+                )()
+              }}
             </li>
           }
         }

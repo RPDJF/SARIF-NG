@@ -1,14 +1,17 @@
+import { NgClass } from '@angular/common';
 import { Component, input, output } from '@angular/core';
 
 @Component({
   selector: 'app-button',
   standalone: true,
-  imports: [],
+  imports: [NgClass],
   templateUrl: './button.component.html',
 })
 export class ButtonComponent {
-  public icon = input<string>();
-
-  public href = input();
-  public click = output();
+  icon = input<string>();
+  href = input();
+  style = input<'primary' | 'secondary'>('primary');
+  type = input<string>();
+  disabled = input<boolean>(false);
+  click = output();
 }

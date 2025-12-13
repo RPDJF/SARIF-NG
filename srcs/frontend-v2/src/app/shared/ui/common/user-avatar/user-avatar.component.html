@@ -1,7 +1,12 @@
+<!-- TODO: Fix backend to always return Avatar -->
 <a class="select-none outline-none"
   ><img
     alt="User Avatar"
-    class="select-none border-2 rounded-full object-cover min-w-10 min-h-10 w-10
-      h-10 bg-white"
-    [src]="user().Avatar"
+    class="select-none border-2 rounded-full object-cover bg-white"
+    draggable="false"
+    [ngClass]="{
+      'h-10 w-10 min-h-10 min-w-10': size() === 'small',
+      'h-40 w-40 min-h-40 min-w-40': size() === 'large',
+    }"
+    [src]="user().Avatar || 'api/users/' + user().PlayerID + '/picture'"
 /></a>

@@ -3,7 +3,7 @@ import { User } from '../../state/user/user.state.types';
 export interface UserStats {
   isPrivate: boolean;
   lostMatches: number;
-  winMatches: number;
+  wonMatches: number;
   totalMatches: number;
   user: Pick<
     User,

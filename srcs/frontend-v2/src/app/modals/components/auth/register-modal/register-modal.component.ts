@@ -10,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { I18nPipe } from '../../../../core/pipes/i18n/i18n.pipe';
 import { AuthentificationServiceRegisterProp } from '../../../../core/services/authentificationService/authentification.service.types';
 import { GoogleSigninButtonComponent } from '../../../../shared/ui/auth/google-signin-button/google-signin-button.component';
+import { ButtonComponent } from '../../../../shared/ui/common/buttons/button/button.component';
 import { LinkButtonComponent } from '../../../../shared/ui/common/buttons/link-button/link-button.component';
 import { InputComponent } from '../../../../shared/ui/common/inputs/input/input.component';
 import { ModalChildComponent } from '../../../modal-child/modal-child.component';
@@ -23,6 +24,7 @@ import { ModalChildComponent } from '../../../modal-child/modal-child.component'
     LinkButtonComponent,
     FormsModule,
     GoogleSigninButtonComponent,
+    ButtonComponent,
   ],
   templateUrl: './register-modal.component.html',
 })
@@ -34,7 +36,7 @@ export class RegisterModalComponent extends ModalChildComponent {
   username = signal('');
   password = signal('');
   confirmPassword = signal('');
-  isLoading = signal('');
+  isLoading = signal(false);
   openLogin = output();
   oauth2Register = output();
 

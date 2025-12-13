@@ -37,17 +37,17 @@
         @if (openDropwdownMenu()) {
           <app-dropdown-menu (close)="openDropwdownMenu.set(false)">
             <app-dropdown-menu-button
-              ><ng-icon name="lucideUserRound" />Mon
-              profil</app-dropdown-menu-button
-            >
+              ><ng-icon name="lucideUserRound" />
+              {{ ('Voir mon historique' | translate)() }}
+            </app-dropdown-menu-button>
             <app-dropdown-menu-button
-              ><ng-icon name="lucideUserRoundPen" />Modifier mon
-              profil</app-dropdown-menu-button
-            >
+              ><ng-icon name="lucideUserRoundPen" />
+              {{ ('Modifier mon profil' | translate)() }}
+            </app-dropdown-menu-button>
             <app-dropdown-menu-button (click)="logout()"
-              ><ng-icon name="lucideLogOut" /> Se
-              déconnecter</app-dropdown-menu-button
-            >
+              ><ng-icon name="lucideLogOut" />
+              {{ ('Se déconnecter' | translate)() }}
+            </app-dropdown-menu-button>
           </app-dropdown-menu>
         }
       </div>

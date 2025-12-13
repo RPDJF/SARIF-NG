@@ -50,9 +50,6 @@ export class UserState {
           ctx.patchState({ me: user });
           localStorage.setItem('isLogged', 'true');
         },
-        error: () => {
-          localStorage.removeItem('isLogged');
-        },
       }),
     );
   }

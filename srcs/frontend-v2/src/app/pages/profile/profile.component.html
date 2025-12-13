@@ -1,1 +1,53 @@
-<p>profile works!</p>
+@if (userStats(); as userStats) {
+  <div
+    class="mt-32 mx-auto bg-panel dark:bg-[#ffffff0f] rounded-xl w-[500px] p-12
+      flex flex-col justify-center items-center gap-y-8 shadow-lg border
+      border-solid border-[#ffffff1f] backdrop-blur-md"
+  >
+    <div class="flex flex-col justify-center items-center">
+      <app-user-avatar [user]="user()!" size="large" />
+      <p class="text-3xl font-bold dark:text-white">
+        {{ userStats.user.DisplayName }}
+      </p>
+      @if (isSelfProfile()) {
+        <app-button class="mt-6" [style]="'secondary'">
+          <div
+            class="flex flex-row-reverse gap-x-2 justify-center items-center"
+          >
+            {{ ('Modifier mon profil' | translate)() }}
+            <ng-icon class="ml-auto h-0" name="lucideUserRoundPen" />
+          </div>
+        </app-button>
+      }
+    </div>
+    <div class="flex flex-col gap-y-8">
+      <div class="flex flex-col justify-center items-center">
+        <p class="text-3xl font-bold">{{ userStats.totalMatches }}</p>
+        <p>{{ ('Matchs au total' | translate)() }}</p>
+      </div>
+      <div class="flex gap-x-4">
+        <div
+          class="flex flex-col justify-center items-center px-14 py-3 rounded-xl
+            border border-solid bg-[#ffffff0f] border-[#ffffff1a]"
+        >
+          <p class="text-2xl font-bold">{{ userStats.wonMatches }}</p>
+          <p>{{ ('Gagnés' | translate)() }}</p>
+        </div>
+        <div
+          class="flex flex-col justify-center items-center px-14 py-3 rounded-xl
+            border border-solid bg-[#ffffff0f] border-[#ffffff1a]"
+        >
+          <p class="text-2xl font-bold">{{ userStats.lostMatches }}</p>
+          <p>{{ ('Perdus' | translate)() }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="w-full">
+      <app-button>
+        <p>{{ ("Voir l'historique" | translate)() }}</p>
+      </app-button>
+    </div>
+  </div>
+} @else {
+  loading
+}

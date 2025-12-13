@@ -1,9 +1,15 @@
 @if (href()) {
   <a
-    class="bg-white dark:bg-background_dark hover:animate-scale
-      hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
-      font-semibold flex align-middle items-center gap-x-3 h-[40px] w-full"
+    class="px-4 py-3 gap-x-3 w-full rounded-xl font-semibold flex items-center
+      justify-center hover:brightness-110 hover:shadow-lg duration-200
+      text-white"
     [href]="href()"
+    [ngClass]="{
+      'bg-[linear-gradient(135deg,#7b5cff,#5245d4)] hover:shadow-[#785aff66]':
+        style() === 'primary',
+      'bg-[#ffffff0f] hover:shadow-[#35353566]': style() === 'secondary',
+    }"
+    [type]="type()"
   >
     @if (icon()) {
       <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
@@ -12,13 +18,19 @@
   ></a>
 } @else {
   <button
-    class="bg-white dark:bg-background_dark hover:animate-scale
-      hover:animate-duration-100 cursor-pointer rounded-lg p-3 text-xs
-      font-semibold flex align-middle items-center gap-x-3 h-[40px] w-full"
+    class="px-4 py-3 gap-x-3 w-full rounded-xl font-semibold flex items-center
+      justify-center hover:brightness-110 hover:shadow-lg duration-200
+      text-white"
+    [ngClass]="{
+      'bg-[linear-gradient(135deg,#7b5cff,#5245d4)] hover:shadow-[#785aff66]':
+        style() === 'primary',
+      'bg-[#ffffff0f] hover:shadow-[#35353566]': style() === 'secondary',
+    }"
+    [type]="type()"
   >
     @if (icon()) {
       <img class="select-none h-4 w-4 dark:invert" [src]="icon()" />
     }
-    <ng-content></ng-content>
+    <ng-content class="text-3xl"></ng-content>
   </button>
 }

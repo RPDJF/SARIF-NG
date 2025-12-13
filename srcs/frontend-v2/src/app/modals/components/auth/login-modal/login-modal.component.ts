@@ -2,6 +2,7 @@ import { Component, input, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { I18nPipe } from '../../../../core/pipes/i18n/i18n.pipe';
 import { GoogleSigninButtonComponent } from '../../../../shared/ui/auth/google-signin-button/google-signin-button.component';
+import { ButtonComponent } from '../../../../shared/ui/common/buttons/button/button.component';
 import { LinkButtonComponent } from '../../../../shared/ui/common/buttons/link-button/link-button.component';
 import { InputComponent } from '../../../../shared/ui/common/inputs/input/input.component';
 import { ModalChildComponent } from '../../../modal-child/modal-child.component';
@@ -16,6 +17,7 @@ import { LoginModalResult } from './login-modal.component.types';
     I18nPipe,
     LinkButtonComponent,
     GoogleSigninButtonComponent,
+    ButtonComponent,
   ],
   templateUrl: './login-modal.component.html',
 })
