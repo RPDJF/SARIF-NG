@@ -39,7 +39,9 @@ export class I18nService extends HydratableService {
 
   #sanityCheck(key: TranslationKey, value: string) {
     if (!value) {
-      console.error(`❌ missing translation for ${key} !`);
+      console.error(
+        `❌ missing translation for "${key}" in ${this.#store.selectSnapshot(I18nState.getLang)} !`,
+      );
       return `❌ !${key}`;
     }
     return value;
@@ -54,7 +56,7 @@ export class I18nService extends HydratableService {
         key,
         this.#store
           .selectSignal(I18nState.getI18n)()
-          [key]?.replaceAll('\n', '<br>') || `❌ !${key}`,
+          [key]?.replaceAll('\n', '<br>'),
       );
 
       if (replace)
