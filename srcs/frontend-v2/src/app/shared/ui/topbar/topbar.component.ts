@@ -1,5 +1,12 @@
 import { Component, inject, signal } from '@angular/core';
+import { NgIcon, provideIcons } from '@ng-icons/core';
+import {
+  lucideLogOut,
+  lucideUserRound,
+  lucideUserRoundPen,
+} from '@ng-icons/lucide';
 import { Store } from '@ngxs/store';
+import { I18nPipe } from '../../../core/pipes/i18n/i18n.pipe';
 import { I18nService } from '../../../core/services/i18nService/i18n.service';
 import { ModalService } from '../../../core/services/modalService/modal.service';
 import { NotificationService } from '../../../core/services/notificationService/notification.service';
@@ -21,14 +28,12 @@ import { UserState } from '../../../core/state/user/user.state';
 import { LoginModalComponent } from '../../../modals/components/auth/login-modal/login-modal.component';
 import { MfaModalComponent } from '../../../modals/components/auth/mfa-modal/mfa-modal.component';
 import { RegisterModalComponent } from '../../../modals/components/auth/register-modal/register-modal.component';
+import { EditProfileModalComponent } from '../../../modals/components/profile/edit-profile-modal/edit-profile-modal.component';
 import { ButtonComponent } from '../common/buttons/button/button.component';
+import { DropdownMenuButtonComponent } from '../common/dropdown-menu/components/dropdown-menu-button/dropdown-menu-button.component';
+import { DropdownMenuComponent } from '../common/dropdown-menu/dropdown-menu.component';
 import { UserAvatarComponent } from '../common/user-avatar/user-avatar.component';
 import { langButton } from './topbar.component.types';
-import { DropdownMenuComponent } from '../common/dropdown-menu/dropdown-menu.component';
-import { I18nPipe } from '../../../core/pipes/i18n/i18n.pipe';
-import { DropdownMenuButtonComponent } from '../common/dropdown-menu/components/dropdown-menu-button/dropdown-menu-button.component';
-import { NgIcon, provideIcons } from '@ng-icons/core';
-import { lucideLogOut, lucideUserRound, lucideUserRoundPen } from '@ng-icons/lucide';
 
 @Component({
   selector: 'app-topbar',
@@ -42,7 +47,9 @@ import { lucideLogOut, lucideUserRound, lucideUserRoundPen } from '@ng-icons/luc
     NgIcon,
   ],
   templateUrl: './topbar.component.html',
-  viewProviders: [provideIcons({lucideUserRound, lucideUserRoundPen, lucideLogOut})]
+  viewProviders: [
+    provideIcons({ lucideUserRound, lucideUserRoundPen, lucideLogOut }),
+  ],
 })
 export class TopbarComponent {
   readonly #store = inject(Store);
@@ -73,7 +80,7 @@ export class TopbarComponent {
     },
   ];
 
-  public onLangChange(LangCode: LangCode) {
+  onLangChange(LangCode: LangCode) {
     this.#store
       .dispatch(
         new I18nUpdateLang({
@@ -83,7 +90,7 @@ export class TopbarComponent {
       .subscribe();
   }
 
-  public showRegisterModal() {
+  showRegisterModal() {
     const modal = this.#modalService.open({
       component: RegisterModalComponent,
       title: 'modal.components.auth.register.panelTitle',
@@ -169,7 +176,7 @@ export class TopbarComponent {
     });
   }
 
-  public showLoginModal() {
+  showLoginModal() {
     const modal = this.#modalService.open({
       component: LoginModalComponent,
       title: 'modal.components.auth.login.panelTitle',
@@ -181,7 +188,7 @@ export class TopbarComponent {
 
     modal.instance.submit.subscribe((value) => {
       this.#store.dispatch(new AuthentificationLogin(value)).subscribe({
-        complete: () => this.show2faModal(),
+        complete: () => this.#show2faModal(),
         error: () => {
           const loginApiStatus = this.#store.selectSnapshot(
             AuthentificationState.getLoginApiStatus,
@@ -252,7 +259,7 @@ export class TopbarComponent {
     });
   }
 
-  private show2faModal() {
+  #show2faModal() {
     // sanity check
     const apiRslt = this.#store.selectSnapshot(
       AuthentificationState.getLoginApiStatus,
@@ -307,7 +314,16 @@ export class TopbarComponent {
     });
   }
 
-  public logout() {
+  logout() {
     this.#store.dispatch(new UserLogout()).subscribe();
+  }
+
+  onEditProfileClick() {
+    this.#modalService.open({
+      component: EditProfileModalComponent,
+      data: {
+        user: this.userProfile,
+      },
+    });
   }
 }

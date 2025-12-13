@@ -1,12 +1,31 @@
 <!-- TODO: Fix backend to always return Avatar -->
-<a class="select-none outline-none"
+<a class="select-none outline-none relative block"
   ><img
     alt="User Avatar"
     class="select-none border-2 rounded-full object-cover bg-white"
     draggable="false"
     [ngClass]="{
       'h-10 w-10 min-h-10 min-w-10': size() === 'small',
+      'h-32 w-32 min-h-32 min-w-32': size() === 'medium',
       'h-40 w-40 min-h-40 min-w-40': size() === 'large',
     }"
     [src]="user().Avatar || 'api/users/' + user().PlayerID + '/picture'"
-/></a>
+  />
+  @if (canUpdate()) {
+    <button
+      class="duration-200 opacity-0 hover:opacity-100 absolute top-0 left-0
+        bottom-0 right-0 rounded-full overflow-hidden"
+    >
+      <div
+        class="bg-black absolute bottom-0 left-0 top-0 right-0 opacity-50
+          rounded-full"
+      ></div>
+      <div class="absolute left-0 right-0 top-0 bottom-0 p-8 rounded-full">
+        <img
+          class="invert w-full h-full"
+          src="assets/ui/photo-upload-svgrepo-com.svg"
+        />
+      </div>
+    </button>
+  }
+</a>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, output } from '@angular/core';
 
 @Component({
   selector: 'app-dropdown-menu-button',
@@ -9,4 +9,6 @@ import { Component } from '@angular/core';
     class: 'w-full',
   },
 })
-export class DropdownMenuButtonComponent {}
+export class DropdownMenuButtonComponent {
+  click = output<void>();
+}

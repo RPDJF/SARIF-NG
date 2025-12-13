@@ -6,8 +6,8 @@
     [href]="href()"
     [ngClass]="{
       'bg-[linear-gradient(135deg,#7b5cff,#5245d4)] hover:shadow-[#785aff66]':
-        style() === 'primary',
-      'bg-[#ffffff0f] hover:shadow-[#35353566]': style() === 'secondary',
+        stylePreset() === 'primary',
+      'bg-[#ffffff0f] hover:shadow-[#35353566]': stylePreset() === 'secondary',
     }"
     [type]="type()"
   >
@@ -23,8 +23,8 @@
       text-white"
     [ngClass]="{
       'bg-[linear-gradient(135deg,#7b5cff,#5245d4)] hover:shadow-[#785aff66]':
-        style() === 'primary',
-      'bg-[#ffffff0f] hover:shadow-[#35353566]': style() === 'secondary',
+        stylePreset() === 'primary',
+      'bg-[#ffffff0f] hover:shadow-[#35353566]': stylePreset() === 'secondary',
     }"
     [type]="type()"
   >

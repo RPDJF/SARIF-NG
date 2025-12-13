@@ -1,16 +1,16 @@
 @if (userStats(); as userStats) {
-  <div
-    class="mt-32 mx-auto bg-panel dark:bg-[#ffffff0f] rounded-xl w-[500px] p-12
-      flex flex-col justify-center items-center gap-y-8 shadow-lg border
-      border-solid border-[#ffffff1f] backdrop-blur-md"
-  >
+  <app-main-box class="w-[500px] mt-32 mx-auto">
     <div class="flex flex-col justify-center items-center">
       <app-user-avatar [user]="user()!" size="large" />
       <p class="text-3xl font-bold dark:text-white">
         {{ userStats.user.DisplayName }}
       </p>
       @if (isSelfProfile()) {
-        <app-button class="mt-6" [style]="'secondary'">
+        <app-button
+          class="mt-6"
+          [stylePreset]="'secondary'"
+          (click)="onEditProfileClick()"
+        >
           <div
             class="flex flex-row-reverse gap-x-2 justify-center items-center"
           >
@@ -47,7 +47,7 @@
         <p>{{ ("Voir l'historique" | translate)() }}</p>
       </app-button>
     </div>
-  </div>
+  </app-main-box>
 } @else {
   loading
 }

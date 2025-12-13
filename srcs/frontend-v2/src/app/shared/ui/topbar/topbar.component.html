@@ -1,6 +1,6 @@
 <header
   class="fixed top-0 left-0 right-0 min-h-16 h-16 bg-primary
-    dark:bg-primary_dark py-2 px-8 flex justify-between align-middle"
+    dark:bg-primary_dark py-2 px-8 flex justify-between align-middle z-50"
 >
   <div class="flex justify-center items-center gap-4">
     <img src="" alt="logo" />
@@ -40,7 +40,7 @@
               ><ng-icon name="lucideUserRound" />
               {{ ('Voir mon historique' | translate)() }}
             </app-dropdown-menu-button>
-            <app-dropdown-menu-button
+            <app-dropdown-menu-button (click)="onEditProfileClick()"
               ><ng-icon name="lucideUserRoundPen" />
               {{ ('Modifier mon profil' | translate)() }}
             </app-dropdown-menu-button>

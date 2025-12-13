@@ -1,0 +1,79 @@
+<div class="flex flex-col gap-y-8 justify-center items-center">
+  <app-user-avatar [user]="user()" size="medium" [canUpdate]="true" />
+  <div>
+    <hr class="w-full border-gray-600 my-4" />
+    <h2 class="text-lg font-semibold text-gray-800 dark:text-gray-200 mb-2">
+      {{ ('Modifier mon profil' | translate)() }}
+    </h2>
+    <form
+      class="w-80 text-black dark:text-white flex flex-col gap-y-4 items-center"
+      (ngSubmit)="onSubmitButtonClick()"
+    >
+      <app-input
+        class="w-full"
+        type="text"
+        [placeholder]="
+          ('modal.components.auth.login.usernameLabel' | translate)()
+        "
+        [(value)]="username"
+        name="username"
+        [autocomplete]="false"
+        required
+      />
+      <app-input
+        class="w-full"
+        type="email"
+        [placeholder]="
+          ('modal.components.auth.register.emailLabel' | translate)()
+        "
+        [(value)]="email"
+        name="email"
+        [autocomplete]="false"
+        required
+      />
+      <app-input
+        class="w-full"
+        type="password"
+        [placeholder]="
+          ('modal.components.auth.login.passwordLabel' | translate)()
+        "
+        [(value)]="password"
+        name="password"
+        [autocomplete]="false"
+        required
+      />
+      <app-input
+        class="w-full"
+        type="confirm_password"
+        [placeholder]="
+          ('modal.components.auth.register.confirmPasswordLabel' | translate)()
+        "
+        [(value)]="confirmPassword"
+        [confirmValue]="password()"
+        name="confirm_password"
+        [autocomplete]="false"
+        required
+      />
+      <div class="flex gap-x-4 w-full">
+        <app-button
+          stylePreset="secondary"
+          class="w-full"
+          [disabled]="isLoading()"
+          type="submit"
+          (click)="close.emit()"
+        >
+          {{ ('Annuler' | translate)() }}
+        </app-button>
+        <app-button class="w-full" [disabled]="isLoading()" type="submit">
+          {{ ('Enregistrer' | translate)() }}
+        </app-button>
+      </div>
+
+      <!-- TODO: Support remember me
+    <label>
+      <input type="checkbox" checked="checked" name="remember" />
+      {{ ('Se souvenir de moi' | translate)() }}
+    </label>
+    --></form>
+  </div>
+</div>

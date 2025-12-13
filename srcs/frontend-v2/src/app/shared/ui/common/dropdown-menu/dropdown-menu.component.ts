@@ -6,11 +6,12 @@ import {
   inject,
   output,
 } from '@angular/core';
+import { MainBoxComponent } from '../boxes/main-box/main-box.component';
 
 @Component({
   selector: 'app-dropdown-menu',
   standalone: true,
-  imports: [],
+  imports: [MainBoxComponent],
   templateUrl: './dropdown-menu.component.html',
 })
 export class DropdownMenuComponent implements AfterViewChecked {

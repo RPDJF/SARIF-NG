@@ -9,7 +9,8 @@ import { User } from '../../../../core/state/user/user.state.types';
   templateUrl: './user-avatar.component.html',
 })
 export class UserAvatarComponent {
-  public user = input.required<User>();
-  public size = input<'small' | 'large'>('small');
-  public redirect = input<boolean>(false);
+  user = input.required<User>();
+  size = input<'small' | 'medium' | 'large'>('small');
+  redirect = input<boolean>(false);
+  canUpdate = input<boolean>(false);
 }

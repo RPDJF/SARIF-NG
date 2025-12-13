@@ -171,5 +171,7 @@
   "Au moins {num} majuscules": "Au moins {num} majuscules",
   "Au moins {num} minuscules": "Au moins {num} minuscules",
   "Au moins {num} numéros": "Au moins {num} numéros",
-  "Au moins {num} caractères spéciaux (!@#$%)": "Au moins {num} caractères spéciaux (!@#$%)"
+  "Au moins {num} caractères spéciaux (!@#$%)": "Au moins {num} caractères spéciaux (!@#$%)",
+  "Annuler": "Annuler",
+  "Enregistrer": "Enregistrer"
 }

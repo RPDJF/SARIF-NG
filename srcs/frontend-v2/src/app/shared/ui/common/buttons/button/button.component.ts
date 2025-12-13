@@ -10,7 +10,7 @@ import { Component, input, output } from '@angular/core';
 export class ButtonComponent {
   icon = input<string>();
   href = input();
-  style = input<'primary' | 'secondary'>('primary');
+  stylePreset = input<'primary' | 'secondary'>('primary');
   type = input<string>();
   disabled = input<boolean>(false);
   click = output();
