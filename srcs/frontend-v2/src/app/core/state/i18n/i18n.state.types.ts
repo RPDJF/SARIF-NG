@@ -1,7 +1,7 @@
-import english from '../../../../assets/i18n/english.json';
+import french from '../../../../assets/i18n/french.json';
 
 export type LangCode = 'english' | 'french' | 'portuguese' | 'russian';
-export type TranslationKey = keyof typeof english;
+export type TranslationKey = keyof typeof french;
 export type I18nCollection = Record<TranslationKey, string>;
 
 export interface I18nUpdateLangPayload {

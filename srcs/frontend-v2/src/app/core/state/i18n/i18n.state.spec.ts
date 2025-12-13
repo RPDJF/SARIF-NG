@@ -16,7 +16,7 @@ const extractKeys = (obj: any) => {
   return keys;
 };
 
-const baseKeys = extractKeys(english);
+const baseKeys = extractKeys(french);
 
 let state: Signal<I18nStateModel>;
 
@@ -31,17 +31,17 @@ describe('I18n store', () => {
     state = store.selectSignal(I18nState.getState);
   });
 
-  it('english should match english.json', () => {
+  it('french should match french.json', () => {
     const expected: I18nStateModel = {
-      lang: 'english',
-      i18n: english,
+      lang: 'french',
+      i18n: french,
     };
     const actual = store.selectSnapshot(I18nState.getState);
     expect(actual).toEqual(expected);
   });
 
-  it('no missing french translations', () => {
-    expect(extractKeys(french)).toEqual(baseKeys);
+  it('no missing english translations', () => {
+    expect(extractKeys(english)).toEqual(baseKeys);
   });
 
   it('no missing portuguese translations', () => {

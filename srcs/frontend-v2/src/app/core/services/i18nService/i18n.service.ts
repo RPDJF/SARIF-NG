@@ -22,8 +22,8 @@ export class I18nService extends HydratableService {
   hydrateService(): Observable<void> {
     const LangCode =
       typeof window !== 'undefined'
-        ? ((localStorage.getItem('lang') as LangCode) ?? 'english')
-        : 'english';
+        ? ((localStorage.getItem('lang') as LangCode) ?? 'french')
+        : 'french';
 
     return this.#store.dispatch(
       new I18nUpdateLang({
@@ -45,18 +45,30 @@ export class I18nService extends HydratableService {
     return value;
   }
 
-  public translate(key: TranslationKey) {
-    return computed(() =>
-      this.#sanityCheck(
+  public translate(
+    key: TranslationKey,
+    replace?: Record<string, string | { toString: () => string }>,
+  ) {
+    return computed(() => {
+      let translation = this.#sanityCheck(
         key,
         this.#store
           .selectSignal(I18nState.getI18n)()
           [key]?.replaceAll('\n', '<br>') || `❌ !${key}`,
-      ),
-    );
+      );
+
+      if (replace)
+        for (const [key, value] of Object.entries(replace)) {
+          translation = translation.replaceAll(`{${key}}`, value.toString());
+        }
+      return translation;
+    });
   }
 
-  public translateSnapshot(key: TranslationKey) {
-    return this.translate(key)();
+  public translateSnapshot(
+    key: TranslationKey,
+    replace?: Record<string, string | { toString: () => string }>,
+  ) {
+    return this.translate(key, replace)();
   }
 }
