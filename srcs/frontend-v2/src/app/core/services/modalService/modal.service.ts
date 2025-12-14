@@ -62,6 +62,7 @@ export class ModalService {
     data,
     title,
     icon,
+    onSubmit,
   }: modalServiceOpenProp<T>): ComponentRef<T> {
     // build modals
     this.#modalRef.setInput('icon', icon);
@@ -78,6 +79,13 @@ export class ModalService {
 
     // replace current modal if exists
     this.#replaceModal(childRef);
+
+    // onSubmit function
+    if (onSubmit) {
+      childRef.instance.submit.subscribe((val) => {
+        onSubmit(val);
+      });
+    }
 
     return childRef;
   }

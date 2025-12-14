@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, inject, Signal, signal } from '@angular/core';
 import { NgIcon, provideIcons } from '@ng-icons/core';
 import {
   lucideLogOut,
@@ -29,6 +29,7 @@ import {
   UserUpdateProfile,
 } from '../../../core/state/user/user.actions';
 import { UserState } from '../../../core/state/user/user.state';
+import { User } from '../../../core/state/user/user.state.types';
 import { LoginModalComponent } from '../../../modals/components/auth/login-modal/login-modal.component';
 import { MfaModalComponent } from '../../../modals/components/auth/mfa-modal/mfa-modal.component';
 import { RegisterModalComponent } from '../../../modals/components/auth/register-modal/register-modal.component';
@@ -326,12 +327,13 @@ export class TopbarComponent {
     const modal = this.#modalService.open({
       component: EditProfileModalComponent,
       data: {
-        user: this.userProfile,
+        user: this.userProfile as Signal<User>,
       },
-    });
-
-    modal.instance.submit.subscribe((prop) => {
-      this.#store.dispatch(new UserUpdateProfile(prop)).subscribe();
+      onSubmit: (val) => {
+        this.#store.dispatch(new UserUpdateProfile(val)).subscribe(() => {
+          modal.instance.close.emit();
+        });
+      },
     });
   }
 }

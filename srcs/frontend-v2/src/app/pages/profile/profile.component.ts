@@ -18,6 +18,7 @@ import { I18nService } from '../../core/services/i18nService/i18n.service';
 import { ModalService } from '../../core/services/modalService/modal.service';
 import { UserService } from '../../core/services/userService/user.service';
 import { UserStats } from '../../core/services/userService/user.service.types';
+import { UserUpdateProfile } from '../../core/state/user/user.actions';
 import { UserState } from '../../core/state/user/user.state';
 import { User } from '../../core/state/user/user.state.types';
 import { EditProfileModalComponent } from '../../modals/components/profile/edit-profile-modal/edit-profile-modal.component';
@@ -100,10 +101,15 @@ export class ProfileComponent implements OnDestroy {
   }
 
   onEditProfileClick() {
-    this.#modalService.open({
+    const modal = this.#modalService.open({
       component: EditProfileModalComponent,
       data: {
-        user: this.#store.selectSignal(UserState.getMe),
+        user: this.user,
+      },
+      onSubmit: (val) => {
+        this.#store.dispatch(new UserUpdateProfile(val)).subscribe(() => {
+          modal.instance.close.emit();
+        });
       },
     });
   }
