@@ -1,9 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { Action, Selector, State, StateContext } from '@ngxs/store';
-import { tap } from 'rxjs';
+import { catchError, tap, throwError } from 'rxjs';
 import { ServiceApiStatus } from '../../interfaces/http.interfaces';
 import { UserService } from '../../services/userService/user.service';
-import { UserFetchMe, UserLogout } from './user.actions';
+import { UserFetchMe, UserLogout, UserUpdateProfile } from './user.actions';
 import { User } from './user.state.types';
 
 export interface UserStateModel {
@@ -11,6 +11,7 @@ export interface UserStateModel {
   loginApiStatus: ServiceApiStatus;
   registerApiStatus: ServiceApiStatus;
   enforce2faApiStatus: ServiceApiStatus;
+  updateProfileApiStatus: ServiceApiStatus;
 }
 
 @State<UserStateModel>({
@@ -24,6 +25,9 @@ export interface UserStateModel {
       status: undefined,
     },
     enforce2faApiStatus: {
+      status: undefined,
+    },
+    updateProfileApiStatus: {
       status: undefined,
     },
   },
@@ -60,6 +64,46 @@ export class UserState {
       tap(() => {
         ctx.patchState({ me: undefined });
         localStorage.removeItem('isLogged');
+      }),
+    );
+  }
+
+  @Action(UserUpdateProfile)
+  userUpdateProfile(
+    ctx: StateContext<UserStateModel>,
+    { payload }: UserUpdateProfile,
+  ) {
+    const stateModel = ctx.getState();
+    if (stateModel.updateProfileApiStatus.status === 'loading') return;
+    ctx.patchState({
+      updateProfileApiStatus: {
+        status: 'loading',
+      },
+    });
+
+    return this.#userService.updateUserProfile(payload).pipe(
+      tap((value) => {
+        ctx.patchState({
+          me: {
+            ...(stateModel.me || {}),
+            ...value,
+          },
+          updateProfileApiStatus: {
+            status: 'success',
+          },
+        });
+      }),
+      catchError((error) => {
+        ctx.patchState({
+          updateProfileApiStatus: {
+            normalizedSarifHttpResponse: {
+              status: error.status,
+              detail: error.message ?? 'UpdateProfile failed',
+            },
+            status: 'error',
+          },
+        });
+        return throwError(() => error);
       }),
     );
   }

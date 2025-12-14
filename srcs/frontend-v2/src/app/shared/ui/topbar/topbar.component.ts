@@ -23,7 +23,11 @@ import {
 } from '../../../core/state/authentification/authentification.state';
 import { I18nUpdateLang } from '../../../core/state/i18n/i18n.actions';
 import { LangCode } from '../../../core/state/i18n/i18n.state.types';
-import { UserFetchMe, UserLogout } from '../../../core/state/user/user.actions';
+import {
+  UserFetchMe,
+  UserLogout,
+  UserUpdateProfile,
+} from '../../../core/state/user/user.actions';
 import { UserState } from '../../../core/state/user/user.state';
 import { LoginModalComponent } from '../../../modals/components/auth/login-modal/login-modal.component';
 import { MfaModalComponent } from '../../../modals/components/auth/mfa-modal/mfa-modal.component';
@@ -319,11 +323,15 @@ export class TopbarComponent {
   }
 
   onEditProfileClick() {
-    this.#modalService.open({
+    const modal = this.#modalService.open({
       component: EditProfileModalComponent,
       data: {
         user: this.userProfile,
       },
+    });
+
+    modal.instance.submit.subscribe((prop) => {
+      this.#store.dispatch(new UserUpdateProfile(prop)).subscribe();
     });
   }
 }

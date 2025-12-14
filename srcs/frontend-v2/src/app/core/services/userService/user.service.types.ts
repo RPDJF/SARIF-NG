@@ -1,4 +1,5 @@
 import { User } from '../../state/user/user.state.types';
+import { AuthentificationServiceRegisterProp } from '../authentificationService/authentification.service.types';
 
 export interface UserStats {
   isPrivate: boolean;
@@ -10,3 +11,6 @@ export interface UserStats {
     'PlayerID' | 'Admin' | 'DisplayName' | 'Private' | 'LastAlive'
   >;
 }
+
+export type UpdateUserProfileProp =
+  Partial<AuthentificationServiceRegisterProp>;

@@ -6,5 +6,5 @@ export interface User {
   Private: number;
   LastAlive: number;
   Admin: number;
-  Avatar: string;
+  Avatar?: string;
 }
